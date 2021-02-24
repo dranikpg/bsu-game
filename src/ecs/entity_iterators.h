@@ -183,9 +183,6 @@ Entity* EntityIterator<Ts...>::Peek() {
   }
 }
 
-
-
-
 // ========================== ComponentIterator Implementation =====================================
 
 template<typename... Ts>

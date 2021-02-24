@@ -6,7 +6,7 @@
 
 struct Message : public ecs::Component {
   QString message;
-  Message(const QString& message) : message(message) {}
+  explicit Message(const QString& message) : message(message) {}
 };
 
 struct Visible : public ecs::Component {
