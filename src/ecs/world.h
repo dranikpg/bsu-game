@@ -30,12 +30,12 @@ class World {
    * Create single entity
    * @return
    */
-  Entity* createEntity();
+  Entity& createEntity();
   /**
    * Erase single entity
    * @param es
    */
-  void eraseEntity(Entity* es_ptr);
+  void eraseEntity(const Entity& es_ptr);
   /**
    * Iterate over entities with specific component set
    * @tparam Ts component list

@@ -19,13 +19,16 @@ World::~World() {
   }
 }
 
-Entity* World::createEntity() {
+Entity& World::createEntity() {
   auto* e = new Entity();
   entities_created_.insert(e);
-  return e;
+  return *e;
 }
 
-void World::eraseEntity(Entity* ptr) {
+void World::eraseEntity(const Entity& entity) {
+  // this cast is only required to type-case the pointer
+  // it does not perform any modifications
+  auto* ptr = const_cast<Entity*>(&entity);
   assert(ptr != nullptr);
   if (entities_.count(ptr)) {
     entities_deleted_.push_back(ptr);
