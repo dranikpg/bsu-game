@@ -33,7 +33,7 @@ class EntityIterator {
    * Get single or null
    * @return sing entity pointer or null
    */
-  Entity* peek();
+  Entity* Peek();
 
   Entity& operator*();
 
@@ -56,22 +56,22 @@ class EntityIterator {
    * @param entity
    * @return true if to include
    */
-  bool check(Entity* entity) {
-    return entity->has<Ts...>();
+  bool Check(Entity* entity) {
+    return entity->Has<Ts...>();
   }
 
   /**
    * Find next entity
    * @param forced whether to force step over
    */
-  void advance(bool forced = false) {
+  void Advance(bool forced = false) {
     if (begin_iterator_ == end_iterator_) {
       return;
     }
     if (forced) {
       begin_iterator_++;
     }
-    while (begin_iterator_ != end_iterator_ && !check(*begin_iterator_)) {
+    while (begin_iterator_ != end_iterator_ && !Check(*begin_iterator_)) {
       begin_iterator_++;
     }
   }
@@ -128,19 +128,19 @@ EntityIterator<Ts...>::EntityIterator(std::unordered_set<Entity*>::iterator begi
                                       std::unordered_set<Entity*>::iterator end)
     : begin_iterator_(begin),
       end_iterator_(end) {
-  advance();
+  Advance();
 }
 
 template<typename... Ts>
 EntityIterator<Ts...>& EntityIterator<Ts...>::operator++() {
-  advance(true);
+  Advance(true);
   return *this;
 }
 
 template<typename... Ts>
 EntityIterator<Ts...> EntityIterator<Ts...>::operator++(int) {
   EntityIterator copy = *this;
-  advance(true);
+  Advance(true);
   return copy;
 }
 
@@ -175,7 +175,7 @@ bool EntityIterator<Ts...>::operator!=(const EntityIterator<Ts...>& other) {
 }
 
 template<typename... Ts>
-Entity* EntityIterator<Ts...>::peek() {
+Entity* EntityIterator<Ts...>::Peek() {
   if (begin_iterator_ == end_iterator_) {
     return nullptr;
   } else {
@@ -230,7 +230,7 @@ bool operator!=(const ComponentIterator<Ts...>& a, const ComponentIterator<Ts...
 template<typename... Ts>
 std::tuple<Ts& ...> ComponentIterator<Ts...>::operator*() {
   Entity& e = *begin_iterator_;
-  return e.unpackRef<Ts...>();
+  return e.UnpackRef<Ts...>();
 }
 
 template<typename... Ts>

@@ -25,24 +25,24 @@ class World {
    * Init world
    * @param systems
    */
-  void init(const std::vector<System*>& systems);
+  void Init(const std::vector<System*>& systems);
   /**
    * Create single entity
    * @return
    */
-  Entity& createEntity();
+  Entity& CreateEntity();
   /**
    * Erase single entity
    * @param es
    */
-  void eraseEntity(const Entity& es_ptr);
+  void EraseEntity(const Entity& es_ptr);
   /**
    * Iterate over entities with specific component set
    * @tparam Ts component list
    * @return iterator & iterator proxy
    */
   template<typename... Ts>
-  EntityIterator<Ts...> scanEntities() {
+  EntityIterator<Ts...> ScanEntities() {
     return EntityIterator<Ts...>(entities_.begin(), entities_.end());
   }
   /**
@@ -51,7 +51,7 @@ class World {
    * @return iterator & iterator proxy
    */
   template<typename... Ts>
-  ComponentIterator<Ts...> scan() {
+  ComponentIterator<Ts...> Scan() {
     return ComponentIterator<Ts...>(
         EntityIterator<Ts...>(entities_.begin(), entities_.end()),
         EntityIterator<Ts...>(entities_.end(), entities_.end()));
@@ -59,13 +59,13 @@ class World {
   /**
    * Run simulations
    */
-  void run();
+  void Run();
 
  private:
   /**
-   * Remove and create pending entities
+   * Remove and Create pending entities
    */
-  void syncEntities();
+  void SyncEntities();
 
 // ========================== FIELDS ===============================================================
 

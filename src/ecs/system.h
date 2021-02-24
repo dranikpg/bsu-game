@@ -12,7 +12,7 @@ class System {
    * Called on each tick
    * @param world
    */
-  virtual void run(World* world) = 0;
+  virtual void Run(World* world) = 0;
 };
 
 }  // namespace ecs

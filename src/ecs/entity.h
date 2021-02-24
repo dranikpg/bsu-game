@@ -20,7 +20,7 @@ class Entity {
    * @return if it contains all of them
    */
   template<typename... Ts>
-  bool has();
+  bool Has();
 
   /**
    * Get pointer to component
@@ -28,7 +28,7 @@ class Entity {
    * @return pointer to the component or null
    */
   template<typename T>
-  T* get();
+  T* Get();
 
   /**
    * Get reference to component
@@ -37,7 +37,7 @@ class Entity {
    * @return reference to the component
    */
   template<typename T>
-  T& getRef();
+  T& GetRef();
 
   /**
    * Return tuple of component pointers
@@ -45,7 +45,7 @@ class Entity {
    * @return tuple with pointers to listed components
    */
   template<typename... Ts>
-  std::tuple<Ts* ...> unpack();
+  std::tuple<Ts* ...> Unpack();
 
   /**
    * Return tuple of component references
@@ -55,7 +55,7 @@ class Entity {
    * @return tuple with reference to listed components
    */
   template<typename... Ts>
-  std::tuple<Ts& ...> unpackRef();
+  std::tuple<Ts& ...> UnpackRef();
 
   /**
    * Create component
@@ -65,14 +65,14 @@ class Entity {
    * @return reference to created component
    */
   template<typename T, typename... Ts>
-  Entity& create(Ts... args);
+  Entity& Create(Ts... args);
 
   /**
    * Remove component
-   * @tparam T component class to remove
+   * @tparam T component class to Remove
    */
   template<typename T>
-  void remove();
+  void Remove();
 
  private:
   std::unordered_map<std::size_t, std::unique_ptr<Component>> components_;
@@ -81,27 +81,27 @@ class Entity {
 // ========================== Implementation =======================================================
 
 template<typename... Ts>
-bool Entity::has() {
+bool Entity::Has() {
   bool has = true;
   ((has &= components_.find(ID<Ts>()) != components_.end()), ...);
   return has;
 }
 
 template<typename T>
-T* Entity::get() {
+T* Entity::Get() {
   static_assert(std::is_base_of<Component, T>::value,
                 "T must inherit Component!");
   auto it = components_.find(ID<T>());
   if (it == components_.end()) {
     return nullptr;
   } else {
-    return static_cast<T*>(it->second.get());
+    return static_cast<T*>(it->second.Get());
   }
 }
 
 template<typename T>
-T& Entity::getRef() {
-  T* ptr = get<T>();
+T& Entity::GetRef() {
+  T* ptr = Get<T>();
   if (ptr == nullptr) {
     throw std::invalid_argument("Component class not present");
   } else {
@@ -110,17 +110,17 @@ T& Entity::getRef() {
 }
 
 template<typename... Ts>
-std::tuple<Ts* ...> Entity::unpack() {
-  return std::make_tuple(get<Ts>()...);
+std::tuple<Ts* ...> Entity::Unpack() {
+  return std::make_tuple(Get<Ts>()...);
 }
 
 template<typename... Ts>
-std::tuple<Ts& ...> Entity::unpackRef() {
-  return std::forward_as_tuple(getRef<Ts>()...);
+std::tuple<Ts& ...> Entity::UnpackRef() {
+  return std::forward_as_tuple(GetRef<Ts>()...);
 }
 
 template<typename T, typename... Ts>
-Entity& Entity::create(Ts... args) {
+Entity& Entity::Create(Ts... args) {
   static_assert(std::is_base_of<Component, T>::value,
                 "T must inherit Component!");
   components_[ID<T>()] = std::make_unique<T>(args...);
@@ -128,7 +128,7 @@ Entity& Entity::create(Ts... args) {
 }
 
 template<typename T>
-void Entity::remove() {
+void Entity::Remove() {
   static_assert(std::is_base_of<Component, T>::value,
                 "T must inherit Component!");
   auto it = components_.find(ID<T>());

@@ -6,29 +6,29 @@
 
 namespace ecs {
 
-void World::init(const std::vector<System*>& systems) {
+void World::Init(const std::vector<System*>& systems) {
   for (System* system: systems) {
     systems_.push_back(std::unique_ptr<System>(system));
   }
 }
 
 World::~World() {
-  syncEntities();
+  SyncEntities();
   for (Entity* entity: entities_) {
     delete entity;
   }
 }
 
-Entity& World::createEntity() {
+Entity& World::CreateEntity() {
   auto* e = new Entity();
   entities_created_.insert(e);
   return *e;
 }
 
-void World::eraseEntity(const Entity& entity) {
+void World::EraseEntity(const Entity& es_ptr) {
   // this cast is only required to type-case the pointer
   // it does not perform any modifications
-  auto* ptr = const_cast<Entity*>(&entity);
+  auto* ptr = const_cast<Entity*>(&es_ptr);
   assert(ptr != nullptr);
   if (entities_.count(ptr)) {
     entities_deleted_.push_back(ptr);
@@ -39,14 +39,14 @@ void World::eraseEntity(const Entity& entity) {
   }
 }
 
-void World::run() {
-  syncEntities();
+void World::Run() {
+  SyncEntities();
   for (auto& sys: systems_) {
-    sys->run(this);
+    sys->Run(this);
   }
 }
 
-void World::syncEntities() {
+void World::SyncEntities() {
   for (Entity* entity: entities_created_) {
     entities_.insert(entity);
   }
