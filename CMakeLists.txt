@@ -18,7 +18,8 @@ add_executable(${PROJECT_NAME}
         src/ecs/system.h
         src/ecs/world.cpp
         src/ecs/world.h
-        src/ecs/entity_iterators.h)
+        src/ecs/entity_iterators.h
+        src/ecs/ecs.h)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
