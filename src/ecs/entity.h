@@ -95,7 +95,7 @@ T* Entity::Get() {
   if (it == components_.end()) {
     return nullptr;
   } else {
-    return static_cast<T*>(it->second.Get());
+    return static_cast<T*>(it->second.get());
   }
 }
 
