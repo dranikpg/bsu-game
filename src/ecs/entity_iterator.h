@@ -66,6 +66,7 @@ class EntityIterator {
    */
   void Advance(bool forced = false);
 
+ private:
   world_iterator begin_iterator_;
   world_iterator end_iterator_;
 };

@@ -1,8 +1,4 @@
-#include <cassert>
-
 #include "world.h"
-#include "entity.h"
-#include "system.h"
 
 namespace ecs {
 
@@ -12,6 +8,7 @@ void World::Init(std::vector<std::unique_ptr<System>>&& systems) {
 
 World::~World() {
 }
+
 Entity& World::CreateEntity() {
   auto entity = std::make_shared<Entity>();
   entities_created_.insert(entity);
@@ -19,7 +16,6 @@ Entity& World::CreateEntity() {
 }
 
 void World::EraseEntity(Entity* raw_ptr) {
-  assert(raw_ptr != nullptr);
   std::shared_ptr<Entity> ptr = raw_ptr->shared_from_this();
   if (entities_.count(ptr)) {
     entities_deleted_.push_back(ptr);
