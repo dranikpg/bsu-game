@@ -11,7 +11,8 @@
 
 #include "system.h"
 #include "entity.h"
-#include "entity_iterators.h"
+#include "entity_iterator.h"
+#include "component_iterator.h"
 
 namespace ecs {
 
@@ -61,6 +62,7 @@ class World {
    */
   void SyncEntities();
 
+ private:
   std::unordered_set<std::shared_ptr<Entity>> entities_;
   std::unordered_set<std::shared_ptr<Entity>> entities_created_;
   std::vector<std::shared_ptr<Entity>> entities_deleted_;
