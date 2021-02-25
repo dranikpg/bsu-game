@@ -70,7 +70,7 @@ class Entity : public std::enable_shared_from_this<Entity> {
 template<typename... Ts>
 bool Entity::HasComponent() {
   bool has = true;
-  ((has &= components_.find(ID<Ts>()) != components_.end()), ...);
+  ((has &= components_.count(ID<Ts>())), ...);
   return has;
 }
 
