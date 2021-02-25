@@ -33,9 +33,9 @@ class World {
   Entity& CreateEntity();
   /**
    * Erase single entity
-   * @param es
+   * @param const_reference
    */
-  void EraseEntity(const Entity& es_ptr);
+  void EraseEntity(const Entity& const_reference);
   /**
    * Iterate over entities with specific component set
    * @tparam Ts component list
@@ -67,23 +67,9 @@ class World {
    */
   void SyncEntities();
 
-// ========================== FIELDS ===============================================================
-
-  /**
-   * List of entities
-   */
-  std::unordered_set<Entity*> entities_;
-  /**
-   * List of not yet created entities
-   */
-  std::unordered_set<Entity*> entities_created_;
-  /**
-   * List of not yet deleted entities
-   */
-  std::vector<Entity*> entities_deleted_;
-  /**
-   * List of systems
-   */
+  std::unordered_set<std::shared_ptr<Entity>> entities_;
+  std::unordered_set<std::shared_ptr<Entity>> entities_created_;
+  std::vector<std::shared_ptr<Entity>> entities_deleted_;
   std::vector<std::unique_ptr<System>> systems_;
 };
 

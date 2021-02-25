@@ -2,6 +2,7 @@
 #define SRC_ECS_ENTITY_ITERATORS_H_
 
 #include <tuple>
+#include <memory>
 #include <unordered_set>
 
 namespace ecs {
@@ -21,13 +22,15 @@ class EntityIterator {
   using difference_type = std::ptrdiff_t;
   using pointer = Entity*;
   using reference = Entity&;
+
+  using world_iterator = std::unordered_set<std::shared_ptr<Entity>>::iterator;
   /**
    * Construct from a set iterator
    * @param begin begin
    * @param end end
    */
-  EntityIterator(std::unordered_set<Entity*>::iterator begin,
-                 std::unordered_set<Entity*>::iterator end);
+  EntityIterator(world_iterator begin,
+                 world_iterator end);
 
   /**
    * Get single or null
@@ -71,13 +74,13 @@ class EntityIterator {
     if (forced) {
       begin_iterator_++;
     }
-    while (begin_iterator_ != end_iterator_ && !Check(*begin_iterator_)) {
+    while (begin_iterator_ != end_iterator_ && !Check(begin_iterator_->get())) {
       begin_iterator_++;
     }
   }
 
-  std::unordered_set<Entity*>::iterator begin_iterator_;
-  std::unordered_set<Entity*>::iterator end_iterator_;
+  world_iterator begin_iterator_;
+  world_iterator end_iterator_;
 };
 
 // ========================== Component Iterator ===================================================
@@ -124,8 +127,7 @@ class ComponentIterator {
 // ========================== EntityIterator Implementation ========================================
 
 template<typename... Ts>
-EntityIterator<Ts...>::EntityIterator(std::unordered_set<Entity*>::iterator begin,
-                                      std::unordered_set<Entity*>::iterator end)
+EntityIterator<Ts...>::EntityIterator(world_iterator begin, world_iterator end)
     : begin_iterator_(begin),
       end_iterator_(end) {
   Advance();
@@ -166,7 +168,7 @@ bool EntityIterator<Ts...>::operator==(const EntityIterator<Ts...>& other) {
 
 template<typename... Ts>
 Entity* EntityIterator<Ts...>::operator->() {
-  return *begin_iterator_;
+  return begin_iterator_->get();
 }
 
 template<typename... Ts>
@@ -179,7 +181,7 @@ Entity* EntityIterator<Ts...>::Peek() {
   if (begin_iterator_ == end_iterator_) {
     return nullptr;
   } else {
-    return *begin_iterator_;
+    return begin_iterator_->get();
   }
 }
 

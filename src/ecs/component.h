@@ -7,6 +7,7 @@ namespace ecs {
  * Common base for all pure data structs
  */
 struct Component {
+  virtual ~Component() = default;
 };
 
 }  // namespace ecs

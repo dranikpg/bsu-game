@@ -13,23 +13,16 @@ void World::Init(const std::vector<System*>& systems) {
 }
 
 World::~World() {
-  SyncEntities();
-  for (Entity* entity: entities_) {
-    delete entity;
-  }
 }
-
 Entity& World::CreateEntity() {
-  auto* e = new Entity();
-  entities_created_.insert(e);
-  return *e;
+  auto entity = std::make_shared<Entity>();
+  entities_created_.insert(entity);
+  return *entity;
 }
 
-void World::EraseEntity(const Entity& es_ptr) {
-  // this cast is only required to type-case the pointer
-  // it does not perform any modifications
-  auto* ptr = const_cast<Entity*>(&es_ptr);
-  assert(ptr != nullptr);
+void World::EraseEntity(const Entity& const_reference) {
+  auto& mut_reference = const_cast<Entity&>(const_reference);
+  std::shared_ptr<Entity> ptr = mut_reference.shared_from_this();
   if (entities_.count(ptr)) {
     entities_deleted_.push_back(ptr);
     entities_.erase(ptr);
@@ -47,11 +40,8 @@ void World::Run() {
 }
 
 void World::SyncEntities() {
-  for (Entity* entity: entities_created_) {
+  for (std::shared_ptr<Entity> entity: entities_created_) {
     entities_.insert(entity);
-  }
-  for (Entity* entity: entities_deleted_) {
-    delete entity;
   }
   entities_created_.clear();
   entities_deleted_.clear();

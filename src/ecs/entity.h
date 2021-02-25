@@ -13,8 +13,9 @@ namespace ecs {
 /**
  * Basic component bag
  */
-class Entity {
+class Entity : public std::enable_shared_from_this<Entity> {
  public:
+  Entity() = default;
   /**
    * @tparam Ts List of component classes
    * @return if it contains all of them

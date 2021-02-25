@@ -25,7 +25,7 @@ void TestEcs(QListWidget* list) {
   world.CreateEntity()
       .Create<Message>("Second invisible");
 
-  ecs::Entity& second_visible = world.CreateEntity()
+  auto& second_visible = world.CreateEntity()
       .Create<Message>("Second visible")
       .Create<Visible>();
 
