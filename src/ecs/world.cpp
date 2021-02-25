@@ -18,9 +18,9 @@ Entity& World::CreateEntity() {
   return *entity;
 }
 
-void World::EraseEntity(const Entity& const_reference) {
-  auto& mut_reference = const_cast<Entity&>(const_reference);
-  std::shared_ptr<Entity> ptr = mut_reference.shared_from_this();
+void World::EraseEntity(Entity* raw_ptr) {
+  assert(raw_ptr != nullptr);
+  std::shared_ptr<Entity> ptr = raw_ptr->shared_from_this();
   if (entities_.count(ptr)) {
     entities_deleted_.push_back(ptr);
     entities_.erase(ptr);
@@ -38,7 +38,7 @@ void World::Run() {
 }
 
 void World::SyncEntities() {
-  for (std::shared_ptr<Entity> entity: entities_created_) {
+  for (const std::shared_ptr<Entity>& entity: entities_created_) {
     entities_.insert(entity);
   }
   entities_created_.clear();

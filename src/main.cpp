@@ -33,11 +33,13 @@ void TestEcs(QListWidget* list) {
       .Create<Message>("Second visible")
       .Create<Visible>();
 
-  world.EraseEntity(second_visible);
+  world.EraseEntity(&second_visible);
 
   world.Run();
 
-  for (auto[message, _] : world.Scan<Message, Visible>()) {
+  ecs::ComponentIterator<Message, Visible> it = world.Scan<Message, Visible>();
+
+  for (auto[message, _] : it) {
     list->addItem(message.message);
   }
 }

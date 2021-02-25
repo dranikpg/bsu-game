@@ -22,8 +22,8 @@ class EntityIterator {
   using difference_type = std::ptrdiff_t;
   using pointer = Entity*;
   using reference = Entity&;
-
   using world_iterator = std::unordered_set<std::shared_ptr<Entity>>::iterator;
+
   /**
    * Construct from a set iterator
    * @param begin begin
@@ -36,7 +36,7 @@ class EntityIterator {
    * Get single or null
    * @return sing entity pointer or null
    */
-  Entity* Peek();
+  Entity* Peek() const;
 
   Entity& operator*();
 
@@ -50,9 +50,9 @@ class EntityIterator {
 
   EntityIterator end();
 
-  bool operator==(const EntityIterator<Ts...>& other);
+  bool operator==(const EntityIterator<Ts...>& other) const;
 
-  bool operator!=(const EntityIterator<Ts...>& other);
+  bool operator!=(const EntityIterator<Ts...>& other) const;
 
  private:
   /**
@@ -115,9 +115,9 @@ class ComponentIterator {
 
   ComponentIterator end();
 
-  bool operator==(const ComponentIterator<Ts...>& other);
+  bool operator==(const ComponentIterator<Ts...>& other) const;
 
-  bool operator!=(const ComponentIterator<Ts...>& other);
+  bool operator!=(const ComponentIterator<Ts...>& other) const;
 
  private:
   EntityIterator<Ts...> begin_iterator_;
@@ -162,22 +162,22 @@ Entity& EntityIterator<Ts...>::operator*() {
 }
 
 template<typename... Ts>
-bool EntityIterator<Ts...>::operator==(const EntityIterator<Ts...>& other) {
-  return begin_iterator_ == other.begin_iterator_;
-}
-
-template<typename... Ts>
 Entity* EntityIterator<Ts...>::operator->() {
   return begin_iterator_->get();
 }
 
 template<typename... Ts>
-bool EntityIterator<Ts...>::operator!=(const EntityIterator<Ts...>& other) {
+bool EntityIterator<Ts...>::operator==(const EntityIterator<Ts...>& other) const {
+  return begin_iterator_ == other.begin_iterator_;
+}
+
+template<typename... Ts>
+bool EntityIterator<Ts...>::operator!=(const EntityIterator<Ts...>& other) const {
   return !(*this == other);
 }
 
 template<typename... Ts>
-Entity* EntityIterator<Ts...>::Peek() {
+Entity* EntityIterator<Ts...>::Peek() const {
   if (begin_iterator_ == end_iterator_) {
     return nullptr;
   } else {
@@ -217,28 +217,18 @@ ComponentIterator<Ts...> ComponentIterator<Ts...>::end() {
 }
 
 template<typename... Ts>
-bool operator==(const ComponentIterator<Ts...>& a, const ComponentIterator<Ts...>& b) {
-  return a.begin_iterator_ == b.begin_iterator_;;
-}
-
-template<typename... Ts>
-bool operator!=(const ComponentIterator<Ts...>& a, const ComponentIterator<Ts...>& b) {
-  return !(a == b);
-}
-
-template<typename... Ts>
 std::tuple<Ts& ...> ComponentIterator<Ts...>::operator*() {
   Entity& e = *begin_iterator_;
   return e.UnpackRef<Ts...>();
 }
 
 template<typename... Ts>
-bool ComponentIterator<Ts...>::operator==(const ComponentIterator<Ts...>& other) {
+bool ComponentIterator<Ts...>::operator==(const ComponentIterator<Ts...>& other) const {
   return begin_iterator_ == other.begin_iterator_;
 }
 
 template<typename... Ts>
-bool ComponentIterator<Ts...>::operator!=(const ComponentIterator<Ts...>& other) {
+bool ComponentIterator<Ts...>::operator!=(const ComponentIterator<Ts...>& other) const {
   return !(*this == other);
 }
 

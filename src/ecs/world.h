@@ -35,27 +35,21 @@ class World {
    * Erase single entity
    * @param const_reference
    */
-  void EraseEntity(const Entity& const_reference);
+  void EraseEntity(Entity* ptr);
   /**
    * Iterate over entities with specific component set
    * @tparam Ts component list
    * @return iterator & iterator proxy
    */
   template<typename... Ts>
-  EntityIterator<Ts...> ScanEntities() {
-    return EntityIterator<Ts...>(entities_.begin(), entities_.end());
-  }
+  EntityIterator<Ts...> ScanEntities();
   /**
    * Iterate over specific component set
    * @tparam Ts component list
    * @return iterator & iterator proxy
    */
   template<typename... Ts>
-  ComponentIterator<Ts...> Scan() {
-    return ComponentIterator<Ts...>(
-        EntityIterator<Ts...>(entities_.begin(), entities_.end()),
-        EntityIterator<Ts...>(entities_.end(), entities_.end()));
-  }
+  ComponentIterator<Ts...> Scan();;
   /**
    * Run simulations
    */
@@ -72,6 +66,18 @@ class World {
   std::vector<std::shared_ptr<Entity>> entities_deleted_;
   std::vector<std::unique_ptr<System>> systems_;
 };
+
+template<typename... Ts>
+EntityIterator<Ts...> World::ScanEntities() {
+  return EntityIterator<Ts...>(entities_.begin(), entities_.end());
+}
+
+template<typename... Ts>
+ComponentIterator<Ts...> World::Scan() {
+  return ComponentIterator<Ts...>(
+      EntityIterator<Ts...>(entities_.begin(), entities_.end()),
+      EntityIterator<Ts...>(entities_.end(), entities_.end()));
+}
 
 }  // namespace ecs
 
