@@ -6,10 +6,8 @@
 
 namespace ecs {
 
-void World::Init(const std::vector<System*>& systems) {
-  for (System* system: systems) {
-    systems_.push_back(std::unique_ptr<System>(system));
-  }
+void World::Init(std::vector<std::unique_ptr<System>>&& systems) {
+  systems_ = std::move(systems);
 }
 
 World::~World() {

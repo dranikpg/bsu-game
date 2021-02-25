@@ -25,7 +25,7 @@ class World {
    * Init world
    * @param systems
    */
-  void Init(const std::vector<System*>& systems);
+  void Init(std::vector<std::unique_ptr<System>>&& systems);
   /**
    * Create single entity
    * @return
