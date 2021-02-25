@@ -6,9 +6,6 @@ void World::Init(std::vector<std::unique_ptr<System>>&& systems) {
   systems_ = std::move(systems);
 }
 
-World::~World() {
-}
-
 Entity& World::CreateEntity() {
   auto entity = std::make_shared<Entity>();
   entities_created_.insert(entity);

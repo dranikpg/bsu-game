@@ -21,7 +21,6 @@ namespace ecs {
  */
 class World {
  public:
-  ~World();
   /**
    * Init world
    * @param systems
@@ -50,7 +49,7 @@ class World {
    * @return iterator & iterator proxy
    */
   template<typename... Ts>
-  ComponentIterator<Ts...> Scan();;
+  ComponentIterator<Ts...> Scan();
   /**
    * Run simulations
    */
