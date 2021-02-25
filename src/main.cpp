@@ -19,19 +19,19 @@ void TestEcs(QListWidget* list) {
   ecs::World world;
 
   world.CreateEntity()
-      .Create<Message>("First visible")
-      .Create<Visible>();
+      .AddComponent<Message>("First visible")
+      .AddComponent<Visible>();
 
   world.CreateEntity()
-      .Create<Message>("Second invisible");
+      .AddComponent<Message>("Second invisible");
 
   auto& second_visible = world.CreateEntity()
-      .Create<Message>("Second visible")
-      .Create<Visible>();
+      .AddComponent<Message>("Second visible")
+      .AddComponent<Visible>();
 
   world.CreateEntity()
-      .Create<Message>("Second visible")
-      .Create<Visible>();
+      .AddComponent<Message>("Second visible")
+      .AddComponent<Visible>();
 
   world.EraseEntity(&second_visible);
 

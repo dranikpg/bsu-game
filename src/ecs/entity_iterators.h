@@ -60,7 +60,7 @@ class EntityIterator {
    * @return true if to include
    */
   bool Check(Entity* entity) {
-    return entity->Has<Ts...>();
+    return entity->HasComponent<Ts...>();
   }
 
   /**
