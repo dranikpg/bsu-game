@@ -24,29 +24,13 @@ class Entity : public std::enable_shared_from_this<Entity> {
   bool HasComponent();
 
   /**
-   * Get pointer to component
-   * @tparam T component class, extends `Component`
-   * @return pointer to the component or null
-   */
-  template<typename T>
-  T* GetComponent();
-
-  /**
    * Get reference to component
    * @tparam T component class, extends `Component`
    * @throws std::invalid_argument if it does not contain the component
    * @return reference to the component
    */
   template<typename T>
-  T& GetComponentRef();
-
-  /**
-   * Return tuple of component pointers
-   * @tparam Ts list of component classes
-   * @return tuple with pointers to listed components
-   */
-  template<typename... Ts>
-  std::tuple<Ts* ...> Unpack();
+  T& GetComponent();
 
   /**
    * Return tuple of component references
@@ -56,7 +40,7 @@ class Entity : public std::enable_shared_from_this<Entity> {
    * @return tuple with reference to listed components
    */
   template<typename... Ts>
-  std::tuple<Ts& ...> UnpackRef();
+  std::tuple<Ts& ...> Unpack();
 
   /**
    * @tparam T component class
@@ -74,6 +58,10 @@ class Entity : public std::enable_shared_from_this<Entity> {
   void RemoveComponent();
 
  private:
+  template<typename T>
+  T* GetComponentPointer();
+
+ private:
   std::unordered_map<std::size_t, std::unique_ptr<Component>> components_;
 };
 
@@ -87,7 +75,7 @@ bool Entity::HasComponent() {
 }
 
 template<typename T>
-T* Entity::GetComponent() {
+T* Entity::GetComponentPointer() {
   static_assert(std::is_base_of<Component, T>::value,
                 "T must inherit Component!");
   auto it = components_.find(ID<T>());
@@ -99,8 +87,8 @@ T* Entity::GetComponent() {
 }
 
 template<typename T>
-T& Entity::GetComponentRef() {
-  T* ptr = GetComponent<T>();
+T& Entity::GetComponent() {
+  T* ptr = GetComponentPointer<T>();
   if (ptr == nullptr) {
     throw std::invalid_argument("Component class not present");
   } else {
@@ -109,13 +97,8 @@ T& Entity::GetComponentRef() {
 }
 
 template<typename... Ts>
-std::tuple<Ts* ...> Entity::Unpack() {
-  return std::make_tuple(GetComponent<Ts>()...);
-}
-
-template<typename... Ts>
-std::tuple<Ts& ...> Entity::UnpackRef() {
-  return std::forward_as_tuple(GetComponentRef<Ts>()...);
+std::tuple<Ts& ...> Entity::Unpack() {
+  return std::forward_as_tuple(GetComponent<Ts>()...);
 }
 
 template<typename T, typename... Ts>

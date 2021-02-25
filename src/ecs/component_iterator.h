@@ -78,7 +78,7 @@ ComponentIterator<Ts...> ComponentIterator<Ts...>::end() {
 template<typename... Ts>
 std::tuple<Ts& ...> ComponentIterator<Ts...>::operator*() {
   Entity& e = *begin_iterator_;
-  return e.UnpackRef<Ts...>();
+  return e.Unpack<Ts...>();
 }
 
 template<typename... Ts>
