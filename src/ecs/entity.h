@@ -65,8 +65,6 @@ class Entity : public std::enable_shared_from_this<Entity> {
   std::unordered_map<std::size_t, std::unique_ptr<Component>> components_;
 };
 
-// ========================== Implementation =======================================================
-
 template<typename... Ts>
 bool Entity::HasComponent() {
   bool has = true;
