@@ -11,4 +11,9 @@ SpriteComponent::SpriteComponent(const QPixmap& pixmap,
                                  SpriteLayer layer)
     : pixmap(pixmap), area(area), bounds(bounds), layer(layer) {}
 
+void SpriteComponent::updateGraphics(const QPixmap& pixmap, const QRect& area) {
+  this->pixmap = pixmap;
+  this->area = area;
+}
+
 }  // namespace game
