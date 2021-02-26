@@ -13,16 +13,11 @@ using constants::SpriteLayer;
 namespace game {
 
 struct SpriteComponent : public ecs::Component {
-  explicit SpriteComponent(const QPixmap& pixmap, SpriteLayer = SpriteLayer::BACKGROUND);
-  SpriteComponent(const QPixmap& pixmap,
-                  const QRect& area,
-                  const QRect& size,
-                  const QPoint& offset,
-                  SpriteLayer layer);
+  explicit SpriteComponent(const QPixmap& pixmap, SpriteLayer = SpriteLayer::kBackground);
+  SpriteComponent(const QPixmap& pixmap, const QRect& area, const QRect& bounds, SpriteLayer layer);
   QPixmap pixmap;
   QRect area;
-  QRect size;
-  QPoint offset;
+  QRect bounds;
   SpriteLayer layer;
 };
 

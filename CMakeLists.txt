@@ -15,7 +15,9 @@ add_executable(${PROJECT_NAME}
         src/ecs/world.cpp
         src/components/position_component.cpp
         src/components/sprite_component.cpp
-        src/prototype/prototype_widget.cpp)
+        src/prototype/prototype_widget.cpp
+        src/systems/rendering_system.cpp
+        src/context/painter_context.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

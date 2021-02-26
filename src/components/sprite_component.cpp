@@ -3,12 +3,12 @@
 namespace game {
 
 SpriteComponent::SpriteComponent(const QPixmap& pixmap, SpriteLayer layer)
-    : pixmap(pixmap), area(pixmap.rect()), size(pixmap.rect()), offset(0, 0), layer(layer) {
+    : pixmap(pixmap), area(pixmap.rect()), bounds(pixmap.rect()),  layer(layer) {
 }
-
-SpriteComponent::SpriteComponent(const QPixmap& pixmap, const QRect& area,
-                                 const QRect& size, const QPoint& offset,
+SpriteComponent::SpriteComponent(const QPixmap& pixmap,
+                                 const QRect& area,
+                                 const QRect& bounds,
                                  SpriteLayer layer)
-    : pixmap(pixmap), area(area), size(size), offset(offset), layer(layer) {}
+    : pixmap(pixmap), area(area), bounds(bounds), layer(layer) {}
 
 }  // namespace game

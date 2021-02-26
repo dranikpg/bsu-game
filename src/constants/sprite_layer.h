@@ -4,8 +4,9 @@
 namespace constants {
 
 enum class SpriteLayer {
-  BACKGROUND,
-  FOREGROUND
+  kBackground,
+  kForeground,
+  _LAST
 };
 
 }  // namespace constants
