@@ -37,4 +37,5 @@ void PrototypeWidget::paintEvent(QPaintEvent* event) {
   painter_context_.Supply(&painter);
 
   world_.Run();
+  update();
 }
