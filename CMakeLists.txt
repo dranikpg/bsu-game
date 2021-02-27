@@ -18,7 +18,7 @@ add_executable(${PROJECT_NAME}
         src/prototype/prototype_widget.cpp
         src/systems/rendering_system.cpp
         src/context/painter_context.cpp
-        src/resources/animation.cpp)
+        src/resources/animation.cpp src/components/impulse_component.cpp src/components/impulse_component.h src/components/collider_component.h)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
