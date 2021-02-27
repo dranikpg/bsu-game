@@ -5,8 +5,8 @@
 
 namespace game {
 
- struct ColliderComponent : public ecs::Component {
- };
+struct ColliderComponent : public ecs::Component {
+};
 }  // namespace game
 
 #endif  // SRC_COMPONENTS_COLLIDER_COMPONENT_H_

@@ -7,11 +7,11 @@
 
 namespace game {
 
- struct ImpulseComponent : public ecs::Component {
-   explicit ImpulseComponent(const QPoint& shift);
+struct ImpulseComponent : public ecs::Component {
+  explicit ImpulseComponent(const QPoint& shift);
 
-   QPoint shift;
- };
+  QPoint shift;
+};
 }  // namespace game
 
 #endif  // SRC_COMPONENTS_IMPULSE_COMPONENT_H_
