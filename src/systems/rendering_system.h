@@ -13,7 +13,8 @@ namespace game {
 class RenderingSystem : public System {
  public:
   explicit RenderingSystem(PainterContext* painter_context);
-  void Run(World *world) override;
+  void Run(World* world) override;
+
  private:
   PainterContext* painter_context_;
 };

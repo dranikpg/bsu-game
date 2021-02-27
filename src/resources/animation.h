@@ -17,11 +17,11 @@ class Animation {
   const QRect& GetFrame(int frame) const;
   uint16_t GetFrameLength(int frame) const;
   std::size_t GetFrameCount() const;
+
  private:
   QPixmap pixmap_;
   std::vector<QRect> frames_;
   std::vector<uint16_t> frame_lengths_;
-  size_t GetFrameCount();
 };
 
 }  // namespace resource

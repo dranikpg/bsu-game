@@ -3,17 +3,18 @@
 namespace game {
 
 SpriteComponent::SpriteComponent(const QPixmap& pixmap, SpriteLayer layer)
-    : pixmap(pixmap), area(pixmap.rect()), bounds(pixmap.rect()),  layer(layer) {
+    : pixmap(pixmap), source_area(pixmap.rect()), target_area(pixmap.rect()), layer(layer) {
 }
+
 SpriteComponent::SpriteComponent(const QPixmap& pixmap,
                                  const QRect& area,
                                  const QRect& bounds,
                                  SpriteLayer layer)
-    : pixmap(pixmap), area(area), bounds(bounds), layer(layer) {}
+    : pixmap(pixmap), source_area(area), target_area(bounds), layer(layer) {}
 
 void SpriteComponent::UpdateGraphics(const QPixmap& pixmap, const QRect& area) {
   this->pixmap = pixmap;
-  this->area = area;
+  this->source_area = area;
 }
 
 }  // namespace game

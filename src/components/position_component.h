@@ -10,9 +10,10 @@ namespace game {
 struct PositionComponent : public ecs::Component {
   PositionComponent() = default;
   explicit PositionComponent(const QPoint& pos);
+
   PositionComponent(int x, int y);
 
-  QPoint pos;
+  QPoint position;
 };
 
 }  // namespace game

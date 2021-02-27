@@ -21,7 +21,7 @@ uint16_t Animation::GetFrameLength(int frame) const {
   return frame_lengths_[frame];
 }
 
-std::size_t Animation::GetFrameCount() {
+std::size_t Animation::GetFrameCount() const {
   return frames_.size();
 }
 
