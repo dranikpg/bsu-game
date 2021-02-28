@@ -2,9 +2,7 @@
 #define SRC_CONTEXT_INPUT_CONTEXT_H_
 
 #include <set>
-#include <QObject>
 #include <QKeyEvent>
-#include <QMainWindow>
 
 #include "../constants/keys.h"
 
@@ -12,9 +10,9 @@ using constants::Keys;
 
 namespace context {
 
-class InputContext : public QWidget {
+class InputContext {
  public:
-  void keyPressEvent(QKeyEvent* event) override;
+  void SetKeys(Qt::Key key);
   std::set<constants::Keys>& GetKeys();
   void Clean();
 

@@ -34,6 +34,5 @@ void InputMovementSystem::Run(World* world) {
       }
     }
   }
-  input_->Clean();
 }
 }  // namespace game

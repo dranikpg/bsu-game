@@ -2,8 +2,8 @@
 
 namespace context {
 
-void InputContext::keyPressEvent(QKeyEvent* event) {
-  switch (event->key()) {
+void InputContext::SetKeys(Qt::Key key) {
+  switch (key) {
     case Qt::Key::Key_W:
       seq_of_keys_.insert(Keys::kUp);
       break;
@@ -15,6 +15,8 @@ void InputContext::keyPressEvent(QKeyEvent* event) {
       break;
     case Qt::Key::Key_D:
       seq_of_keys_.insert(Keys::kRight);
+      break;
+    default:
       break;
   }
 }
