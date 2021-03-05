@@ -20,16 +20,16 @@ void InputMovementSystem::Run(World* world) {
     for (auto key : keys) {
       switch (key) {
         case Keys::kUp:
-          impulse.shift += QPoint(0, -5);
+          impulse.shift += QPoint(0, -10);
           break;
         case Keys::kLeft:
-          impulse.shift += QPoint(-5, 0);
+          impulse.shift += QPoint(-10, 0);
           break;
         case Keys::kRight:
-          impulse.shift += QPoint(5, 0);
+          impulse.shift += QPoint(10, 0);
           break;
         case Keys::kDown:
-          impulse.shift += QPoint(0, 5);
+          impulse.shift += QPoint(0, 10);
           break;
       }
     }

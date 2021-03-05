@@ -18,7 +18,7 @@ add_executable(${PROJECT_NAME}
         src/prototype/prototype_widget.cpp
         src/systems/rendering_system.cpp
         src/context/painter_context.cpp
-        src/resources/animation.cpp src/components/impulse_component.cpp src/components/impulse_component.h src/components/collider_component.h src/systems/movement_system.cpp src/systems/movement_system.h src/components/bounds_component.cpp src/components/bounds_component.h src/components/input_movement_component.h src/context/input_context.cpp src/context/input_context.h src/constants/keys.h src/systems/input_movement_system.cpp src/systems/input_movement_system.h)
+        src/resources/animation.cpp src/components/impulse_component.cpp src/systems/movement_system.cpp src/components/bounds_component.cpp  src/context/input_context.cpp src/systems/input_movement_system.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
