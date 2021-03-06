@@ -15,7 +15,8 @@ void AnimationSystem::Run(World* world) {
         animation.frame_index_ = 0;
         ++animation.repetitions;
       }
-      animation.frame_length_ = animation.animation_resource_->GetFrameLength(animation.frame_index_);
+      animation.frame_length_ =
+          animation.animation_resource_->GetFrameLength(animation.frame_index_);
     }
 
     sprite.SetGraphics(animation.animation_resource_->GetPixmap(),

@@ -27,12 +27,12 @@ void RenderingSystem::Run(World* world) {
   for (int layer_id = 0; SpriteLayer::_LAST != static_cast<SpriteLayer>(layer_id); layer_id++) {
     auto layer = static_cast<SpriteLayer>(layer_id);
     for (auto[sprite, position] : world->Scan<SpriteComponent, PositionComponent>()) {
-      if (sprite.layer != layer) {
+      if (sprite.layer_ != layer) {
         continue;
       }
-      QRect bounds = sprite.target_area;
+      QRect bounds = sprite.target_area_;
       bounds.moveCenter(position.position);
-      painter.drawPixmap(bounds, sprite.pixmap, sprite.source_area);
+      painter.drawPixmap(bounds, sprite.pixmap_, sprite.source_area_);
     }
   }
 
