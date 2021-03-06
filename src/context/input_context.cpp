@@ -2,7 +2,7 @@
 
 namespace context {
 
-void InputContext::SetKeys(Qt::Key key) {
+void InputContext::AddKey(Qt::Key key) {
   switch (key) {
     case Qt::Key::Key_W:
       seq_of_keys_.insert(Keys::kUp);

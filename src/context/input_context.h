@@ -12,7 +12,7 @@ namespace context {
 
 class InputContext {
  public:
-  void SetKeys(Qt::Key key);
+  void AddKey(Qt::Key key);
   std::set<constants::Keys>& GetKeys();
   void Clean();
 
