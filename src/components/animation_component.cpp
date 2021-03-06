@@ -8,12 +8,13 @@ AnimationComponent::AnimationComponent(std::shared_ptr<resource::Animation> anim
   SetAnimationResource(std::move(animation_resource));
 }
 
-void AnimationComponent::SetAnimationResource(std::shared_ptr<resource::Animation> animation_resource) {
+void AnimationComponent::SetAnimationResource(
+    std::shared_ptr<resource::Animation> animation_resource) {
   animation_resource_ = std::move(animation_resource);
-  frame_index_ = 0;
-  frame_time_ = 0;
-  frame_length_ = animation_resource_->GetFrameLength(frame_index_);
-  total_frames_ = animation_resource_->GetFrameCount();
+  frame_index = 0;
+  frame_time = 0;
+  frame_length = animation_resource_->GetFrameLength(frame_index);
+  total_frames = animation_resource_->GetFrameCount();
   repetitions = 0;
 }
 
