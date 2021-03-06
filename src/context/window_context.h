@@ -1,5 +1,5 @@
-#ifndef WINDOW_CONTEXT_H
-#define WINDOW_CONTEXT_H
+#ifndef SRC_CONTEXT_WINDOW_CONTEXT_H_
+#define SRC_CONTEXT_WINDOW_CONTEXT_H_
 
 #include <QSize>
 
@@ -15,4 +15,4 @@ class WindowContext {
 
 }  // namespace context
 
-#endif  // WINDOW_CONTEXT_H
+#endif  // SRC_CONTEXT_WINDOW_CONTEXT_H_

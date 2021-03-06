@@ -23,8 +23,7 @@ void RenderingSystem::Run(World* world) {
     auto& camera_pos = camera_entity->GetComponent<PositionComponent>();
     painter.translate(
         -camera_pos.position.x() + window_context_->GetSize().width() / 2,
-        -camera_pos.position.y() + window_context_->GetSize().height() / 2
-    );
+        -camera_pos.position.y() + window_context_->GetSize().height() / 2);
   }
 
   for (int layer_id = 0; SpriteLayer::_LAST != static_cast<SpriteLayer>(layer_id); layer_id++) {
