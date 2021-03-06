@@ -12,8 +12,6 @@ class AnimationSystem : public System {
  public:
   AnimationSystem() = default;
   void Run(World* world) override;
-
- private:
 };
 
 }  // namespace game
