@@ -21,7 +21,7 @@ AseAnimationParser::AnimationBag AseAnimationParser::Parse(QFile file) {
   QJsonObject root_obj = json_document.object();
 
   // check pixmap path
-  if(!root_obj.value("pixmap").isString()){
+  if (!root_obj.value("pixmap").isString()) {
     throw JsonFormatException("No pixmap property");
   }
 
