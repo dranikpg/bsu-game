@@ -26,7 +26,8 @@ add_executable(${PROJECT_NAME}
         src/systems/input_movement_system.cpp
         src/resources/animation.cpp
         src/systems/animation_system.cpp
-        src/components/animation_component.cpp)
+        src/components/animation_component.cpp
+        src/context/window_context.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
