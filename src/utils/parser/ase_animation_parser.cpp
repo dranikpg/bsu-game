@@ -27,8 +27,7 @@ AseAnimationParser::AnimationBag AseAnimationParser::Parse(QFile file) {
 
   // load pixmap
   QString pixmap_path = root_obj.value("pixmap").toString();
-  QPixmap pixmap;
-  pixmap.load(pixmap_path);
+  QPixmap pixmap(pixmap_path);
   if (pixmap.isNull()) {
     throw InvalidPixmapException("Failed to load pixmap: " + pixmap_path.toStdString());
   }

@@ -32,7 +32,8 @@ class AseAnimationParser {
   };
 
   using AnimationBag = std::unordered_map<std::string, std::shared_ptr<Animation>>;
-  static AnimationBag Parse(QFile file) noexcept(false);
+  static AnimationBag Parse(QFile file);
+
  private:
   static QRect ParseRect(const QJsonObject& obj);
   static std::vector<std::pair<QRect, uint16_t>> ParseFrames(const QJsonArray& array);
