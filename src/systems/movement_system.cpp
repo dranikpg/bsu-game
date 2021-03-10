@@ -31,9 +31,8 @@ void MovementSystem::Run(World* world) {
   }
 }
 
-bool MovementSystem::IsIntersects(World* world, Entity* entity,
-                                  const QRect& first_case,
-                                  const QRect& second_case) const {
+bool MovementSystem::Intersects(World* world, Entity* entity,
+                                  const QRect& target) const {
   for (auto& another_entity : world->ScanEntities<PositionComponent, ColliderComponent,
                                                   BoundsComponent>()) {
     if (entity == &another_entity) {
@@ -44,8 +43,7 @@ bool MovementSystem::IsIntersects(World* world, Entity* entity,
     QRect colliding_rect(0, 0, bounds.bounds.x(), bounds.bounds.y());
     colliding_rect.moveCenter(pos_point.position);
 
-    if (first_case.intersects(colliding_rect) ||
-        second_case.intersects(colliding_rect)) {
+    if (target.intersects(colliding_rect)) {
       return true;
     }
   }
@@ -56,28 +54,26 @@ bool MovementSystem::IsCollidingX(World* world,
                                   Entity* entity,
                                   const QRect& entity_rect,
                                   int x_shift) const {
-  QRect dest_rect = entity_rect;
-  dest_rect.moveCenter(QPoint(entity_rect.center().x() + x_shift,
-                                       entity_rect.center().y()));
+  QRect dest_rect = entity_rect.translated(x_shift, 0);
 
   QRect first_collision_case(entity_rect.topLeft(), dest_rect.bottomRight());
   QRect second_collision_case(dest_rect.topLeft(), entity_rect.bottomRight());
 
-  return IsIntersects(world, entity, first_collision_case, second_collision_case);
+  return (Intersects(world, entity, first_collision_case) ||
+          Intersects(world, entity, second_collision_case));
 }
 
 bool MovementSystem::IsCollidingY(World* world,
                                   Entity* entity,
                                   const QRect& entity_rect,
                                   int y_shift) const {
-  QRect dest_rect = entity_rect;
-  dest_rect.moveCenter(QPoint(entity_rect.center().x(),
-                              entity_rect.center().y() + y_shift));
+  QRect dest_rect = entity_rect.translated(0, y_shift);
 
   QRect first_collision_case(dest_rect.topLeft(), entity_rect.bottomRight());
   QRect second_collision_case(entity_rect.topLeft(), dest_rect.bottomRight());
 
-  return IsIntersects(world, entity, first_collision_case, second_collision_case);
+  return (Intersects(world, entity, first_collision_case) ||
+          Intersects(world, entity, second_collision_case));
 }
 
 }  // namespace game
