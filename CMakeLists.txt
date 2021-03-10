@@ -18,7 +18,9 @@ add_executable(${PROJECT_NAME}
         src/prototype/prototype_widget.cpp
         src/systems/rendering_system.cpp
         src/context/painter_context.cpp
-        src/resources/animation.cpp)
+        src/resources/animation.cpp
+        src/systems/animation_system.cpp
+        src/components/animation_component.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
