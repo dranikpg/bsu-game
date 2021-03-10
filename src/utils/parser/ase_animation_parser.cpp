@@ -57,6 +57,7 @@ AseAnimationParser::AnimationBag AseAnimationParser::Parse(QFile file) {
         std::make_shared<Animation>(pixmap, std::move(frame_areas), std::move(frame_lengths));
   }
 
+  file.close();
   return animations;
 }
 
