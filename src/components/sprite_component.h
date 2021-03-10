@@ -15,10 +15,12 @@ namespace game {
 struct SpriteComponent : public ecs::Component {
   explicit SpriteComponent(const QPixmap& pixmap, SpriteLayer = SpriteLayer::kBackground);
   SpriteComponent(const QPixmap& pixmap, const QRect& area, const QRect& bounds, SpriteLayer layer);
-  void UpdateGraphics(const QPixmap& pixmap, const QRect& area);
+
+  void SetGraphics(const QPixmap& pixmap, const QRect& area);
+
   QPixmap pixmap;
-  QRect area;
-  QRect bounds;
+  QRect source_area;
+  QRect target_area;
   SpriteLayer layer;
 };
 
