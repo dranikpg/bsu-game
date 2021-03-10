@@ -2,11 +2,11 @@
 
 namespace context {
 
-void PainterContext::Supply(QPainter* painter) {
+void PainterContext::SetPainter(QPainter* painter) {
   painter_ = painter;
 }
 
-QPainter& PainterContext::Acquire() {
+QPainter& PainterContext::GetPainter() {
   return *painter_;
 }
 

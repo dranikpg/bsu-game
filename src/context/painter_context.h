@@ -7,8 +7,9 @@ namespace context {
 
 class PainterContext {
  public:
-  void Supply(QPainter* painter);
-  QPainter& Acquire();
+  void SetPainter(QPainter* painter);
+  QPainter& GetPainter();
+
  private:
   QPainter* painter_;
 };
