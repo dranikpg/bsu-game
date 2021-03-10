@@ -23,7 +23,7 @@ add_executable(${PROJECT_NAME}
         src/systems/movement_system.cpp
         src/components/bounds_component.cpp 
         src/context/input_context.cpp
-        src/systems/input_movement_system.cpp)
+        src/systems/input_movement_system.cpp
         src/resources/animation.cpp
         src/systems/animation_system.cpp
         src/components/animation_component.cpp)
