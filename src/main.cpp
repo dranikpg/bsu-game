@@ -6,6 +6,6 @@ int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
   PrototypeWidget prototype;
   prototype.show();
-  prototype.resize(300, 100);
+  prototype.resize(500, 500);
   return QApplication::exec();
 }
