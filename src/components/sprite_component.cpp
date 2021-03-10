@@ -12,6 +12,10 @@ SpriteComponent::SpriteComponent(const QPixmap& pixmap,
                                  SpriteLayer layer)
     : pixmap(pixmap), source_area(area), target_area(bounds), layer(layer) {}
 
+SpriteComponent::SpriteComponent(const QRect& bounds, SpriteLayer layer)
+    : target_area(bounds), layer(layer) {
+}
+
 void SpriteComponent::SetGraphics(const QPixmap& pixmap, const QRect& area) {
   this->pixmap = pixmap;
   this->source_area = area;
