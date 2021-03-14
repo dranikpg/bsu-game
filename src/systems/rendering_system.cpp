@@ -11,8 +11,8 @@ using constants::SpriteLayer;
 
 namespace game {
 
-RenderingSystem::RenderingSystem(PainterContext* painter_context)
-    : painter_context_(painter_context) {}
+RenderingSystem::RenderingSystem(PainterContext* painter_context, WindowContext* window_context)
+    : painter_context_(painter_context), window_context_(window_context) {}
 
 void RenderingSystem::Run(World* world) {
   QPainter& painter = painter_context_->GetPainter();
@@ -21,7 +21,9 @@ void RenderingSystem::Run(World* world) {
   ecs::Entity* camera_entity = world->ScanEntities<PositionComponent, CameraComponent>().Peek();
   if (camera_entity) {
     auto& camera_pos = camera_entity->GetComponent<PositionComponent>();
-    painter.translate(-camera_pos.position);
+    painter.translate(
+        -camera_pos.position.x() + window_context_->GetSize().width() / 2,
+        -camera_pos.position.y() + window_context_->GetSize().height() / 2);
   }
 
   for (int layer_id = 0; SpriteLayer::_LAST != static_cast<SpriteLayer>(layer_id); layer_id++) {

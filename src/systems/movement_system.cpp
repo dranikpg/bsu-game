@@ -11,9 +11,9 @@ namespace game {
 
 void MovementSystem::Run(World* world) {
   for (auto& entity : world->ScanEntities<ImpulseComponent, PositionComponent>()) {
-    auto [impulse, position] = entity.Unpack<ImpulseComponent, PositionComponent>();
+    auto[impulse, position] = entity.Unpack<ImpulseComponent, PositionComponent>();
     if (entity.HasComponent<ColliderComponent, BoundsComponent>()) {
-      auto [entity_pos, entity_bounds] = entity.Unpack<PositionComponent, BoundsComponent>();
+      auto[entity_pos, entity_bounds] = entity.Unpack<PositionComponent, BoundsComponent>();
       QPoint destination(0, 0);
 
       QRect entity_rect(0, 0, entity_bounds.bounds.x(), entity_bounds.bounds.y());
@@ -25,20 +25,22 @@ void MovementSystem::Run(World* world) {
         destination.setX(impulse.shift.x());
       }
       position.position += destination;
+    } else {
+      position.position += impulse.shift;
     }
     impulse.shift = QPoint(0, 0);
   }
 }
 
 bool MovementSystem::Intersects(World* world, Entity* entity,
-                                  const QRect& target) const {
+                                const QRect& target) const {
   for (auto& another_entity : world->ScanEntities<PositionComponent, ColliderComponent,
                                                   BoundsComponent>()) {
     if (entity == &another_entity) {
       continue;
     }
 
-    auto [pos_point, bounds] = another_entity.Unpack<PositionComponent, BoundsComponent>();
+    auto[pos_point, bounds] = another_entity.Unpack<PositionComponent, BoundsComponent>();
     QRect colliding_rect(0, 0, bounds.bounds.x(), bounds.bounds.y());
     colliding_rect.moveCenter(pos_point.position);
 
@@ -59,7 +61,7 @@ bool MovementSystem::IsCollidingX(World* world,
   QRect second_collision_case(dest_rect.topLeft(), entity_rect.bottomRight());
 
   return (Intersects(world, entity, first_collision_case) ||
-          Intersects(world, entity, second_collision_case));
+      Intersects(world, entity, second_collision_case));
 }
 
 bool MovementSystem::IsCollidingY(World* world,
@@ -72,7 +74,7 @@ bool MovementSystem::IsCollidingY(World* world,
   QRect second_collision_case(entity_rect.topLeft(), dest_rect.bottomRight());
 
   return (Intersects(world, entity, first_collision_case) ||
-          Intersects(world, entity, second_collision_case));
+      Intersects(world, entity, second_collision_case));
 }
 
 }  // namespace game
