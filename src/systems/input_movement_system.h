@@ -16,7 +16,7 @@ class InputMovementSystem : public ecs::System {
 
  private:
   InputContext* input_;
-  const int kSpeed_ = 10;
+  const int kSpeed_ = 3;
 };
 }  // namespace game
 #endif  // SRC_SYSTEMS_INPUT_MOVEMENT_SYSTEM_H_
