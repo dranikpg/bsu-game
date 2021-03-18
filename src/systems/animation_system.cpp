@@ -18,7 +18,7 @@ void AnimationSystem::Run(World* world) {
       sprite.SetGraphics(animation.animation_resource_->GetPixmap(),
                          animation.animation_resource_->GetFrame(animation.frame_index));
     }
-    if ((animation.frame_index == (animation.total_frames-1))
+    if ((animation.frame_index == (animation.total_frames - 1))
         && (animation.frame_time == animation.frame_length)) {
       ++animation.repetitions;
       animation.animation_is_ending = true;
