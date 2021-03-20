@@ -29,8 +29,8 @@ add_executable(${PROJECT_NAME}
         src/components/animation_component.cpp
         src/context/window_context.cpp
         src/utils/parser/ase_animation_parser.cpp
-        src/systems/animation_sync_system.cpp
-        src/components/animation_sync_component.cpp)
+        src/systems/movement_animation_sync_system.cpp
+        src/components/movement_animation_sync_component.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

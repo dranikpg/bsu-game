@@ -5,9 +5,9 @@
 
 namespace game {
 
-class AnimationSyncSystem : public ecs::System {
+class MovementAnimationSyncSystem : public ecs::System {
  public:
-  AnimationSyncSystem() = default;
+  MovementAnimationSyncSystem() = default;
   void Run(ecs::World* world) override;
 
  private:
@@ -17,4 +17,4 @@ class AnimationSyncSystem : public ecs::System {
 
 }  // namespace game
 
-#endif  // SRC_SYSTEMS_ANIMATION_SYNC_SYSTEM_H_
+#endif  // SRC_SYSTEMS_MOVEMENT_ANIMATION_SYNC_SYSTEM_H_

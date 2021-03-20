@@ -4,14 +4,10 @@
 namespace constants {
 
 enum class AnimationType {
-  kShiftUp,
-  kShiftDown,
-  kShiftRight,
-  kShiftLeft,
-  kShiftLeftDownCorner,
-  kShiftRightDownCorner,
-  kShiftLeftUpCorner,
-  kShiftRightUpCorner,
+  kUp,
+  kDown,
+  kRight,
+  kLeft,
   kDefault
 };
 

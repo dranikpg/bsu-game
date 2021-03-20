@@ -12,8 +12,8 @@ using constants::AnimationType;
 
 namespace game {
 
-struct AnimationSyncComponent : public ecs::Component {
-  explicit AnimationSyncComponent(std::multimap<constants::AnimationType,
+struct MovementAnimationSyncComponent : public ecs::Component {
+  explicit MovementAnimationSyncComponent(std::multimap<constants::AnimationType,
                                   std::shared_ptr<resource::Animation>> animations);
 
   std::shared_ptr<resource::Animation> current_animation;
@@ -25,4 +25,4 @@ struct AnimationSyncComponent : public ecs::Component {
 
 }  // namespace game
 
-#endif  // SRC_COMPONENTS_ANIMATION_SYNC_COMPONENT_H_
+#endif  // SRC_COMPONENTS_MOVEMENT_ANIMATION_SYNC_COMPONENT_H_
