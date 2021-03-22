@@ -18,8 +18,6 @@ struct MovementAnimationSyncComponent : public ecs::Component {
 
   std::shared_ptr<resource::Animation> current_animation;
   AnimationType current_animation_type;
-  std::shared_ptr<resource::Animation> next_animation;
-  AnimationType next_animation_type;
   std::multimap<constants::AnimationType, std::shared_ptr<resource::Animation>> animations;
 };
 

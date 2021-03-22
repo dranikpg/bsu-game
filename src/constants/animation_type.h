@@ -8,7 +8,8 @@ enum class AnimationType {
   kDown,
   kRight,
   kLeft,
-  kDefault
+  kDefault,
+  _LAST
 };
 
 }  // namespace constants
