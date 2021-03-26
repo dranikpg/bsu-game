@@ -14,8 +14,9 @@ namespace game {
 
 struct SpriteComponent : public ecs::Component {
   explicit SpriteComponent(const QPixmap& pixmap, SpriteLayer = SpriteLayer::kBackground);
-  SpriteComponent(const QPixmap& pixmap, const QRect& area, const QRect& bounds, SpriteLayer layer);
-  explicit SpriteComponent(const QRect& bounds, SpriteLayer = SpriteLayer::kBackground);
+  SpriteComponent(const QPixmap& pixmap, const QRect& area, const QRect& bounds,
+                  SpriteLayer = SpriteLayer::kBackground);
+  explicit SpriteComponent(const QRect& target_area, SpriteLayer = SpriteLayer::kBackground);
 
   void SetGraphics(const QPixmap& pixmap, const QRect& area);
 
