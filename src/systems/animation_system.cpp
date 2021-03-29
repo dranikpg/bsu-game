@@ -13,11 +13,17 @@ void AnimationSystem::Run(World* world) {
       ++animation.frame_index;
       if (animation.frame_index >= animation.total_frames) {
         animation.frame_index = 0;
-        ++animation.repetitions;
       }
       animation.frame_length = animation.animation_resource_->GetFrameLength(animation.frame_index);
       sprite.SetGraphics(animation.animation_resource_->GetPixmap(),
                          animation.animation_resource_->GetFrame(animation.frame_index));
+    }
+    if ((animation.frame_index == (animation.total_frames - 1))
+        && (animation.frame_time == animation.frame_length)) {
+      ++animation.repetitions;
+      animation.animation_is_ending = true;
+    } else {
+      animation.animation_is_ending = false;
     }
   }
 }
