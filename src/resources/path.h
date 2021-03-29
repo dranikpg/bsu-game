@@ -18,7 +18,7 @@ class Path {
   int Size() const;
   const WayPoint& Point(int idx) const;
  private:
-  std::vector<WayPoint> points;
+  std::vector<WayPoint> points_;
 };
 
 }  // namespace resources

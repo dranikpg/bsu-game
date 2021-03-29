@@ -7,6 +7,7 @@ namespace resource {
 
 class Behaviour {
  public:
+  virtual ~Behaviour() = default;
   virtual void process(ecs::Entity* entity) = 0;
 };
 

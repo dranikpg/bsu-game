@@ -8,13 +8,13 @@ Path::WayPoint::WayPoint(int x, int y, int pause = 0)
 }
 
 const Path::WayPoint& Path::Point(int idx) const {
-  return points[idx % Size()];
+  return points_[idx % Size()];
 }
 
 int Path::Size() const {
-  return points.size();
+  return points_.size();
 }
 
-Path::Path(std::vector<WayPoint>&& points) : points(std::move(points)) {}
+Path::Path(std::vector<WayPoint>&& points) : points_(std::move(points)) {}
 
 }  // namespace resources

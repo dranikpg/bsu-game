@@ -24,4 +24,5 @@ class InputContext {
   std::set<constants::Keys> seq_of_keys_{};
 };
 }  // namespace context
+
 #endif  // SRC_CONTEXT_INPUT_CONTEXT_H_

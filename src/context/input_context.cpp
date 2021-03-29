@@ -26,12 +26,17 @@ void InputContext::Clean() {
 
 std::optional<Keys> InputContext::MapKey(Qt::Key key) {
   switch (key) {
-    case Qt::Key::Key_W:return Keys::kUp;
-    case Qt::Key::Key_A:return Keys::kLeft;
-    case Qt::Key::Key_S:return Keys::kRight;
-    case Qt::Key::Key_D:return Keys::kDown;
-    default:return std::nullopt;
-  };
+    case Qt::Key::Key_W:
+        return Keys::kUp;
+    case Qt::Key::Key_A:
+      return Keys::kLeft;
+    case Qt::Key::Key_S:
+      return Keys::kDown;
+    case Qt::Key::Key_D:
+      return Keys::kRight;
+    default:
+      return std::nullopt;
+  }
 }
 
 }  // namespace context
