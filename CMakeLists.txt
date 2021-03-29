@@ -30,7 +30,11 @@ add_executable(${PROJECT_NAME}
         src/context/window_context.cpp
         src/utils/parser/ase_animation_parser.cpp
         src/map/map_loader.cpp
-        src/resources/path.cpp)
+        src/resources/path.cpp
+        src/resources/level.cpp
+        src/systems/level_system.cpp
+        src/context/level_context.cpp
+        src/levels/example/example_level.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

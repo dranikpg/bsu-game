@@ -3,6 +3,7 @@
 
 #include <QPoint>
 #include <QSize>
+#include <QString>
 
 namespace map {
 

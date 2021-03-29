@@ -31,7 +31,7 @@ void MapLoader::Load(QFile file, MapInstancer* instancer) {
   }
 
   // parse paths
-  auto path_layer = FindLayer(layer_array, "paths");
+  auto path_layer = FindLayer(layer_array, "path");
   if (path_layer) {
     for (const auto& obj_ref : (*path_layer).value("objects").toArray()) {
       auto named_path = ParsePath(obj_ref.toObject());
@@ -50,6 +50,8 @@ void MapLoader::Load(QFile file, MapInstancer* instancer) {
       instancer->CreateObject(layer_id.first, obj);
     }
   }
+
+  file.close();
 }
 
 std::optional<QJsonObject> MapLoader::FindLayer(const QJsonArray& array,
