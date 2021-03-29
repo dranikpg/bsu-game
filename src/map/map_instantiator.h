@@ -1,5 +1,5 @@
-#ifndef SRC_MAP_MAP_INSTANCER_H_
-#define SRC_MAP_MAP_INSTANCER_H_
+#ifndef SRC_MAP_MAP_INSTANTIATOR_H_
+#define SRC_MAP_MAP_INSTANTIATOR_H_
 
 #include "map_layer.h"
 #include "map_object.h"
@@ -8,7 +8,7 @@
 
 namespace map {
 
-class MapInstancer {
+class MapInstantiator {
  public:
   virtual void CreateMap(const QString& path) = 0;
   virtual void CreateObject(MapLayer layer, const MapObject& object) = 0;
@@ -17,4 +17,4 @@ class MapInstancer {
 
 }  // namespace map
 
-#endif  // SRC_MAP_MAP_INSTANCER_H_
+#endif  // SRC_MAP_MAP_INSTANTIATOR_H_

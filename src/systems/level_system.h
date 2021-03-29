@@ -15,14 +15,17 @@ namespace game {
 class LevelSystem : public ecs::System {
  public:
   explicit LevelSystem(context::LevelContext* context);
+
  private:
   using LevelRef = context::LevelContext::LevelRef;
+
   void Run(ecs::World* world) override;
   void LoadLevel(LevelRef level);
+
  private:
-  LevelRef loading_level = nullptr;
-  context::LevelContext* context = nullptr;
-  LevelRef level = nullptr;
+  context::LevelContext* context_ = nullptr;
+  LevelRef loading_level_ = nullptr;
+  LevelRef level_ = nullptr;
 };
 
 }  // namespace game

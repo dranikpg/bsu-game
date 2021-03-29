@@ -11,7 +11,7 @@
 #include "../context/input_context.h"
 #include "../context/level_context.h"
 
-#include "../map/map_instancer.h"
+#include "../map/map_instantiator.h"
 
 class PrototypeWidget : public QWidget {
  public:

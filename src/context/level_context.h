@@ -15,18 +15,21 @@ class LevelContext {
  public:
   using LevelRef = std::unique_ptr<resources::Level>;
   using Callback = std::function<void(LevelRef)>;
+
   void SetLoadCallback(const Callback& load_callback);
+  
   template<typename T>
   void Load();
+
  private:
-  Callback loadCallback_;
+  Callback load_callback_;
 };
 
 template<typename T>
 void LevelContext::Load() {
-  if (loadCallback_) {
+  if (load_callback_) {
     LevelRef ref = std::make_unique<T>();
-    loadCallback_(std::move(ref));
+    load_callback_(std::move(ref));
   }
 }
 

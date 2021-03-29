@@ -10,11 +10,10 @@
 
 namespace map {
 
-void MapLoader::Load(QFile file, MapInstancer* instancer) {
+void MapLoader::Load(QFile file, MapInstantiator* instancer) {
   // read file
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    throw InvalidPathException(
-        "Invalid file path: " + file.fileName().toStdString());
+    throw InvalidPathException(file.fileName().toStdString());
   }
   QString json_src = file.readAll();
   QJsonDocument json_document = QJsonDocument::fromJson(json_src.toUtf8());
@@ -27,7 +26,7 @@ void MapLoader::Load(QFile file, MapInstancer* instancer) {
     QString image_path = (*image_layer).value("image").toString();
     instancer->CreateMap(image_path);
   } else {
-    throw MissingLayerError("No image layer");
+    throw MissingLayerError("image");
   }
 
   // parse paths
@@ -42,9 +41,6 @@ void MapLoader::Load(QFile file, MapInstancer* instancer) {
   // parse layers
   for (const auto& layer_id: kLayers) {
     std::optional<QJsonObject> layer = FindLayer(layer_array, layer_id.second);
-    if (!layer) {
-      throw MissingLayerError("No layer " + layer_id.second.toStdString());
-    }
     for (const auto& obj_ref : (*layer).value("objects").toArray()) {
       MapObject obj = ParseMapObject(obj_ref.toObject());
       instancer->CreateObject(layer_id.first, obj);
@@ -61,7 +57,7 @@ std::optional<QJsonObject> MapLoader::FindLayer(const QJsonArray& array,
         return val.toObject().value("name") == name;
       });
   if (layer_it != array.end()) {
-    return (*layer_it).toObject();
+    return layer_it->toObject();
   } else {
     return std::nullopt;
   }
@@ -69,11 +65,11 @@ std::optional<QJsonObject> MapLoader::FindLayer(const QJsonArray& array,
 
 MapObject MapLoader::ParseMapObject(const QJsonObject& obj) {
   MapObject map_obj;
-  map_obj.position.rx() = obj.value("x").toInt();
-  map_obj.position.ry() = obj.value("y").toInt();
+  auto [position, name] = ParsePoint(obj);
+  map_obj.name = std::move(name);
+  map_obj.position = position;
   map_obj.size.rwidth() = obj.value("width").toInt();
   map_obj.size.rheight() = obj.value("height").toInt();
-  map_obj.name = obj.value("name").toString();
   return map_obj;
 }
 
@@ -101,10 +97,10 @@ std::pair<resources::Path,
 MapLoader::JsonError::JsonError(const std::string& arg) : runtime_error(arg) {}
 
 MapLoader::MissingLayerError::MissingLayerError(const std::string& arg)
-    : runtime_error(arg) {}
+    : runtime_error("No layer " + arg) {}
 
 MapLoader::InvalidPathException::InvalidPathException(const std::string& arg)
-    : runtime_error(arg) {}
+    : runtime_error("Invalid file path: " + arg) {}
 
 const std::vector<std::pair<MapLayer, QString>> MapLoader::kLayers = {
     {MapLayer::kCollision, "collision"},

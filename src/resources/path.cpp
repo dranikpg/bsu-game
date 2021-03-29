@@ -4,8 +4,7 @@
 namespace resources {
 
 Path::WayPoint::WayPoint(int x, int y, int pause = 0)
-  : point(x, y), pauseFrames(pause) {
-}
+  : point(x, y), pauseFrames(pause) {}
 
 const Path::WayPoint& Path::Point(int idx) const {
   return points_[idx % Size()];
