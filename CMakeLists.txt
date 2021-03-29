@@ -29,7 +29,8 @@ add_executable(${PROJECT_NAME}
         src/components/animation_component.cpp
         src/context/window_context.cpp
         src/utils/parser/ase_animation_parser.cpp
-        src/map/map_loader.cpp)
+        src/map/map_loader.cpp
+        src/resources/path.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

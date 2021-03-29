@@ -10,6 +10,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
+#include "../resources/path.h"
 #include "map_instancer.h"
 #include "map_object.h"
 
@@ -30,17 +31,18 @@ class MapLoader {
     explicit MissingLayerError(const std::string& arg);
   };
 
-  void Load(QFile file, MapInstancer* instancer);
+  static void Load(QFile file, MapInstancer* instancer);
 
  private:
-    std::optional<QJsonObject> FindLayer(const QJsonArray& array, const QString& name);
-    MapObject ParseMapObject(const QJsonObject& obj);
+    static std::optional<QJsonObject> FindLayer(const QJsonArray& array,
+                                         const QString& name);
+    static MapObject ParseMapObject(const QJsonObject& obj);
+    static std::pair<resources::Path, QString> ParsePath(const QJsonObject& obj);
+    static std::pair<QPoint, QString> ParsePoint(const QJsonObject& obj);
+
 
  private:
-  const std::vector<std::pair<MapLayer, QString>> kLayers = {
-          {MapLayer::kCollision, "collision"},
-          {MapLayer::kEntity, "entity"}
-      };
+  static const std::vector<std::pair<MapLayer, QString>> kLayers;
 };
 
 }  // namespace map
