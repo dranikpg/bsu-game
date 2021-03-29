@@ -16,20 +16,20 @@ class LevelContext {
   using LevelRef = std::unique_ptr<resources::Level>;
   using Listener = std::function<void(LevelRef)>;
 
-  void SetOnLevelCreated(const Listener& load_callback);
+  void SetOnLevelCreated(const Listener& listener);
 
   template<typename T>
   void Load();
 
  private:
-  Listener on_level_crated_;
+  Listener on_level_created_;
 };
 
 template<typename T>
 void LevelContext::Load() {
-  if (on_level_crated_) {
+  if (on_level_created_) {
     LevelRef ref = std::make_unique<T>();
-    on_level_crated_(std::move(ref));
+    on_level_created_(std::move(ref));
   }
 }
 
