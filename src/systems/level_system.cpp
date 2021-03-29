@@ -24,7 +24,7 @@ void LevelSystem::LoadLevel(LevelRef level_ref) {
 
 LevelSystem::LevelSystem(context::LevelContext* context)
     : context_(context), level_(nullptr) {
-  context->SetLoadCallback([this](LevelRef ref) {
+  context->SetOnLevelCreated([this](LevelRef ref) {
     this->LoadLevel(std::move(ref));
   });
 }

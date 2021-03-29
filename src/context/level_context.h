@@ -14,22 +14,22 @@ namespace context {
 class LevelContext {
  public:
   using LevelRef = std::unique_ptr<resources::Level>;
-  using Callback = std::function<void(LevelRef)>;
+  using Listener = std::function<void(LevelRef)>;
 
-  void SetLoadCallback(const Callback& load_callback);
-  
+  void SetOnLevelCreated(const Listener& load_callback);
+
   template<typename T>
   void Load();
 
  private:
-  Callback load_callback_;
+  Listener on_level_crated_;
 };
 
 template<typename T>
 void LevelContext::Load() {
-  if (load_callback_) {
+  if (on_level_crated_) {
     LevelRef ref = std::make_unique<T>();
-    load_callback_(std::move(ref));
+    on_level_crated_(std::move(ref));
   }
 }
 
