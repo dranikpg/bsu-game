@@ -55,10 +55,12 @@ void PrototypeWidget::paintEvent(QPaintEvent* event) {
   window_context_.SetSize(size());
 
   world_.Run();
-
-  input_context_.Clean();
 }
 
 void PrototypeWidget::keyPressEvent(QKeyEvent* event) {
   input_context_.AddKey(static_cast<Qt::Key>(event->key()));
+}
+
+void PrototypeWidget::keyReleaseEvent(QKeyEvent* event) {
+  input_context_.RemoveKey(static_cast<Qt::Key>(event->key()));
 }
