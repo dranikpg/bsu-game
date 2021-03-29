@@ -5,6 +5,7 @@
 namespace level {
 
 void ExampleLevel::Process(ecs::World* world) {
+  // processing game logic
 }
 
 void ExampleLevel::CreateMap(const QString& path) {
@@ -25,10 +26,11 @@ ExampleLevel::~ExampleLevel() {
 
 void ExampleLevel::Load(ecs::World* world) {
   world_ = world;
-  map::MapLoader::Load(QFile("test/tiled_test.json"), this);
+  // start loading here via MapLoader
 }
 
 void ExampleLevel::Dispose(ecs::World* word) {
+  // delete all created entities
 }
 
 }  // namespace level
