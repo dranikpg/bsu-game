@@ -3,21 +3,16 @@
 namespace context {
 
 void InputContext::AddKey(Qt::Key key) {
-  switch (key) {
-    case Qt::Key::Key_W:
-      seq_of_keys_.insert(Keys::kUp);
-      break;
-    case Qt::Key::Key_A:
-      seq_of_keys_.insert(Keys::kLeft);
-      break;
-    case Qt::Key::Key_S:
-      seq_of_keys_.insert(Keys::kDown);
-      break;
-    case Qt::Key::Key_D:
-      seq_of_keys_.insert(Keys::kRight);
-      break;
-    default:
-      break;
+  auto mapped_key = MapKey(key);
+  if (mapped_key) {
+    seq_of_keys_.insert(*mapped_key);
+  }
+}
+
+void InputContext::RemoveKey(Qt::Key key) {
+  auto mapped_key = MapKey(key);
+  if (mapped_key) {
+    seq_of_keys_.erase(*mapped_key);
   }
 }
 
@@ -27,6 +22,21 @@ std::set<constants::Keys>& InputContext::GetKeys() {
 
 void InputContext::Clean() {
   seq_of_keys_ = {};
+}
+
+std::optional<Keys> InputContext::MapKey(Qt::Key key) {
+  switch (key) {
+    case Qt::Key::Key_W:
+        return Keys::kUp;
+    case Qt::Key::Key_A:
+      return Keys::kLeft;
+    case Qt::Key::Key_S:
+      return Keys::kDown;
+    case Qt::Key::Key_D:
+      return Keys::kRight;
+    default:
+      return std::nullopt;
+  }
 }
 
 }  // namespace context

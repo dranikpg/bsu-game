@@ -29,6 +29,13 @@ add_executable(${PROJECT_NAME}
         src/components/animation_component.cpp
         src/context/window_context.cpp
         src/utils/parser/ase_animation_parser.cpp
+        src/map/map_loader.cpp
+        src/resources/path.cpp
+        src/resources/level.cpp
+        src/systems/level_system.cpp
+        src/context/level_context.cpp
+        src/levels/example/example_level.cpp
+        src/utils/parser/ase_animation_parser.cpp
         src/systems/movement_animation_sync_system.cpp
         src/components/movement_animation_sync_component.cpp)
 
