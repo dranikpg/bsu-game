@@ -13,7 +13,7 @@ namespace context {
 
 class LevelContext {
  public:
-  using LevelRef = std::unique_ptr<resources::Level>;
+  using LevelRef = std::unique_ptr<resource::Level>;
   using Listener = std::function<void(LevelRef)>;
 
   void SetOnLevelCreated(const Listener& listener);
