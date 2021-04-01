@@ -5,7 +5,7 @@
 #include "../map/map_object.h"
 #include "../ecs/world.h"
 
-namespace resources {
+namespace resource {
 
 class Level : public map::MapInstantiator {
  public:

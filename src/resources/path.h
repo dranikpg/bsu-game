@@ -5,7 +5,7 @@
 
 #include <QPoint>
 
-namespace resources {
+namespace resource {
 
 class Path {
  public:
