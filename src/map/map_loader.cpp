@@ -68,14 +68,14 @@ MapObject MapLoader::ParseMapObject(const QJsonObject& obj) {
   auto [position, name] = ParsePoint(obj);
   map_obj.name = std::move(name);
   map_obj.position = position;
-  map_obj.size.rwidth() = obj.value("width").toInt();
-  map_obj.size.rheight() = obj.value("height").toInt();
+  map_obj.size.rwidth() = static_cast<int>(obj.value("width").toDouble());
+  map_obj.size.rheight() = static_cast<int>(obj.value("height").toDouble());
   return map_obj;
 }
 
 std::pair<QPoint, QString> MapLoader::ParsePoint(const QJsonObject& obj) {
-  int x = obj.value("x").toInt();
-  int y = obj.value("y").toInt();
+  int x = static_cast<int>(obj.value("x").toDouble() + 1);
+  int y = static_cast<int>(obj.value("y").toDouble() + 1);
   QString name = obj.value("name").toString();
   return {QPoint(x, y), std::move(name)};
 }
@@ -87,8 +87,8 @@ std::pair<resources::Path,
   std::vector<Path::WayPoint> points;
   for (const auto& ref: obj.value("polygon").toArray()) {
     const auto point_obj = ref.toObject();
-    int x = point_obj.value("x").toInt();
-    int y = point_obj.value("y").toInt();
+    int x = static_cast<int>(point_obj.value("x").toDouble());
+    int y = static_cast<int>(point_obj.value("y").toDouble());
     points.emplace_back(x + pos.x(), y + pos.y(), 0);
   }
   return {Path(std::move(points)), std::move(name)};
