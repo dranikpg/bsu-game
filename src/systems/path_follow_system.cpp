@@ -65,11 +65,18 @@ void PathFollowSystem::MoveTowardsGoal(QPoint goal,
   QVector2D shift_vec(direction * speed);
   QVector2D goal_to_pos(QVector2D(goal) - (QVector2D(position) + shift_vec));
 
+  // i use (shift =) not (shift +=) cause object that use PathFollowing
+  // cannot have another shift modifier
   if (qFabs(QVector2D::dotProduct(direction, goal_to_pos)) < qreal(0.1f)) {
-    shift += goal - position;
+    shift = goal - position;
   } else {
-    shift += QPoint(ceil(shift_vec.x()),
+    shift = QPoint(ceil(shift_vec.x()),
                    ceil(shift_vec.y()));
+    QPoint next_position = position + shift;
+    if ((abs((goal-next_position).x()) <= 1) &&
+        (abs((goal-next_position).y()) <= 1)) {
+      shift = goal - position;
+    }
   }
 }
 
