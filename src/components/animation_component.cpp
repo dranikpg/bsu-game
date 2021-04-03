@@ -4,7 +4,8 @@
 
 namespace game {
 
-AnimationComponent::AnimationComponent(std::shared_ptr<resource::Animation> animation_resource_ptr) {
+AnimationComponent::AnimationComponent(std::shared_ptr<resource::Animation>
+    animation_resource_ptr) {
   SetAnimationResource(std::move(animation_resource_ptr));
 }
 
