@@ -20,6 +20,8 @@ class PathFollowSystem : public ecs::System {
                         ecs::Entity* entity);
   bool SetNextGoal(PathFollowComponent* pf_component);
   void WaitOneTerm(PathFollowComponent* pf_component);
+  void HandleState(ecs::Entity* entity);
+  void HandleResolvingState(ecs::Entity* entity);
 };
 
 }  // namespace game

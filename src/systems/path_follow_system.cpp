@@ -17,34 +17,50 @@ void PathFollowSystem::Run(ecs::World* world) {
       PositionComponent,
       ImpulseComponent>()) {
     auto& pf_component = entity.GetComponent<PathFollowComponent>();
-    do {
-      switch (pf_component.state) {
-        case PathFollowState::kWaiting:
-          WaitOneTerm(&pf_component);
-          break;
-        case PathFollowState::kMoving: {
-          QPoint goal = pf_component.path.
-              Point(pf_component.current_waypoint).point;
-          float speed = pf_component.speed;
-          MoveTowardsGoal(goal, speed, &entity);
-        }
-          break;
-        case PathFollowState::kResolvingMoving:
-          pf_component.state = PathFollowState::kWaiting;
-          WaitOneTerm(&pf_component);
-          break;
-        case PathFollowState::kResolvingWaiting:
-          if (SetNextGoal(&pf_component)) {
-            pf_component.state = PathFollowState::kMoving;
-          } else {
-            pf_component.state = PathFollowState::kFinished;
-          }
-          break;
-        case PathFollowState::kFinished:
-          break;
+    HandleState(&entity);
+    if ((pf_component.state == PathFollowState::kResolvingWaiting) ||
+        (pf_component.state == PathFollowState::kResolvingMoving)) {
+      while ((pf_component.state == PathFollowState::kResolvingWaiting) ||
+              (pf_component.state == PathFollowState::kResolvingMoving)) {
+        HandleResolvingState(&entity);
       }
-    } while ((pf_component.state == PathFollowState::kResolvingMoving) ||
-              pf_component.state == PathFollowState::kResolvingWaiting);
+      HandleState(&entity);
+    }
+  }
+}
+
+void PathFollowSystem::HandleState(ecs::Entity* entity) {
+  auto& pf_component = entity->GetComponent<PathFollowComponent>();
+  switch (pf_component.state) {
+    case PathFollowState::kWaiting:
+      WaitOneTerm(&pf_component);
+      break;
+    case PathFollowState::kMoving: {
+      QPoint goal = pf_component.path.
+          Point(pf_component.current_waypoint).point;
+      float speed = pf_component.speed;
+      MoveTowardsGoal(goal, speed, entity);
+    }
+      break;
+    case PathFollowState::kFinished:
+      break;
+  }
+}
+
+void PathFollowSystem::HandleResolvingState(ecs::Entity* entity) {
+  auto& pf_component = entity->GetComponent<PathFollowComponent>();
+  switch (pf_component.state) {
+    case PathFollowState::kResolvingMoving:
+      pf_component.state = PathFollowState::kWaiting;
+      WaitOneTerm(&pf_component);
+      break;
+    case PathFollowState::kResolvingWaiting:
+      if (SetNextGoal(&pf_component)) {
+        pf_component.state = PathFollowState::kMoving;
+      } else {
+        pf_component.state = PathFollowState::kFinished;
+      }
+      break;
   }
 }
 
