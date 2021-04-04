@@ -13,20 +13,20 @@ using constants::PathFollowState;
 namespace game {
 
 struct PathFollowComponent : public ecs::Component {
-  PathFollowComponent(std::shared_ptr<resource::Path> path_ptr,
+  PathFollowComponent(resource::Path mov_path,
                       PathFollowType type,
-                      qreal mov_speed);
+                      float mov_speed);
   void SetCurrentWaypoint(int idx);
 
-  std::shared_ptr<resource::Path> path;
+  resource::Path path;
   PathFollowType path_type;
   PathFollowState state;
   // when state kWaiting stores current WayPoint, when state kMoving stores next WayPoint
-  int waypoint_index;
-  int waypoint_time;
-  int waypoint_length;
+  int current_waypoint;
+  int wait_timer;
+  int wait_duration;
   int total_waypoints;
-  qreal speed;
+  float speed;
 };
 
 }  // namespace game

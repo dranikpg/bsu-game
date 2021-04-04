@@ -23,9 +23,9 @@ void PathFollowSystem::Run(ecs::World* world) {
           WaitOneTerm(&pf_component);
           break;
         case PathFollowState::kMoving: {
-          QPoint goal = pf_component.path->
-              Point(pf_component.waypoint_index).point;
-          qreal speed = pf_component.speed;
+          QPoint goal = pf_component.path.
+              Point(pf_component.current_waypoint).point;
+          float speed = pf_component.speed;
           MoveTowardsGoal(goal, speed, &entity);
         }
           break;
@@ -49,7 +49,7 @@ void PathFollowSystem::Run(ecs::World* world) {
 }
 
 void PathFollowSystem::MoveTowardsGoal(QPoint goal,
-                                        qreal speed,
+                                        float speed,
                                         ecs::Entity* entity) {
   auto [position_component, impulse_component, pf_component] = entity->Unpack<
       PositionComponent, ImpulseComponent, PathFollowComponent>();
@@ -67,7 +67,7 @@ void PathFollowSystem::MoveTowardsGoal(QPoint goal,
 
   // i use (shift =) not (shift +=) cause object that use PathFollowing
   // cannot have another shift modifier
-  if (qFabs(QVector2D::dotProduct(direction, goal_to_pos)) < qreal(0.1f)) {
+  if (abs(QVector2D::dotProduct(direction, goal_to_pos)) < 0.1f) {
     shift = goal - position;
   } else {
     shift = QPoint(ceil(shift_vec.x()),
@@ -83,7 +83,7 @@ void PathFollowSystem::MoveTowardsGoal(QPoint goal,
 bool PathFollowSystem::SetNextGoal(
     PathFollowComponent* pf_component) {
   int new_waypoint_idx = 0;
-  int current_waypoint_idx = pf_component->waypoint_index;
+  int current_waypoint_idx = pf_component->current_waypoint;
   int path_size = pf_component->total_waypoints;
   auto& state = pf_component->state;
 
@@ -93,7 +93,7 @@ bool PathFollowSystem::SetNextGoal(
       break;
     case PathFollowType::kLoop:
       if (current_waypoint_idx == (path_size - 1)) {
-        pf_component->path->ReversePath();
+        pf_component->path.ReversePath();
         new_waypoint_idx = (path_size == 1) ? 0 : 1;
       } else {
         new_waypoint_idx = current_waypoint_idx + 1;
@@ -103,7 +103,7 @@ bool PathFollowSystem::SetNextGoal(
       if (current_waypoint_idx == (path_size - 1)) {
         return false;
       } else {
-        new_waypoint_idx = current_waypoint_idx+1;
+        new_waypoint_idx = current_waypoint_idx + 1;
       }
       break;
   }
@@ -112,10 +112,8 @@ bool PathFollowSystem::SetNextGoal(
 }
 
 void PathFollowSystem::WaitOneTerm(PathFollowComponent* pf_component) {
-  auto& time = pf_component->waypoint_time;
-  auto length = pf_component->waypoint_length;
-  ++time;
-  if (time > length) {
+  pf_component->wait_timer++;
+  if (pf_component->wait_timer > pf_component->wait_duration) {
     pf_component->state = PathFollowState::kResolvingWaiting;
   }
 }

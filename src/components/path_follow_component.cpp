@@ -4,20 +4,20 @@
 
 namespace game {
 
-PathFollowComponent::PathFollowComponent(std::shared_ptr<resource::Path> path_ptr,
-                                         PathFollowType type, qreal mov_speed)
-                                         : path(std::move(path_ptr)),
+PathFollowComponent::PathFollowComponent(resource::Path mov_path,
+                                         PathFollowType type, float mov_speed)
+                                         : path(std::move(mov_path)),
                                            path_type(type),
                                            speed(mov_speed),
                                            state(PathFollowState::kResolvingWaiting),
-                                           total_waypoints(path->Size()) {
+                                           total_waypoints(path.Size()) {
   SetCurrentWaypoint(0);
 }
 
 void PathFollowComponent::SetCurrentWaypoint(int idx) {
-  waypoint_index = idx;
-  waypoint_time = 0;
-  waypoint_length = path->Point(idx).pauseFrames;
+  current_waypoint = idx;
+  wait_timer = 0;
+  wait_duration = path.Point(idx).pauseFrames;
 }
 
 }  // namespace game
