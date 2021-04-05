@@ -18,12 +18,9 @@ void PathFollowSystem::Run(ecs::World* world) {
       ImpulseComponent>()) {
     auto& pf_component = entity.GetComponent<PathFollowComponent>();
     HandleState(&entity);
-    if ((pf_component.state == PathFollowState::kResolvingWaiting) ||
-        (pf_component.state == PathFollowState::kResolvingMoving)) {
-      while ((pf_component.state == PathFollowState::kResolvingWaiting) ||
-              (pf_component.state == PathFollowState::kResolvingMoving)) {
-        HandleResolvingState(&entity);
-      }
+    while (pf_component.state == PathFollowState::kResolvingWaiting ||
+        pf_component.state == PathFollowState::kResolvingMoving) {
+      HandleResolvingState(&entity);
       HandleState(&entity);
     }
   }
@@ -32,35 +29,39 @@ void PathFollowSystem::Run(ecs::World* world) {
 void PathFollowSystem::HandleState(ecs::Entity* entity) {
   auto& pf_component = entity->GetComponent<PathFollowComponent>();
   switch (pf_component.state) {
-    case PathFollowState::kWaiting:
+    case PathFollowState::kWaiting: {
       WaitOneTerm(&pf_component);
       break;
+    }
     case PathFollowState::kMoving: {
       QPoint goal = pf_component.path.
           Point(pf_component.current_waypoint).point;
       float speed = pf_component.speed;
       MoveTowardsGoal(goal, speed, entity);
+      break;
     }
+    case PathFollowState::kFinished: {
       break;
-    case PathFollowState::kFinished:
-      break;
+    }
   }
 }
 
 void PathFollowSystem::HandleResolvingState(ecs::Entity* entity) {
   auto& pf_component = entity->GetComponent<PathFollowComponent>();
   switch (pf_component.state) {
-    case PathFollowState::kResolvingMoving:
+    case PathFollowState::kResolvingMoving: {
       pf_component.state = PathFollowState::kWaiting;
       WaitOneTerm(&pf_component);
       break;
-    case PathFollowState::kResolvingWaiting:
+    }
+    case PathFollowState::kResolvingWaiting: {
       if (SetNextGoal(&pf_component)) {
         pf_component.state = PathFollowState::kMoving;
       } else {
         pf_component.state = PathFollowState::kFinished;
       }
       break;
+    }
   }
 }
 
