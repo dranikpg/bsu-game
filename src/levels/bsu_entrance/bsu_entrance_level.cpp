@@ -16,6 +16,7 @@
 #include <map>
 #include <memory>
 #include <utility>
+#include <cmath>
 
 using game::BoundsComponent;
 using game::PositionComponent;
@@ -112,10 +113,10 @@ level::GuardBehaviour::GuardBehaviour(ecs::Entity* player, QPoint main_pos, QPoi
 
 void level::GuardBehaviour::Process(ecs::Entity* entity) {
   auto [player_pos] = player_->Unpack<PositionComponent>();
-  int distance_to_door = sqrt((player_pos.position.x() - door_pos_.x()) *
+  int distance_to_door = static_cast<int>(std::sqrt((player_pos.position.x() - door_pos_.x()) *
                          (player_pos.position.x() - door_pos_.x()) +
                          (player_pos.position.y() - door_pos_.y()) *
-                         (player_pos.position.y() - door_pos_.y()));
+                         (player_pos.position.y() - door_pos_.y())));
 
   auto [guard_pos, impulse] = entity->Unpack<PositionComponent, ImpulseComponent>();
   if (distance_to_door <= 180 && !IsCloseToDoor(guard_pos.position)) {
