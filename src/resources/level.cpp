@@ -7,16 +7,12 @@
 #include "../components/collider_component.h"
 #include "../components/position_component.h"
 #include "../components/bounds_component.h"
-#include "../components/name_component.h"
 #include "../components/sprite_component.h"
 
 using game::ColliderComponent;
 using game::PositionComponent;
 using game::BoundsComponent;
-using game::NameComponent;
-using game::AnimationComponent;
 using game::SpriteComponent;
-using resource::Animation;
 
 void resource::Level::CreateCollider(ecs::World* world,
                                       const map::MapObject* map_object) {
