@@ -1,7 +1,7 @@
 #include "path.h"
 #include <utility>
 
-namespace resources {
+namespace resource {
 
 Path::WayPoint::WayPoint(int x, int y, int pause = 0)
   : point(x, y), pauseFrames(pause) {}
@@ -16,4 +16,4 @@ int Path::Size() const {
 
 Path::Path(std::vector<WayPoint>&& points) : points_(std::move(points)) {}
 
-}  // namespace resources
+}  // namespace resource

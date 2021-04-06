@@ -37,7 +37,7 @@ class MapLoader {
     static std::optional<QJsonObject> FindLayer(const QJsonArray& array,
                                                 const QString& name);
     static MapObject ParseMapObject(const QJsonObject& obj);
-    static std::pair<resources::Path, QString> ParsePath(const QJsonObject& obj);
+    static std::pair<resource::Path, QString> ParsePath(const QJsonObject& obj);
     static std::pair<QPoint, QString> ParsePoint(const QJsonObject& obj);
 
 

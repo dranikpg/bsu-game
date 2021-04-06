@@ -1,0 +1,70 @@
+{ "frames": [
+   {
+    "filename": "ohrannik 0.png",
+    "frame": { "x": 0, "y": 0, "w": 64, "h": 164 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 164 },
+    "sourceSize": { "w": 64, "h": 164 },
+    "duration": 7
+   },
+   {
+    "filename": "ohrannik 1.png",
+    "frame": { "x": 64, "y": 0, "w": 64, "h": 164 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 164 },
+    "sourceSize": { "w": 64, "h": 164 },
+    "duration": 7
+   },
+   {
+    "filename": "ohrannik 2.png",
+    "frame": { "x": 128, "y": 0, "w": 64, "h": 164 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 164 },
+    "sourceSize": { "w": 64, "h": 164 },
+    "duration": 7
+   },
+   {
+    "filename": "ohrannik 3.png",
+    "frame": { "x": 192, "y": 0, "w": 64, "h": 164 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 164 },
+    "sourceSize": { "w": 64, "h": 164 },
+    "duration": 7
+   },
+   {
+    "filename": "ohrannik 4.png",
+    "frame": { "x": 256, "y": 0, "w": 64, "h": 164 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 164 },
+    "sourceSize": { "w": 64, "h": 164 },
+    "duration": 7
+   },
+   {
+    "filename": "ohrannik 5.png",
+    "frame": { "x": 320, "y": 0, "w": 64, "h": 164 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 164 },
+    "sourceSize": { "w": 64, "h": 164 },
+    "duration": 7
+   }
+ ],
+ "pixmap" : ":/guard-sheet.png",
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.23-x64",
+  "image": "ohrannik-sheet.png",
+  "format": "RGBA8888",
+  "size": { "w": 384, "h": 164 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "pokoy", "from": 0, "to": 2, "direction": "forward" },
+   { "name": "move", "from": 3, "to": 5, "direction": "forward" }
+  ]
+ }
+}

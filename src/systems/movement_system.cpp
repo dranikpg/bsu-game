@@ -32,7 +32,6 @@ void MovementSystem::Run(World* world) {
     }
     impulse.shift = QPoint(0, 0);
   }
-
 }
 
 bool MovementSystem::Intersects(World* world, Entity* entity,

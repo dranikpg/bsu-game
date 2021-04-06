@@ -5,7 +5,7 @@
 
 #include <QPoint>
 
-namespace resources {
+namespace resource {
 
 class Path {
  public:
@@ -22,6 +22,6 @@ class Path {
   std::vector<WayPoint> points_;
 };
 
-}  // namespace resources
+}  // namespace resource
 
 #endif  // SRC_RESOURCES_PATH_H_
