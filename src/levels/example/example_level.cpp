@@ -16,7 +16,7 @@ void ExampleLevel::CreateObject(map::MapLayer layer,
                                 const map::MapObject& object) {
   qDebug() << "object: " << object.name;
 }
-void ExampleLevel::CreatePath(const resources::Path& path,
+void ExampleLevel::CreatePath(const resource::Path& path,
                               const QString& name) {
   qDebug() << "path of size: " << path.Size();
 }

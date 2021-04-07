@@ -80,10 +80,10 @@ std::pair<QPoint, QString> MapLoader::ParsePoint(const QJsonObject& obj) {
   return {QPoint(x, y), std::move(name)};
 }
 
-std::pair<resources::Path,
+std::pair<resource::Path,
           QString> MapLoader::ParsePath(const QJsonObject& obj) {
   auto[pos, name] = ParsePoint(obj);
-  using resources::Path;
+  using resource::Path;
   std::vector<Path::WayPoint> points;
   for (const auto& ref: obj.value("polygon").toArray()) {
     const auto point_obj = ref.toObject();

@@ -5,7 +5,7 @@
 #include "../map/map_object.h"
 #include "../ecs/world.h"
 
-namespace resources {
+namespace resource {
 
 class Level : public map::MapInstantiator {
  public:
@@ -19,6 +19,6 @@ class Level : public map::MapInstantiator {
   void CreateCollider(ecs::World* world, const map::MapObject* map_object);
 };
 
-}  // namespace resources
+}  // namespace resource
 
 #endif  // SRC_RESOURCES_LEVEL_H_

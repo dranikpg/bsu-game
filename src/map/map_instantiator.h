@@ -12,7 +12,7 @@ class MapInstantiator {
  public:
   virtual void CreateMap(const QString& path) = 0;
   virtual void CreateObject(MapLayer layer, const MapObject& object) = 0;
-  virtual void CreatePath(const resources::Path& path, const QString& name) = 0;
+  virtual void CreatePath(const resource::Path& path, const QString& name) = 0;
 };
 
 }  // namespace map

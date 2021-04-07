@@ -37,7 +37,9 @@ add_executable(${PROJECT_NAME}
         src/levels/example/example_level.cpp
         src/utils/parser/ase_animation_parser.cpp
         src/systems/movement_animation_sync_system.cpp
-        src/components/movement_animation_sync_component.cpp)
+        src/components/movement_animation_sync_component.cpp
+        src/components/path_follow_component.cpp
+        src/systems/path_follow_system.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

@@ -9,10 +9,10 @@
 namespace game {
 
 struct AnimationComponent : public ecs::Component {
-  explicit AnimationComponent(std::shared_ptr<resource::Animation> animation_resource);
-  void SetAnimationResource(std::shared_ptr<resource::Animation> animation_resource);
+  explicit AnimationComponent(std::shared_ptr<resource::Animation> animation_resource_ptr);
+  void SetAnimationResource(std::shared_ptr<resource::Animation> animation_resource_ptr);
 
-  std::shared_ptr<resource::Animation> animation_resource_;
+  std::shared_ptr<resource::Animation> animation_resource;
   uint16_t frame_index;
   uint16_t frame_time;
   uint16_t frame_length;
