@@ -34,6 +34,7 @@ void RenderingSystem::Run(World* world) {
       }
       QRect bounds = sprite.target_area;
       bounds.moveCenter(position.position);
+      bounds.translate(sprite.target_area.topLeft());
       painter.drawPixmap(bounds, sprite.pixmap, sprite.source_area);
     }
   }

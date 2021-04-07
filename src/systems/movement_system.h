@@ -14,8 +14,10 @@ namespace game {
 class MovementSystem : public ecs::System {
  public:
   void Run(World* world) override;
+  bool IsCollidingXY(World* world, Entity* entity,
+                     const QRect& entity_rect, QPoint x_y_shift) const;
   bool IsCollidingX(World* world, Entity* entity,
-                    const QRect& entity_rect, int x_shift) const;
+                    const QRect& entity_rect, int y_shift) const;
   bool IsCollidingY(World* world, Entity* entity,
                     const QRect& entity_rect, int y_shift) const;
   bool Intersects(World* world, Entity* entity, const QRect& target) const;

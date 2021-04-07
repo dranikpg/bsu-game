@@ -13,6 +13,8 @@
 #include "../systems/movement_system.h"
 #include "../systems/input_movement_system.h"
 #include "../systems/level_system.h"
+#include "../systems/movement_animation_sync_system.h"
+#include "../systems/behaviour_system.h"
 
 #include "../components/sprite_component.h"
 #include "../components/impulse_component.h"
@@ -27,6 +29,7 @@
 #include "../map/map_loader.h"
 
 #include "../levels/example/example_level.h"
+#include "../levels/bsu_entrance/bsu_entrance_level.h"
 
 PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;
@@ -35,11 +38,14 @@ PrototypeWidget::PrototypeWidget() {
       std::make_unique<game::RenderingSystem>(&painter_context_, &window_context_));
   systems.emplace_back(std::make_unique<game::AnimationSystem>());
   systems.emplace_back(std::make_unique<game::InputMovementSystem>(&input_context_));
+  systems.emplace_back(std::make_unique<game::MovementAnimationSyncSystem>());
   systems.emplace_back(std::make_unique<game::MovementSystem>());
+  systems.emplace_back(std::make_unique<game::BehaviourSystem>());
+
   world_.Init(std::move(systems));
 
   // Load example level
-  level_context_.Load<level::ExampleLevel>();
+  level_context_.Load<level::BsuEntranceLevel>();
 
   connect(&timer_, &QTimer::timeout, [this]() {
     update();

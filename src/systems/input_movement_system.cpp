@@ -13,8 +13,8 @@ namespace game {
 InputMovementSystem::InputMovementSystem(InputContext* input) : input_(input) {}
 
 void InputMovementSystem::Run(World* world) {
-  for (auto[impulse, input_marker] : world->Scan<ImpulseComponent,
-      InputMovementComponent>()) {
+
+  for (auto[impulse, input_marker] : world->Scan<ImpulseComponent, InputMovementComponent>()) {
     std::set<Keys> keys = input_->GetKeys();
     for (auto key : keys) {
       switch (key) {
