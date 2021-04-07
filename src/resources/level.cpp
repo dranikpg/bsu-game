@@ -16,7 +16,6 @@ using game::SpriteComponent;
 
 void resource::Level::CreateCollider(ecs::World* world,
                                       const map::MapObject* map_object) {
-  QPixmap kek("/Users/nikita/CLionProjects/bsu-game/test/4874.jpg");
   world->CreateEntity().AddComponent<ColliderComponent>()
                        .AddComponent<PositionComponent>(map_object->position.x(),
                                                         map_object->position.y())

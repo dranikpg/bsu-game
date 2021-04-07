@@ -63,7 +63,7 @@
   "size": { "w": 384, "h": 164 },
   "scale": "1",
   "frameTags": [
-   { "name": "pokoy", "from": 0, "to": 2, "direction": "forward" },
+   { "name": "main", "from": 0, "to": 2, "direction": "forward" },
    { "name": "move", "from": 3, "to": 5, "direction": "forward" }
   ]
  }

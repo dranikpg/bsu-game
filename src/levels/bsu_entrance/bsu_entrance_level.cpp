@@ -85,7 +85,7 @@ void level::BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapOb
   } else if (object.name == "guard") {
     auto anims = utils::AseAnimationParser::Parse(QFile(":/guard.json"));
     std::multimap<constants::AnimationType, std::shared_ptr<resource::Animation>> sync_pack;
-    sync_pack.insert(std::make_pair(AnimationType::kDefault, anims["pokoy"]));
+    sync_pack.insert(std::make_pair(AnimationType::kDefault, anims["main"]));
     sync_pack.insert(std::make_pair(AnimationType::kLeft, anims["move"]));
     sync_pack.insert(std::make_pair(AnimationType::kRight, anims["move"]));
     guard_ = &world_->CreateEntity()
@@ -97,7 +97,7 @@ void level::BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapOb
         .AddComponent<SpriteComponent>(QRect(0, -27, 40, 103),
                                        SpriteLayer::kForeground)
         .AddComponent<BehaviourComponent>(nullptr)
-        .AddComponent<AnimationComponent>(anims["pokoy"])
+        .AddComponent<AnimationComponent>(anims["main"])
         .AddComponent<MovementAnimationSyncComponent>(sync_pack);
   }
 }
