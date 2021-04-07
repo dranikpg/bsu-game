@@ -81,6 +81,7 @@ std::pair<QPoint, QString> MapLoader::ParsePoint(const QJsonObject& obj) {
   return {QPoint(x, y), std::move(name)};
 }
 
+
 std::pair<resource::Path, QString> MapLoader::ParsePath(const QJsonObject& obj) {
   auto[pos, name] = ParsePoint(obj);
   using resource::Path;

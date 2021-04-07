@@ -17,6 +17,7 @@ class Path {
   explicit Path(std::vector<WayPoint>&& points);
   int Size() const;
   const WayPoint& Point(int idx) const;
+  void ReversePath();
 
  private:
   std::vector<WayPoint> points_;

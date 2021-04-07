@@ -3,7 +3,6 @@
 #include <utility>
 #include <vector>
 
-#include <QDebug>
 #include <QString>
 #include <QRect>
 #include <QJsonDocument>

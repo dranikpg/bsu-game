@@ -14,6 +14,7 @@ using game::PositionComponent;
 using game::BoundsComponent;
 using game::SpriteComponent;
 
+
 void resource::Level::CreateCollider(ecs::World* world,
                                       const map::MapObject* map_object) {
   world->CreateEntity().AddComponent<ColliderComponent>()
