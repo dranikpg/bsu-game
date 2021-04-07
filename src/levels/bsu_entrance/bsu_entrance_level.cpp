@@ -12,6 +12,7 @@
 #include "../../components/behaviour_component.h"
 #include "../../utils/parser/ase_animation_parser.h"
 #include "../../map/map_loader.h"
+#include "../../levels/bsu_entrance/guard_behaviour.h"
 
 #include <map>
 #include <memory>
@@ -28,6 +29,7 @@ using game::SpriteComponent;
 using game::ImpulseComponent;
 using game::CameraComponent;
 using game::BehaviourComponent;
+using game::GuardBehaviour;
 
 level::BsuEntranceLevel::~BsuEntranceLevel() = default;
 
@@ -41,8 +43,7 @@ void level::BsuEntranceLevel::Load(ecs::World* world) {
   world_ = world;
   map::MapLoader::Load(QFile(":/BSU_entrance.json"), this);
   auto [behaviour, guard_pos] = guard_->Unpack<BehaviourComponent, PositionComponent>();
-  std::shared_ptr<GuardBehaviour> guard_behaviour =
-      std::make_shared<GuardBehaviour>(player_, guard_pos.position, door_pos_);
+  auto guard_behaviour = std::make_shared<GuardBehaviour>(player_, guard_pos.position, door_pos_);
   behaviour.behaviour = guard_behaviour;
 }
 
@@ -55,8 +56,8 @@ void level::BsuEntranceLevel::CreateMap(const QString& path) {
 void level::BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapObject& object) {
   if (layer == map::MapLayer::kCollision) {
     if (object.name == "door") {
-      door_pos_.setX(object.position.x() + object.size.width() / 2);
-      door_pos_.setY(object.position.y() + object.size.height() / 2);
+      door_pos_.setX(object.position.x());
+      door_pos_.setY(object.position.y());
     }
     CreateCollider(world_, &object);
     return;
@@ -88,10 +89,8 @@ void level::BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapOb
     sync_pack.insert(std::make_pair(AnimationType::kLeft, anims["move"]));
     sync_pack.insert(std::make_pair(AnimationType::kRight, anims["move"]));
     guard_ = &world_->CreateEntity()
-        .AddComponent<PositionComponent>(object.position.x() +
-                                             object.size.width() / 2,
-                                         object.position.y() +
-                                             object.size.height() / 2)
+        .AddComponent<PositionComponent>(object.position.x(),
+                                         object.position.y())
         .AddComponent<BoundsComponent>(object.size.width(), object.size.height())
         .AddComponent<ColliderComponent>()
         .AddComponent<ImpulseComponent>()
@@ -104,34 +103,3 @@ void level::BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapOb
 }
 
 void level::BsuEntranceLevel::CreatePath(const resource::Path& path, const QString& name) {}
-
-level::GuardBehaviour::GuardBehaviour(ecs::Entity* player, QPoint main_pos, QPoint door_pos) :
-    player_(player),
-    main_position_(main_pos),
-    door_pos_(door_pos) {}
-
-
-void level::GuardBehaviour::Process(ecs::Entity* entity) {
-  auto [player_pos] = player_->Unpack<PositionComponent>();
-  int distance_to_door = static_cast<int>(std::sqrt((player_pos.position.x() - door_pos_.x()) *
-                         (player_pos.position.x() - door_pos_.x()) +
-                         (player_pos.position.y() - door_pos_.y()) *
-                         (player_pos.position.y() - door_pos_.y())));
-
-  auto [guard_pos, impulse] = entity->Unpack<PositionComponent, ImpulseComponent>();
-  if (distance_to_door <= 180 && !IsCloseToDoor(guard_pos.position)) {
-    impulse.shift.setX(-8);
-  } else if (distance_to_door <= 180 && IsCloseToDoor(guard_pos.position)) {
-    impulse.shift.setX(0);
-  } else {
-    if (guard_pos.position == main_position_) {
-      impulse.shift.setX(0);
-      return;
-    }
-    impulse.shift.setX(8);
-  }
-}
-
-bool level::GuardBehaviour::IsCloseToDoor(QPoint guard_pos) const {
-  return (guard_pos.x() - door_pos_.x()) * (guard_pos.x() - door_pos_.x()) < 100;
-}

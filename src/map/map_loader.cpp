@@ -67,21 +67,21 @@ MapObject MapLoader::ParseMapObject(const QJsonObject& obj) {
   MapObject map_obj;
   auto [position, name] = ParsePoint(obj);
   map_obj.name = std::move(name);
-  map_obj.position = position;
   map_obj.size.rwidth() = static_cast<int>(obj.value("width").toDouble());
   map_obj.size.rheight() = static_cast<int>(obj.value("height").toDouble());
+  map_obj.position = position + QPoint(map_obj.size.rwidth() / 2,
+                                       map_obj.size.rheight() / 2);
   return map_obj;
 }
 
 std::pair<QPoint, QString> MapLoader::ParsePoint(const QJsonObject& obj) {
-  int x = static_cast<int>(obj.value("x").toDouble() + 1);
-  int y = static_cast<int>(obj.value("y").toDouble() + 1);
+  int x = static_cast<int>(std::ceil(obj.value("x").toDouble()));
+  int y = static_cast<int>(std::ceil(obj.value("y").toDouble()));
   QString name = obj.value("name").toString();
   return {QPoint(x, y), std::move(name)};
 }
 
-std::pair<resource::Path,
-          QString> MapLoader::ParsePath(const QJsonObject& obj) {
+std::pair<resource::Path, QString> MapLoader::ParsePath(const QJsonObject& obj) {
   auto[pos, name] = ParsePoint(obj);
   using resource::Path;
   std::vector<Path::WayPoint> points;

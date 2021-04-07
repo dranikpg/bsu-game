@@ -18,10 +18,8 @@ void resource::Level::CreateCollider(ecs::World* world,
                                       const map::MapObject* map_object) {
   QPixmap kek("/Users/nikita/CLionProjects/bsu-game/test/4874.jpg");
   world->CreateEntity().AddComponent<ColliderComponent>()
-                       .AddComponent<PositionComponent>(map_object->position.x() +
-                                                        map_object->size.width() / 2,
-                                                        map_object->position.y() +
-                                                        map_object->size.height() / 2)
+                       .AddComponent<PositionComponent>(map_object->position.x(),
+                                                        map_object->position.y())
                        .AddComponent<BoundsComponent>(map_object->size.width(),
                                                       map_object->size.height());
 }

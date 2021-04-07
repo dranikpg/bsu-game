@@ -39,9 +39,8 @@ set(SOURCES
         src/systems/movement_animation_sync_system.cpp
         src/components/movement_animation_sync_component.cpp
         src/systems/behaviour_system.cpp
-        src/resources/behaviour.h
         src/components/behaviour_component.cpp
-        src/levels/bsu_entrance/bsu_entrance_level.cpp)
+        src/levels/bsu_entrance/bsu_entrance_level.cpp src/levels/bsu_entrance/guard_behaviour.cpp src/levels/bsu_entrance/guard_behaviour.h)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

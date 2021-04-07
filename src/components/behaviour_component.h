@@ -8,8 +8,7 @@
 
 namespace game {
 
-class BehaviourComponent : public ecs::Component {
- public:
+struct BehaviourComponent : public ecs::Component {
   explicit BehaviourComponent(std::shared_ptr<resource::Behaviour> behaviour_resource);
   void SetBehaviourResource(std::shared_ptr<resource::Behaviour> behaviour_resource);
 
