@@ -5,7 +5,7 @@
 #include "../../ecs/world.h"
 #include "../../resources/behaviour.h"
 
-namespace level {
+namespace game {
 
 class BsuEntranceLevel : public resource::Level {
  public:
@@ -17,6 +17,8 @@ class BsuEntranceLevel : public resource::Level {
   void CreateObject(map::MapLayer layer, const map::MapObject& object) override;
   void CreatePath(const resource::Path& path, const QString& name) override;
 
+ private:
+  void CreateGuard(ecs::World* world, const map::MapObject& object);
  private:
   ecs::World* world_;
   ecs::Entity* player_ = nullptr;

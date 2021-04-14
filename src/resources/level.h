@@ -3,7 +3,7 @@
 
 #include "../map/map_instantiator.h"
 #include "../map/map_object.h"
-#include "../ecs/world.h"
+#include "../ecs/ecs.h"
 
 namespace resource {
 
@@ -15,8 +15,9 @@ class Level : public map::MapInstantiator {
   virtual void Dispose(ecs::World* word) = 0;
 
  protected:
+  ecs::Entity& CreatePlayer(ecs::World* world, const map::MapObject& position);
   void CreateMap(ecs::World* world, const QString& path);
-  void CreateCollider(ecs::World* world, const map::MapObject* map_object);
+  void CreateCollider(ecs::World* world, const map::MapObject& map_object);
 };
 
 }  // namespace resource

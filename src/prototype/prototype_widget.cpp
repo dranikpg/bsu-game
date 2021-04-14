@@ -45,7 +45,7 @@ PrototypeWidget::PrototypeWidget() {
   world_.Init(std::move(systems));
 
   // Load example level
-  level_context_.Load<level::BsuEntranceLevel>();
+  level_context_.Load<game::BsuEntranceLevel>();
 
   connect(&timer_, &QTimer::timeout, [this]() {
     update();
