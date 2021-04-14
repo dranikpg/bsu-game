@@ -1,5 +1,7 @@
 #include "guard_behaviour.h"
 
+#include <cmath>
+
 #include "../../components/position_component.h"
 #include "../../components/impulse_component.h"
 

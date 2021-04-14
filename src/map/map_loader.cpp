@@ -1,8 +1,9 @@
 #include "map_loader.h"
 
 #include <algorithm>
-#include <QDebug>
+#include <cmath>
 
+#include <QDebug>
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QJsonObject>
