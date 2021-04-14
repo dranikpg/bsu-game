@@ -1,5 +1,7 @@
 #include "rendering_system.h"
 
+#include <QRectF>
+#include <QPointF>
 #include <QPainter>
 
 #include <algorithm>
@@ -24,10 +26,14 @@ void RenderingSystem::Run(World* world) {
   ecs::Entity* camera_entity =
       world->ScanEntities<PositionComponent, CameraComponent>().Peek();
   if (camera_entity) {
-    auto& camera_pos = camera_entity->GetComponent<PositionComponent>();
+    auto[camera, camera_pos] = camera_entity->Unpack<CameraComponent, PositionComponent>();
+    float scale = camera.scale;
+    painter.scale(scale, scale);
     painter.translate(
-        -camera_pos.position.x() + window_context_->GetSize().width() / 2,
-        -camera_pos.position.y() + window_context_->GetSize().height() / 2);
+        -camera_pos.position.x()
+            + 1 / scale * window_context_->GetSize().width() / 2,
+        -camera_pos.position.y()
+            + 1 / scale * window_context_->GetSize().height() / 2);
   }
 
   std::vector<ecs::Entity*> current_layer;
@@ -44,11 +50,12 @@ void RenderingSystem::Run(World* world) {
     std::sort(current_layer.begin(), current_layer.end(),
               [](const ecs::Entity* l, const ecs::Entity* r) {
                 return l->GetComponent<PositionComponent>().position.y() <
-                  r->GetComponent<PositionComponent>().position.y();
+                    r->GetComponent<PositionComponent>().position.y();
               });
     for (auto& entity: current_layer) {
-      auto [sprite, position] = entity->Unpack<SpriteComponent, PositionComponent>();
-      QRect bounds = sprite.target_area;
+      auto[sprite, position] = entity->Unpack<SpriteComponent,
+                                              PositionComponent>();
+      QRectF bounds = sprite.target_area;
       bounds.moveCenter(position.position);
       bounds.translate(sprite.target_area.topLeft());
       painter.drawPixmap(bounds, sprite.pixmap, sprite.source_area);

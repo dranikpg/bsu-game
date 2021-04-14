@@ -39,7 +39,8 @@ void BsuEntranceLevel::Load(ecs::World* world) {
   behaviour.behaviour = guard_behaviour;
 }
 
-void BsuEntranceLevel::Process(ecs::World* world) {}
+void BsuEntranceLevel::Process(ecs::World* world) {
+}
 
 void BsuEntranceLevel::CreateMap(const QString& path) {
   resource::Level::CreateMap(world_, path);

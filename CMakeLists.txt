@@ -43,7 +43,8 @@ set(SOURCES
         src/levels/bsu_entrance/bsu_entrance_level.cpp
         src/levels/bsu_entrance/guard_behaviour.cpp
         src/components/path_follow_component.cpp
-        src/systems/path_follow_system.cpp)
+        src/systems/path_follow_system.cpp
+        src/components/camera_component.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

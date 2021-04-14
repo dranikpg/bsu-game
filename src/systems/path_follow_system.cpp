@@ -68,8 +68,8 @@ void PathFollowSystem::HandleResolvingState(ecs::Entity* entity) {
 void PathFollowSystem::MoveTowardsGoal(QPoint goal,
                                         float speed,
                                         ecs::Entity* entity) {
-  auto [position_component, impulse_component, pf_component] = entity->Unpack<
-      PositionComponent, ImpulseComponent, PathFollowComponent>();
+  auto [position_component, impulse_component, pf_component] =
+      entity->Unpack<PositionComponent, ImpulseComponent, PathFollowComponent>();
   auto position = position_component.position;
   auto& shift = impulse_component.shift;
   if (position == goal) {
@@ -89,7 +89,7 @@ void PathFollowSystem::MoveTowardsGoal(QPoint goal,
   } else {
     shift = QPoint(ceil(shift_vec.x()),
                    ceil(shift_vec.y()));
-    QPoint next_position = position + shift;
+    QPointF next_position = position + shift;
     if ((abs((goal-next_position).x()) <= 1) &&
         (abs((goal-next_position).y()) <= 1)) {
       shift = goal - position;

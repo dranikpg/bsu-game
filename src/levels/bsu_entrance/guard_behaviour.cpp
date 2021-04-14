@@ -5,7 +5,7 @@
 #include "../../components/position_component.h"
 #include "../../components/impulse_component.h"
 
-game::GuardBehaviour::GuardBehaviour(ecs::Entity* player, QPoint main_pos, QPoint door_pos) :
+game::GuardBehaviour::GuardBehaviour(ecs::Entity* player, QPointF main_pos, QPointF door_pos) :
     player_(player),
     main_position_(main_pos),
     door_position_(door_pos) {}
@@ -33,7 +33,7 @@ void game::GuardBehaviour::Process(ecs::Entity* entity) {
   }
 }
 
-bool game::GuardBehaviour::IsCloseToDoor(QPoint guard_pos) const {
+bool game::GuardBehaviour::IsCloseToDoor(QPointF guard_pos) const {
   return std::abs(guard_pos.x() - door_position_.x()) < 10;
 }
 
