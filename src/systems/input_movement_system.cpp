@@ -29,6 +29,8 @@ void InputMovementSystem::Run(World* world) {
         case Keys::kDown:
           impulse.shift += QPoint(0, kSpeed_);
           break;
+        default:
+          break;
       }
     }
   }

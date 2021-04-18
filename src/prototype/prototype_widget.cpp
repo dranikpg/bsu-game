@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 #include <memory>
+#include <map>
 
 #include <QPainter>
 #include <QTimer>
@@ -15,6 +16,7 @@
 #include "../systems/level_system.h"
 #include "../systems/movement_animation_sync_system.h"
 #include "../systems/behaviour_system.h"
+#include "../systems/dialog_system.h"
 
 #include "../components/sprite_component.h"
 #include "../components/impulse_component.h"
@@ -22,8 +24,10 @@
 #include "../components/position_component.h"
 #include "../components/camera_component.h"
 #include "../components/input_movement_component.h"
+#include "../components/dialog_component.h"
 
 #include "../resources/animation.h"
+#include "../resources/dialog.h"
 
 #include "../utils/parser/ase_animation_parser.h"
 #include "../map/map_loader.h"
@@ -35,14 +39,32 @@ PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;
   systems.emplace_back(std::make_unique<game::LevelSystem>(&level_context_));
   systems.emplace_back(
-      std::make_unique<game::RenderingSystem>(&painter_context_, &window_context_));
+      std::make_unique<game::RenderingSystem>(&painter_context_,
+                                              &window_context_));
   systems.emplace_back(std::make_unique<game::AnimationSystem>());
   systems.emplace_back(std::make_unique<game::InputMovementSystem>(&input_context_));
   systems.emplace_back(std::make_unique<game::MovementAnimationSyncSystem>());
   systems.emplace_back(std::make_unique<game::MovementSystem>());
   systems.emplace_back(std::make_unique<game::BehaviourSystem>());
+  systems.emplace_back(std::make_unique<game::DialogSystem>(&input_context_,
+                                                            &dialog_context_));
 
   world_.Init(std::move(systems));
+
+  // dialog
+  std::shared_ptr<resource::Dialog> dialog_ptr =
+      std::make_shared<resource::Dialog>(std::vector<QString>({"d1", "d2",
+                                                               "d3"}),
+                                         std::map<QString, QString>());
+  auto dialog_handler = [](const std::optional<QString>& ans) {
+  };
+  world_.CreateEntity()
+      .AddComponent<game::DialogComponent>(dialog_ptr, dialog_handler);
+
+
+  // init ui
+  dialog_box_.setParent(this);
+  dialog_context_.Init(&dialog_box_);
 
   // Load example level
   level_context_.Load<game::BsuEntranceLevel>();
@@ -61,6 +83,8 @@ void PrototypeWidget::paintEvent(QPaintEvent* event) {
   window_context_.SetSize(size());
 
   world_.Run();
+
+  input_context_.Clean();
 }
 
 void PrototypeWidget::keyPressEvent(QKeyEvent* event) {
@@ -70,3 +94,9 @@ void PrototypeWidget::keyPressEvent(QKeyEvent* event) {
 void PrototypeWidget::keyReleaseEvent(QKeyEvent* event) {
   input_context_.RemoveKey(static_cast<Qt::Key>(event->key()));
 }
+
+void PrototypeWidget::resizeEvent(QResizeEvent* event) {
+  dialog_box_.resize(width(), 100);
+  dialog_box_.move(0, height() - 100);
+}
+

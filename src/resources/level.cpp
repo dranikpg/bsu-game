@@ -1,5 +1,9 @@
 #include "level.h"
 
+#include <map>
+#include <memory>
+#include <utility>
+
 #include <QPixmap>
 #include <QFile>
 #include <QDebug>
@@ -11,25 +15,22 @@ namespace resource {
 
 void resource::Level::CreateCollider(ecs::World* world,
                                      const map::MapObject& map_object) {
-  using namespace game;
-  world->CreateEntity().AddComponent<ColliderComponent>()
-      .AddComponent<PositionComponent>(map_object.position.x(),
+  world->CreateEntity().AddComponent<game::ColliderComponent>()
+      .AddComponent<game::PositionComponent>(map_object.position.x(),
                                        map_object.position.y())
-      .AddComponent<BoundsComponent>(map_object.size.width(),
+      .AddComponent<game::BoundsComponent>(map_object.size.width(),
                                      map_object.size.height());
 }
 
 void resource::Level::CreateMap(ecs::World* world, const QString& path) {
-  using namespace game;
   QPixmap background(path);
-  world->CreateEntity().AddComponent<PositionComponent>(QPoint(
+  world->CreateEntity().AddComponent<game::PositionComponent>(QPoint(
           background.width() / 2,
           background.height() / 2))
-      .AddComponent<SpriteComponent>(background, SpriteLayer::kBackground);
+      .AddComponent<game::SpriteComponent>(background, SpriteLayer::kBackground);
 }
 
 ecs::Entity& resource::Level::CreatePlayer(ecs::World* world, const map::MapObject& object) {
-  using namespace game;
   auto anims = utils::AseAnimationParser::Parse(QFile(":/player.json"));
 
   using constants::AnimationType;
@@ -41,18 +42,18 @@ ecs::Entity& resource::Level::CreatePlayer(ecs::World* world, const map::MapObje
   sync_pack.insert(std::make_pair(AnimationType::kUp, anims["up"]));
 
   ecs::Entity& player = world->CreateEntity()
-      .AddComponent<PositionComponent>(object.position)
-      .AddComponent<BoundsComponent>(object.size.width(), object.size.height())
-      .AddComponent<ColliderComponent>()
-      .AddComponent<InputMovementComponent>()
+      .AddComponent<game::PositionComponent>(object.position)
+      .AddComponent<game::BoundsComponent>(object.size.width(), object.size.height())
+      .AddComponent<game::ColliderComponent>()
+      .AddComponent<game::InputMovementComponent>()
       .AddComponent<game::SpriteComponent>(QRect(0, -16, 64, 64),
                                            SpriteLayer::kForeground)
-      .AddComponent<AnimationComponent>(anims["main"])
-      .AddComponent<MovementAnimationSyncComponent>(sync_pack)
-      .AddComponent<ImpulseComponent>()
-      .AddComponent<CameraComponent>();
+      .AddComponent<game::AnimationComponent>(anims["main"])
+      .AddComponent<game::MovementAnimationSyncComponent>(sync_pack)
+      .AddComponent<game::ImpulseComponent>()
+      .AddComponent<game::CameraComponent>();
 
   return player;
 }
 
-}
+}  // namespace resource

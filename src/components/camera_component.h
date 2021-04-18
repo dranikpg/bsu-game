@@ -6,7 +6,7 @@
 namespace game {
 
 struct CameraComponent : public ecs::Component {
-  CameraComponent(float scale = 1);
+  explicit CameraComponent(float scale = 1);
   float scale;
 };
 

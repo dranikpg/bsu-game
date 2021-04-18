@@ -25,5 +25,7 @@ class BsuEntranceLevel : public resource::Level {
   ecs::Entity* guard_ = nullptr;
   QPoint door_pos_;
 };
-}  // namespace level
+
+}  // namespace game
+
 #endif  // SRC_LEVELS_BSU_ENTRANCE_BSU_ENTRANCE_LEVEL_H_

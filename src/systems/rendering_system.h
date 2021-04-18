@@ -1,6 +1,8 @@
 #ifndef SRC_SYSTEMS_RENDERING_SYSTEM_H_
 #define SRC_SYSTEMS_RENDERING_SYSTEM_H_
 
+#include <vector>
+
 #include "../ecs/ecs.h"
 #include "../context/painter_context.h"
 #include "../context/window_context.h"
