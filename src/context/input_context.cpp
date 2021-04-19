@@ -1,5 +1,7 @@
 #include "input_context.h"
 
+#include <QDebug>
+
 namespace context {
 
 void InputContext::AddKey(Qt::Key key) {

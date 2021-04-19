@@ -22,14 +22,6 @@ class AseAnimationParser {
    public:
     explicit InvalidPixmapException(const std::string& arg);
   };
-  class InvalidPathException : public std::runtime_error {
-   public:
-    explicit InvalidPathException(const std::string& arg);
-  };
-  class JsonFormatException : public std::runtime_error {
-   public:
-    explicit JsonFormatException(const std::string& arg);
-  };
 
   using AnimationBag = std::unordered_map<std::string, std::shared_ptr<Animation>>;
   static AnimationBag Parse(QFile file);

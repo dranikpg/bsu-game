@@ -17,6 +17,10 @@ void PathFollowSystem::Run(ecs::World* world) {
       PositionComponent,
       ImpulseComponent>()) {
     auto& pf_component = entity.GetComponent<PathFollowComponent>();
+    // FIX: better empty path handling?
+    if (pf_component.path.Empty()) {
+      continue;
+    }
     HandleState(&entity);
     while (pf_component.state == PathFollowState::kResolvingWaiting ||
         pf_component.state == PathFollowState::kResolvingMoving) {
@@ -34,7 +38,7 @@ void PathFollowSystem::HandleState(ecs::Entity* entity) {
       break;
     }
     case PathFollowState::kMoving: {
-      QPoint goal = pf_component.path.
+      QPointF goal = pf_component.path.
           Point(pf_component.current_waypoint).point;
       float speed = pf_component.speed;
       MoveTowardsGoal(goal, speed, entity);
@@ -65,7 +69,7 @@ void PathFollowSystem::HandleResolvingState(ecs::Entity* entity) {
   }
 }
 
-void PathFollowSystem::MoveTowardsGoal(QPoint goal,
+void PathFollowSystem::MoveTowardsGoal(QPointF goal,
                                         float speed,
                                         ecs::Entity* entity) {
   auto [position_component, impulse_component, pf_component] =

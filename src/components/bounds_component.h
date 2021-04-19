@@ -3,16 +3,20 @@
 
 #include "../ecs/component.h"
 
-#include <QPoint>
+#include <QPointF>
+#include <QSizeF>
 
 namespace game {
 
 struct BoundsComponent : ecs::Component {
   BoundsComponent() = default;
-  explicit BoundsComponent(const QPoint& bounds);
-  BoundsComponent(int x, int y);
+  explicit BoundsComponent(const QPointF& bounds);
+  explicit BoundsComponent(const QSizeF& bounds);
+  BoundsComponent(float x, float y);
 
-  QPoint bounds;
+  QPointF bounds;
 };
-}
+
+}  // namespace game
+
 #endif  // SRC_COMPONENTS_BOUNDS_COMPONENT_H_

@@ -13,6 +13,7 @@ using constants::PathFollowState;
 namespace game {
 
 struct PathFollowComponent : public ecs::Component {
+  PathFollowComponent() = default;
   PathFollowComponent(resource::Path mov_path,
                       PathFollowType type,
                       float mov_speed);

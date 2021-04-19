@@ -17,6 +17,7 @@
 #include "../systems/movement_animation_sync_system.h"
 #include "../systems/behaviour_system.h"
 #include "../systems/dialog_system.h"
+#include "../systems/path_follow_system.h"
 
 #include "../components/sprite_component.h"
 #include "../components/impulse_component.h"
@@ -48,19 +49,9 @@ PrototypeWidget::PrototypeWidget() {
   systems.emplace_back(std::make_unique<game::BehaviourSystem>());
   systems.emplace_back(std::make_unique<game::DialogSystem>(&input_context_,
                                                             &dialog_context_));
+  systems.emplace_back(std::make_unique<game::PathFollowSystem>());
 
   world_.Init(std::move(systems));
-
-  // dialog
-  std::shared_ptr<resource::Dialog> dialog_ptr =
-      std::make_shared<resource::Dialog>(std::vector<QString>({"d1", "d2",
-                                                               "d3"}),
-                                         std::map<QString, QString>());
-  auto dialog_handler = [](const std::optional<QString>& ans) {
-  };
-  world_.CreateEntity()
-      .AddComponent<game::DialogComponent>(dialog_ptr, dialog_handler);
-
 
   // init ui
   dialog_box_.setParent(this);

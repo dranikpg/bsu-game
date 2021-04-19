@@ -1,9 +1,12 @@
 #ifndef SRC_LEVELS_BSU_ENTRANCE_BSU_ENTRANCE_LEVEL_H_
 #define SRC_LEVELS_BSU_ENTRANCE_BSU_ENTRANCE_LEVEL_H_
 
-#include "../../resources/level.h"
+#include <memory>
+
 #include "../../ecs/world.h"
+#include "../../resources/level.h"
 #include "../../resources/behaviour.h"
+#include "../../resources/path.h"
 
 namespace game {
 
@@ -15,7 +18,7 @@ class BsuEntranceLevel : public resource::Level {
   void Process(ecs::World* world) override;
   void CreateMap(const QString& path) override;
   void CreateObject(map::MapLayer layer, const map::MapObject& object) override;
-  void CreatePath(const resource::Path& path, const QString& name) override;
+  void CreatePath(resource::Path path, const QString& name) override;
 
  private:
   void CreateGuard(ecs::World* world, const map::MapObject& object);
@@ -23,7 +26,8 @@ class BsuEntranceLevel : public resource::Level {
   ecs::World* world_;
   ecs::Entity* player_ = nullptr;
   ecs::Entity* guard_ = nullptr;
-  QPoint door_pos_;
+  std::shared_ptr<resource::Path> guard_path_;
+  QPointF guard_pos_;
 };
 
 }  // namespace game

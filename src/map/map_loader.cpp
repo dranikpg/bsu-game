@@ -35,7 +35,7 @@ void MapLoader::Load(QFile file, MapInstantiator* instancer) {
   if (path_layer) {
     for (const auto& obj_ref : (*path_layer).value("objects").toArray()) {
       auto named_path = ParsePath(obj_ref.toObject());
-      instancer->CreatePath(named_path.first, named_path.second);
+      instancer->CreatePath(std::move(named_path.first), named_path.second);
     }
   }
 
@@ -76,8 +76,8 @@ MapObject MapLoader::ParseMapObject(const QJsonObject& obj) {
 }
 
 std::pair<QPoint, QString> MapLoader::ParsePoint(const QJsonObject& obj) {
-  int x = static_cast<int>(std::ceil(obj.value("x").toDouble()));
-  int y = static_cast<int>(std::ceil(obj.value("y").toDouble()));
+  float x = obj.value("x").toDouble();
+  float y = obj.value("y").toDouble();
   QString name = obj.value("name").toString();
   return {QPoint(x, y), std::move(name)};
 }

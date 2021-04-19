@@ -9,9 +9,9 @@ namespace game {
 
 struct PositionComponent : public ecs::Component {
   PositionComponent() = default;
-  explicit PositionComponent(const QPoint& pos);
+  explicit PositionComponent(const QPointF& pos);
 
-  PositionComponent(int x, int y);
+  PositionComponent(float x, float y);
 
   QPointF position;
 };

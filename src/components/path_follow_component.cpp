@@ -20,4 +20,5 @@ void PathFollowComponent::SetCurrentWaypoint(int idx) {
   wait_duration = path.Point(idx).pauseFrames;
 }
 
+
 }  // namespace game

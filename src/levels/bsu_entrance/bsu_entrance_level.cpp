@@ -1,15 +1,6 @@
 #include "bsu_entrance_level.h"
 
-#include "../../components/bounds_component.h"
-#include "../../components/position_component.h"
-#include "../../components/collider_component.h"
-#include "../../components/input_movement_component.h"
-#include "../../components/impulse_component.h"
-#include "../../components/movement_animation_sync_component.h"
-#include "../../components/animation_component.h"
-#include "../../components/sprite_component.h"
-#include "../../components/camera_component.h"
-#include "../../components/behaviour_component.h"
+#include "../../components/components.h"
 #include "../../utils/parser/ase_animation_parser.h"
 #include "../../map/map_loader.h"
 #include "../../levels/bsu_entrance/guard_behaviour.h"
@@ -32,11 +23,9 @@ void BsuEntranceLevel::Dispose(ecs::World* world) {
 void BsuEntranceLevel::Load(ecs::World* world) {
   world_ = world;
   map::MapLoader::Load(QFile(":/BSU_entrance.json"), this);
-  auto[behaviour, guard_pos] = guard_->Unpack<BehaviourComponent,
-                                              PositionComponent>();
-  auto guard_behaviour =
-      std::make_shared<GuardBehaviour>(player_, guard_pos.position, door_pos_);
-  behaviour.behaviour = guard_behaviour;
+
+  guard_->GetComponent<BehaviourComponent>().behaviour
+    = std::make_shared<GuardBehaviour>(player_, guard_path_, guard_pos_);
 }
 
 void BsuEntranceLevel::Process(ecs::World* world) {
@@ -49,22 +38,24 @@ void BsuEntranceLevel::CreateMap(const QString& path) {
 void BsuEntranceLevel::CreateObject(map::MapLayer layer,
                                            const map::MapObject& object) {
   if (layer == map::MapLayer::kCollision) {
-    if (object.name == "door") {
-      door_pos_.setX(object.position.x());
-      door_pos_.setY(object.position.y());
-    }
     CreateCollider(world_, object);
     return;
   }
-  if (object.name == "chel") {
+  if (object.name == "player") {
     player_ = &CreatePlayer(world_, object);
   } else if (object.name == "guard") {
+    guard_pos_ = object.position;
     CreateGuard(world_, object);
   }
 }
 
-void BsuEntranceLevel::CreatePath(const resource::Path& path,
-                                         const QString& name) {}
+void BsuEntranceLevel::CreatePath(resource::Path path,
+                                         const QString& name) {
+  if (name == "guard_path") {
+    qDebug() << "guard path set";
+    guard_path_ = std::make_shared<resource::Path>(std::move(path));
+  }
+}
 
 void BsuEntranceLevel::CreateGuard(ecs::World* world, const map::MapObject& object) {
   auto anims = utils::AseAnimationParser::Parse(QFile(":/guard.json"));
@@ -74,17 +65,19 @@ void BsuEntranceLevel::CreateGuard(ecs::World* world, const map::MapObject& obje
   sync_pack.insert(std::make_pair(AnimationType::kLeft, anims["move"]));
   sync_pack.insert(std::make_pair(AnimationType::kRight, anims["move"]));
   guard_ = &world_->CreateEntity()
-      .AddComponent<PositionComponent>(object.position.x(),
-                                       object.position.y())
-      .AddComponent<BoundsComponent>(object.size.width(),
-                                     object.size.height())
+      .AddComponent<PositionComponent>(guard_pos_)
+      .AddComponent<BoundsComponent>(object.size)
       .AddComponent<ColliderComponent>()
       .AddComponent<ImpulseComponent>()
       .AddComponent<SpriteComponent>(QRect(0, -27, 40, 103),
                                      SpriteLayer::kForeground)
       .AddComponent<BehaviourComponent>(nullptr)
       .AddComponent<AnimationComponent>(anims["main"])
-      .AddComponent<MovementAnimationSyncComponent>(sync_pack);
+      .AddComponent<MovementAnimationSyncComponent>(sync_pack)
+      .AddComponent<PathFollowComponent>(
+          resource::Path(object.position),
+          constants::PathFollowType::kOnce,
+          1);
 }
 
 }  // namespace game

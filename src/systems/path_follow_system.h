@@ -15,7 +15,7 @@ class PathFollowSystem : public ecs::System {
   void Run(ecs::World* world) override;
 
  private:
-  void MoveTowardsGoal(QPoint goal,
+  void MoveTowardsGoal(QPointF goal,
                         float speed,
                         ecs::Entity* entity);
   bool SetNextGoal(PathFollowComponent* pf_component);

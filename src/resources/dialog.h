@@ -10,14 +10,19 @@ namespace resource {
 
 class Dialog {
  public:
-  Dialog(std::vector<QString> parts, std::map<QString, QString> answers);
+  using OptionBag = std::map<QString, QString>;
+
+  Dialog() = default;
+  explicit Dialog(std::vector<QString> parts);
+  Dialog(std::vector<QString> parts, std::map<QString, QString> options);
+
   const QString& GetPart(int index) const;
   const std::vector<QString>& GetParts() const;
-  const std::map<QString, QString>& GetAnswers() const;
+  const std::map<QString, QString>& GetOptions() const;
   int GetStepCount() const;
  private:
   std::vector<QString> parts_;
-  std::map<QString, QString> answers_;
+  std::map<QString, QString> options_;
 };
 
 }  // namespace resource

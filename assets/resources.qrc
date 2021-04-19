@@ -2,6 +2,7 @@
     <qresource>
         <file>guard.json</file>
         <file>guard-sheet.png</file>
+        <file>guard_dialog.json</file>
         <file>BSU_entrance.json</file>
         <file>BSU_entrance.png</file>
         <file>player.json</file>

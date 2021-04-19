@@ -2,9 +2,9 @@
 
 namespace context {
 
-void DialogContext::Show(QPixmap pixmap, QRect area) {
+void DialogContext::Show(const utils::PixRect& rect) {
   container_->show();
-  image_label_->setPixmap(pixmap.copy(area));
+  image_label_->setPixmap(rect.Copy());
 }
 
 void DialogContext::SetText(const QString& message) {
@@ -26,7 +26,7 @@ void DialogContext::Init(QWidget* container) {
   container_->setStyleSheet("background-color: white");
 
   text_label_ = new QLabel(container);
-  text_label_->setMinimumWidth(100);
+  text_label_->setMinimumWidth(500);
   text_label_->move(100, 0);
   text_label_->setStyleSheet("font-size: 25px;");
 

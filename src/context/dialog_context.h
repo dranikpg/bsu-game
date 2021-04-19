@@ -9,6 +9,8 @@
 #include <QWidget>
 #include <QLabel>
 
+#include "../utils/pix_rect.h"
+
 namespace context {
 
 class DialogContext {
@@ -17,7 +19,7 @@ class DialogContext {
   using OptionBag = std::map<QString, QString>;
 
   void Init(QWidget* container);
-  void Show(QPixmap pixmap, QRect area);
+  void Show(const utils::PixRect& pixrect);
   void SetText(const QString& message);
   void SetQuestions(const OptionBag& options, AnswerHandler handler);
   void Hide();

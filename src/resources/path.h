@@ -10,13 +10,16 @@ namespace resource {
 class Path {
  public:
   struct WayPoint {
-    WayPoint(int x, int y, int pause);
-    QPoint point;
+    WayPoint(float x, float y, int pause);
+    QPointF point;
     int pauseFrames = 0;
   };
+  Path() = default;
   explicit Path(std::vector<WayPoint>&& points);
+  explicit Path(QPointF target);
   int Size() const;
   const WayPoint& Point(int idx) const;
+  bool Empty() const;
   void ReversePath();
 
  private:
