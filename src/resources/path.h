@@ -16,7 +16,7 @@ class Path {
   };
   Path() = default;
   explicit Path(std::vector<WayPoint>&& points);
-  explicit Path(QPointF target);
+  explicit Path(QPointF start, QPointF target);
   int Size() const;
   const WayPoint& Point(int idx) const;
   bool Empty() const;

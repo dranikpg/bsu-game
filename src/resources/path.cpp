@@ -20,8 +20,11 @@ void Path::ReversePath() {
 
 Path::Path(std::vector<WayPoint>&& points) : points_(std::move(points)) {}
 
-Path::Path(QPointF target) {
-  points_ = {WayPoint(target.x(), target.y(), 0)};
+Path::Path(QPointF start, QPointF target) {
+  points_ = {
+      WayPoint(start.x(), start.y(), 0),
+      WayPoint(target.x(), target.y(), 0)
+  };
 }
 
 bool Path::Empty() const {

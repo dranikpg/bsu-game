@@ -36,14 +36,16 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
   float player_dist = std::hypotf(player_vector.x(), player_vector.y());
   auto& path = entity->GetComponent<PathFollowComponent>();
   if (player_dist < kRunRadius && state_ != GuardState::kGuarding) {
-    qDebug() << "switching guard to guarding ";
+    float player_time = player_dist / 5.0f;
+    QPointF guard_position = entity->GetComponent<PositionComponent>().position;
+    QPointF guard_vector = main_position_ - guard_position;
+    float guard_dist = std::hypotf(guard_vector.x(), guard_vector.y());
     state_ = GuardState::kGuarding;
     path = PathFollowComponent(
-        resource::Path(main_position_),
+        resource::Path(guard_position, main_position_),
         constants::PathFollowType::kOnce,
-        player_dist / 5.0f * 0.7f);
+        guard_dist / player_time * 1.1f);
   } else if (player_dist > kRunRadius && state_ != GuardState::kWandering) {
-    qDebug() << "switching guard to wandering ";
     state_ = GuardState::kWandering;
     path = PathFollowComponent(
         *guard_path_,

@@ -9,6 +9,8 @@
 using constants::PathFollowState;
 using constants::PathFollowType;
 
+// TODO(shaun) support paths with only one point
+
 namespace game {
 
 void PathFollowSystem::Run(ecs::World* world) {
@@ -70,13 +72,16 @@ void PathFollowSystem::HandleResolvingState(ecs::Entity* entity) {
 }
 
 void PathFollowSystem::MoveTowardsGoal(QPointF goal,
-                                        float speed,
-                                        ecs::Entity* entity) {
-  auto [position_component, impulse_component, pf_component] =
-      entity->Unpack<PositionComponent, ImpulseComponent, PathFollowComponent>();
-  auto position = position_component.position;
+                                       float speed,
+                                       ecs::Entity* entity) {
+  auto[position_component, impulse_component, pf_component] =
+  entity->Unpack<PositionComponent, ImpulseComponent, PathFollowComponent>();
+  QPointF position = position_component.position;
   auto& shift = impulse_component.shift;
-  if (position == goal) {
+  const float precision = 4;
+  if ((abs(position.x() - goal.x()) < precision) &&
+      (abs(position.y() - goal.y()) < precision)) {
+    position = goal;
     pf_component.state = PathFollowState::kResolvingMoving;
   }
 
@@ -84,21 +89,10 @@ void PathFollowSystem::MoveTowardsGoal(QPointF goal,
   direction.normalize();
 
   QVector2D shift_vec(direction * speed);
-  QVector2D goal_to_pos(QVector2D(goal) - (QVector2D(position) + shift_vec));
 
-  // i use (shift =) not (shift +=) cause object that use PathFollowing
-  // cannot have another shift modifier
-  if (abs(QVector2D::dotProduct(direction, goal_to_pos)) < 0.1f) {
-    shift = goal - position;
-  } else {
-    shift = QPoint(ceil(shift_vec.x()),
-                   ceil(shift_vec.y()));
-    QPointF next_position = position + shift;
-    if ((abs((goal-next_position).x()) <= 1) &&
-        (abs((goal-next_position).y()) <= 1)) {
-      shift = goal - position;
-    }
-  }
+  // TODO(shaun) big speed
+
+  shift = {shift_vec.x(), shift_vec.y()};
 }
 
 bool PathFollowSystem::SetNextGoal(

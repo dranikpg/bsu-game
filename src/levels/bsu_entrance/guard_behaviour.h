@@ -41,8 +41,8 @@ class GuardBehaviour : public resource::Behaviour {
   utils::PixRect guard_icon_;
   resource::Dialog dialog_;
 
-  const float kGuardWanderSpeed = 6;
-  const float kRunRadius = 200;
+  const float kGuardWanderSpeed = 3;
+  const float kRunRadius = 150;
   const float kSpeakRadius = 100;
 };
 

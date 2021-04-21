@@ -52,7 +52,6 @@ void BsuEntranceLevel::CreateObject(map::MapLayer layer,
 void BsuEntranceLevel::CreatePath(resource::Path path,
                                          const QString& name) {
   if (name == "guard_path") {
-    qDebug() << "guard path set";
     guard_path_ = std::make_shared<resource::Path>(std::move(path));
   }
 }
@@ -75,7 +74,7 @@ void BsuEntranceLevel::CreateGuard(ecs::World* world, const map::MapObject& obje
       .AddComponent<AnimationComponent>(anims["main"])
       .AddComponent<MovementAnimationSyncComponent>(sync_pack)
       .AddComponent<PathFollowComponent>(
-          resource::Path(object.position),
+          resource::Path(object.position, object.position),
           constants::PathFollowType::kOnce,
           1);
 }

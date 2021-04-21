@@ -51,7 +51,7 @@ ecs::Entity& resource::Level::CreatePlayer(ecs::World* world, const map::MapObje
       .AddComponent<game::AnimationComponent>(anims["main"])
       .AddComponent<game::MovementAnimationSyncComponent>(sync_pack)
       .AddComponent<game::ImpulseComponent>()
-      .AddComponent<game::CameraComponent>(1.25);
+      .AddComponent<game::CameraComponent>(1);
 
   return player;
 }
