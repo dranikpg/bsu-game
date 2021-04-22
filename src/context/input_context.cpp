@@ -4,12 +4,15 @@
 
 namespace context {
 
+std::set<constants::Keys> InputContext::kEmptySet = {};
+
 void InputContext::AddKey(Qt::Key key) {
   auto mapped_key = MapKey(key);
   if (mapped_key) {
     keys_.insert(*mapped_key);
     frame_keys_.insert(*mapped_key);
   }
+  blocked_input_ = false;
 }
 
 void InputContext::RemoveKey(Qt::Key key) {
@@ -20,10 +23,16 @@ void InputContext::RemoveKey(Qt::Key key) {
 }
 
 const std::set<constants::Keys>& InputContext::GetKeys() const {
+  if (blocked_input_) {
+    return kEmptySet;
+  }
   return keys_;
 }
 
 std::set<constants::Keys>& InputContext::GetFrameKeys() {
+  if (blocked_input_) {
+    return kEmptySet;
+  }
   return frame_keys_;
 }
 
@@ -47,6 +56,10 @@ std::optional<Keys> InputContext::MapKey(Qt::Key key) {
     default:
       return std::nullopt;
   }
+}
+
+void InputContext::BlockInput() {
+  blocked_input_ = true;
 }
 
 }  // namespace context

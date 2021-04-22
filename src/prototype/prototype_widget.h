@@ -12,6 +12,7 @@
 #include "../context/input_context.h"
 #include "../context/level_context.h"
 #include "../context/dialog_context.h"
+#include "../context/mini_game_context.h"
 
 #include "../map/map_instantiator.h"
 
@@ -32,9 +33,11 @@ class PrototypeWidget : public QWidget {
   context::PainterContext painter_context_;
   context::WindowContext window_context_;
   context::DialogContext dialog_context_;
+  context::MiniGameContext mini_game_context_;
 
   // UI
   QWidget dialog_box_;
+  QWidget mini_game_box_;
 };
 
 #endif  // SRC_PROTOTYPE_PROTOTYPE_WIDGET_H_

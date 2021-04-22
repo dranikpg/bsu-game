@@ -9,21 +9,26 @@
 #include "../ecs/system.h"
 #include "../resources/level.h"
 #include "../context/level_context.h"
+#include "../context/mini_game_context.h"
+#include "../context/input_context.h"
 
 namespace game {
 
 class LevelSystem : public ecs::System {
  public:
-  explicit LevelSystem(context::LevelContext* context);
+  LevelSystem(context::LevelContext* level_context,
+              context::MiniGameContext* mini_game_context,
+              context::InputContext* input_context);
 
- private:
   using LevelRef = context::LevelContext::LevelRef;
 
   void Run(ecs::World* world) override;
   void LoadLevel(LevelRef level);
 
  private:
-  context::LevelContext* context_ = nullptr;
+  context::LevelContext* level_context_ = nullptr;
+  context::MiniGameContext* mini_game_context_ = nullptr;
+  context::InputContext* input_context_ = nullptr;
   LevelRef loading_level_ = nullptr;
   LevelRef level_ = nullptr;
 };

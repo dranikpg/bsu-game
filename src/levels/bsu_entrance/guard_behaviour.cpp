@@ -35,7 +35,7 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
       main_position_ - player_->GetComponent<PositionComponent>().position;
   float player_dist = std::hypotf(player_vector.x(), player_vector.y());
   auto& path = entity->GetComponent<PathFollowComponent>();
-  if (player_dist < kRunRadius && state_ != GuardState::kGuarding) {
+  if (player_dist < kRunRadius && state_ == GuardState::kWandering) {
     float player_time = player_dist / 5.0f;
     QPointF guard_position = entity->GetComponent<PositionComponent>().position;
     QPointF guard_vector = main_position_ - guard_position;
@@ -45,7 +45,7 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
         resource::Path(guard_position, main_position_),
         constants::PathFollowType::kOnce,
         guard_dist / player_time * 1.1f);
-  } else if (player_dist > kRunRadius && state_ != GuardState::kWandering) {
+  } else if (player_dist > kRunRadius && state_ == GuardState::kGuarding) {
     state_ = GuardState::kWandering;
     path = PathFollowComponent(
         *guard_path_,
@@ -53,7 +53,7 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
         kGuardWanderSpeed);
   }
 
-  if (player_dist < kSpeakRadius) {
+  if (state_ != GuardState::kSpoken && player_dist < kSpeakRadius) {
     ShowDialog(entity);
   } else {
     if (entity->HasComponent<DialogComponent>()) {
@@ -66,10 +66,14 @@ void GuardBehaviour::ShowDialog(ecs::Entity* entity) {
   auto ds = std::make_shared<resource::Dialog>(dialog_);
   if (!entity->HasComponent<DialogComponent>()) {
     entity->AddComponent<DialogComponent>(ds,
-                                          [](std::optional<QString>) {
-                                            qDebug() << "finished";
-                                          }, guard_icon_);
+                                          [this](const std::optional<QString>&) {
+                                            state_ = GuardState::kSpoken;
+                                          },
+                                          guard_icon_);
   }
+}
+bool GuardBehaviour::DidSpeak() const {
+  return state_ == GuardState::kSpoken;
 }
 
 }  // namespace game

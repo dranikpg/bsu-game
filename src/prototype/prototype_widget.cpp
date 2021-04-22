@@ -33,15 +33,14 @@
 #include "../utils/parser/ase_animation_parser.h"
 #include "../map/map_loader.h"
 
-#include "../levels/example/example_level.h"
 #include "../levels/bsu_entrance/bsu_entrance_level.h"
 
 PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;
-  systems.emplace_back(std::make_unique<game::LevelSystem>(&level_context_));
   systems.emplace_back(
-      std::make_unique<game::RenderingSystem>(&painter_context_,
-                                              &window_context_));
+      std::make_unique<game::LevelSystem>(&level_context_, &mini_game_context_, &input_context_));
+  systems.emplace_back(
+      std::make_unique<game::RenderingSystem>(&painter_context_, &window_context_));
   systems.emplace_back(std::make_unique<game::AnimationSystem>());
   systems.emplace_back(std::make_unique<game::InputMovementSystem>(&input_context_));
   systems.emplace_back(std::make_unique<game::MovementAnimationSyncSystem>());
@@ -56,8 +55,10 @@ PrototypeWidget::PrototypeWidget() {
   // init ui
   dialog_box_.setParent(this);
   dialog_context_.Init(&dialog_box_);
+  mini_game_box_.setParent(this);
+  mini_game_context_.Init(&mini_game_box_);
 
-  // Load example level
+  // Load first level
   level_context_.Load<game::BsuEntranceLevel>();
 
   connect(&timer_, &QTimer::timeout, [this]() {
@@ -89,5 +90,6 @@ void PrototypeWidget::keyReleaseEvent(QKeyEvent* event) {
 void PrototypeWidget::resizeEvent(QResizeEvent* event) {
   dialog_box_.resize(width(), 100);
   dialog_box_.move(0, height() - 100);
+  mini_game_box_.resize(width(), height());
 }
 

@@ -22,6 +22,7 @@ class GuardBehaviour : public resource::Behaviour {
                  const QPointF& main_position);
 
   void Process(ecs::Entity* entity) override;
+  bool DidSpeak() const;
 
  private:
   void ShowDialog(ecs::Entity* entity);
@@ -30,7 +31,8 @@ class GuardBehaviour : public resource::Behaviour {
   enum class GuardState {
     kNone,
     kGuarding,
-    kWandering
+    kWandering,
+    kSpoken
   };
 
   ecs::Entity* player_ = nullptr;
