@@ -7,7 +7,7 @@
 
 #include <QPainter>
 #include <QTimer>
-#include <QDebug>
+#include <QPushButton>
 
 #include "../systems/rendering_system.h"
 #include "../systems/animation_system.h"

@@ -5,7 +5,6 @@
 #include <utility>
 
 #include <QString>
-#include <QDebug>
 
 #include "../components/dialog_component.h"
 #include "../constants/keys.h"

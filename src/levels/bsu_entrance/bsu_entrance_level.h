@@ -25,6 +25,7 @@ class BsuEntranceLevel : public resource::Level {
  private:
   void CreateGuard(ecs::World* world, const map::MapObject& object);
   void StartMiniGame(ContextBag contexts);
+  QPointF ProjectPlayerPos(ecs::World* world, ContextBag contexts);
 
  private:
   enum class State {

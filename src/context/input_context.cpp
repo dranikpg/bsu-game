@@ -1,7 +1,5 @@
 #include "input_context.h"
 
-#include <QDebug>
-
 namespace context {
 
 std::set<constants::Keys> InputContext::kEmptySet = {};

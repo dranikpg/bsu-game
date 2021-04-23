@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="left-up" width="30" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="197">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="left-up" width="30" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="198">
  <editorsettings>
   <export target="../assets/BSU_entrance.json" format="json"/>
  </editorsettings>
@@ -7,8 +7,8 @@
   <image source="../assets/BSU_entrance.png" width="720" height="512"/>
  </imagelayer>
  <objectgroup id="5" name="path">
-  <object id="196" name="guard_path" x="313.143" y="219.788">
-   <polygon points="0,0 84.534,66.157 44.8398,95.5601"/>
+  <object id="197" name="guard_path" x="310.533" y="224.604">
+   <polygon points="0,0 122.051,0.339041 46.1824,65.5593 -61.6307,65.5593 -153.471,13.6493"/>
   </object>
  </objectgroup>
  <objectgroup id="3" name="collision">

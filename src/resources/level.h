@@ -33,6 +33,8 @@ class Level : public map::MapInstantiator {
   ecs::Entity& CreatePlayer(ecs::World* world, const map::MapObject& position);
   void CreateMap(ecs::World* world, const QString& path);
   void CreateCollider(ecs::World* world, const map::MapObject& map_object);
+
+  QPointF ProjectToScreen(ecs::World*, ContextBag, QPointF point);
 };
 
 }  // namespace resource

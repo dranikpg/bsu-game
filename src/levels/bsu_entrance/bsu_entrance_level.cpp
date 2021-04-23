@@ -1,6 +1,7 @@
 #include "bsu_entrance_level.h"
 
 #include "../../components/components.h"
+#include "../../components/camera_component.h"
 #include "../../utils/parser/ase_animation_parser.h"
 #include "../../map/map_loader.h"
 #include "../../levels/bsu_entrance/guard_behaviour.h"
@@ -32,12 +33,11 @@ void BsuEntranceLevel::Load(ecs::World* world) {
 void BsuEntranceLevel::Process(ecs::World* world, ContextBag contexts) {
   if (state_ == State::kNone && guard_behaviour_->DidSpeak()) {
     StartMiniGame(contexts);
-  }
-  if (state_ == State::kMiniGame) {
+  } else if (state_ == State::kMiniGame) {
     contexts.input_context->BlockInput();
-    mini_game_->Process();
-  }
-  if (state_ == State::kFinished) {
+    mini_game_->Process(
+        ProjectPlayerPos(world, contexts));
+  } else if (state_ == State::kFinished) {
     contexts.mini_game_context->Stop();
     contexts.level_context->Load<BsuEntranceLevel>();
   }
@@ -72,7 +72,7 @@ void BsuEntranceLevel::StartMiniGame(ContextBag contexts) {
   contexts.mini_game_context->Start();
   mini_game_ = std::make_shared<GuardMiniGame>([this]() {
     state_ = State::kFinished;
-  });
+  }, contexts.mini_game_context->GetContainer());
   state_ = State::kMiniGame;
 }
 
@@ -97,6 +97,12 @@ void BsuEntranceLevel::CreateGuard(ecs::World* world, const map::MapObject& obje
           resource::Path(object.position, object.position),
           constants::PathFollowType::kOnce,
           1);
+}
+
+QPointF BsuEntranceLevel::ProjectPlayerPos(ecs::World* world, ContextBag contexts) {
+  QPointF point = player_->GetComponent<PositionComponent>().position;
+  point.ry() -= player_->GetComponent<BoundsComponent>().bounds.y() * 2;
+  return ProjectToScreen(world, contexts, point);
 }
 
 }  // namespace game

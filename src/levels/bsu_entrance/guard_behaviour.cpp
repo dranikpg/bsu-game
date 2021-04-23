@@ -6,10 +6,8 @@
 #include <memory>
 
 #include <QString>
-#include <QDebug>
 
 #include "../../constants/path_follow.h"
-#include "../../resources/path.h"
 #include "../../components/dialog_component.h"
 #include "../../components/position_component.h"
 #include "../../components/path_follow_component.h"
@@ -45,7 +43,8 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
         resource::Path(guard_position, main_position_),
         constants::PathFollowType::kOnce,
         guard_dist / player_time * 1.1f);
-  } else if (player_dist > kRunRadius && state_ == GuardState::kGuarding) {
+  } else if (player_dist > kRunRadius
+              && (state_ == GuardState::kGuarding || state_ == GuardState::kNone)) {
     state_ = GuardState::kWandering;
     path = PathFollowComponent(
         *guard_path_,

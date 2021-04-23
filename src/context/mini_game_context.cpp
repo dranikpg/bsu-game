@@ -1,7 +1,3 @@
-//
-// Created by Vladislav Oleshko on 22.04.21.
-//
-
 #include "mini_game_context.h"
 
 namespace context {

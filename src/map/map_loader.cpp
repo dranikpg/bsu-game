@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include <QDebug>
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -75,11 +74,11 @@ MapObject MapLoader::ParseMapObject(const QJsonObject& obj) {
   return map_obj;
 }
 
-std::pair<QPoint, QString> MapLoader::ParsePoint(const QJsonObject& obj) {
+std::pair<QPointF, QString> MapLoader::ParsePoint(const QJsonObject& obj) {
   float x = obj.value("x").toDouble();
   float y = obj.value("y").toDouble();
   QString name = obj.value("name").toString();
-  return {QPoint(x, y), std::move(name)};
+  return {QPointF(x, y), std::move(name)};
 }
 
 
@@ -89,9 +88,10 @@ std::pair<resource::Path, QString> MapLoader::ParsePath(const QJsonObject& obj) 
   std::vector<Path::WayPoint> points;
   for (const auto& ref: obj.value("polygon").toArray()) {
     const auto point_obj = ref.toObject();
-    int x = static_cast<int>(point_obj.value("x").toDouble());
-    int y = static_cast<int>(point_obj.value("y").toDouble());
-    points.emplace_back(x + pos.x(), y + pos.y(), 0);
+    float x = point_obj.value("x").toDouble();
+    float y = point_obj.value("y").toDouble();
+    int duration = point_obj.value("wait").toInt(0);
+    points.emplace_back(x + pos.x(), y + pos.y(), duration);
   }
   return {Path(std::move(points)), std::move(name)};
 }
