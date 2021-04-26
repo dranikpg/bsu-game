@@ -48,7 +48,7 @@ set(SOURCES
         src/context/dialog_context.cpp
         src/systems/dialog_system.cpp
         src/components/dialog_component.cpp
-        src/utils/pix_rect.cpp
+        src/utils/pixmap_rect.cpp
         src/utils/parser/dialog_parser.cpp
         src/utils/exceptions/invalid_path_exception.cpp
         src/utils/exceptions/json_format_exception.cpp

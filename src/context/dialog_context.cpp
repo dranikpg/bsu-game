@@ -2,7 +2,7 @@
 
 namespace context {
 
-void DialogContext::Show(const utils::PixRect& rect) {
+void DialogContext::Show(const utils::PixmapRect& rect) {
   container_->show();
   image_label_->setPixmap(rect.Copy());
 }

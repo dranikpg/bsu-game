@@ -5,22 +5,22 @@
 
 #include "../ecs/component.h"
 #include "../resources/dialog.h"
-#include "../utils/pix_rect.h"
+#include "../utils/pixmap_rect.h"
 
 namespace game {
 
 struct DialogComponent : public ecs::Component {
   using FinishHandler = std::function<void(std::optional<QString> opt)>;
 
-  DialogComponent(const std::shared_ptr<resource::Dialog>& dialog,
+  DialogComponent(std::shared_ptr<resource::Dialog>  dialog,
                   FinishHandler finish_handler,
-                  utils::PixRect rect);
+                  const utils::PixmapRect& rect);
 
-  DialogComponent(const std::shared_ptr<resource::Dialog>& dialog,
+  DialogComponent(std::shared_ptr<resource::Dialog>  dialog,
                   FinishHandler finish_handler);
   void Finish();
 
-  utils::PixRect icon;
+  utils::PixmapRect icon;
   std::shared_ptr<resource::Dialog> dialog;
   FinishHandler finish_handler;
   int current_step;

@@ -20,6 +20,9 @@ class RenderingSystem : public System {
   void Run(World* world) override;
 
  private:
+  static bool EntityYSort(const ecs::Entity* l, const ecs::Entity* r);
+
+ private:
   PainterContext* painter_context_;
   WindowContext* window_context_;
 };

@@ -1,5 +1,7 @@
 #include "guard_mini_game.h"
 
+#include <utility>
+
 #include <QWidget>
 #include <QPainter>
 #include <QResizeEvent>
@@ -15,9 +17,9 @@ void game::GuardMiniGame::Process(QPointF player_pos) {
   }
 }
 
-game::GuardMiniGame::GuardMiniGame(const game::GuardMiniGame::Callback& callback,
+game::GuardMiniGame::GuardMiniGame(game::GuardMiniGame::Callback callback,
                                    QWidget* container)
-    : callback_(callback) {
+    : callback_(std::move(callback)) {
   nimbus_ = new NimbusDrawer();
   nimbus_->setParent(container);
   nimbus_->resize(container->size());

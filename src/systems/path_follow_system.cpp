@@ -78,9 +78,8 @@ void PathFollowSystem::MoveTowardsGoal(QPointF goal,
   entity->Unpack<PositionComponent, ImpulseComponent, PathFollowComponent>();
   QPointF position = position_component.position;
   auto& shift = impulse_component.shift;
-  const float precision = 4;
-  if ((abs(position.x() - goal.x()) < precision) &&
-      (abs(position.y() - goal.y()) < precision)) {
+  if ((abs(position.x() - goal.x()) < kPrecision) &&
+      (abs(position.y() - goal.y()) < kPrecision)) {
     position = goal;
     pf_component.state = PathFollowState::kResolvingMoving;
   }

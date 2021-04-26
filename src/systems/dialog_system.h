@@ -13,9 +13,11 @@ class DialogSystem : public ecs::System {
   DialogSystem(context::InputContext* input_context,
                context::DialogContext* dialog_context);
   void Run(ecs::World* world) override;
+
  private:
   void NextStep(DialogComponent* dialog);
   void OptionCallback(QString id);
+
  private:
   context::InputContext* input_context_;
   context::DialogContext* dialog_context_;

@@ -23,7 +23,7 @@ GuardBehaviour::GuardBehaviour(ecs::Entity* player,
       main_position_(main_position) {
 
   QPixmap guard_sheet(":/guard-sheet.png");
-  guard_icon_ = utils::PixRect(guard_sheet, QRect(0, 0, 64, 64));
+  guard_icon_ = utils::PixmapRect(guard_sheet, QRect(0, 0, 64, 64));
 
   dialog_ = utils::DialogParser::Parse(QFile(":/guard_dialog.json"));
 }
@@ -33,16 +33,14 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
       main_position_ - player_->GetComponent<PositionComponent>().position;
   float player_dist = std::hypotf(player_vector.x(), player_vector.y());
   auto& path = entity->GetComponent<PathFollowComponent>();
+
   if (player_dist < kRunRadius && state_ == GuardState::kWandering) {
-    float player_time = player_dist / 5.0f;
     QPointF guard_position = entity->GetComponent<PositionComponent>().position;
-    QPointF guard_vector = main_position_ - guard_position;
-    float guard_dist = std::hypotf(guard_vector.x(), guard_vector.y());
     state_ = GuardState::kGuarding;
     path = PathFollowComponent(
         resource::Path(guard_position, main_position_),
         constants::PathFollowType::kOnce,
-        guard_dist / player_time * 1.1f);
+        CalculateSpeed(player_dist, guard_position));
   } else if (player_dist > kRunRadius
               && (state_ == GuardState::kGuarding || state_ == GuardState::kNone)) {
     state_ = GuardState::kWandering;
@@ -52,7 +50,7 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
         kGuardWanderSpeed);
   }
 
-  if (state_ != GuardState::kSpoken && player_dist < kSpeakRadius) {
+  if (state_ != GuardState::kDialogFinished && player_dist < kSpeakRadius) {
     ShowDialog(entity);
   } else {
     if (entity->HasComponent<DialogComponent>()) {
@@ -66,13 +64,20 @@ void GuardBehaviour::ShowDialog(ecs::Entity* entity) {
   if (!entity->HasComponent<DialogComponent>()) {
     entity->AddComponent<DialogComponent>(ds,
                                           [this](const std::optional<QString>&) {
-                                            state_ = GuardState::kSpoken;
+                                            state_ = GuardState::kDialogFinished;
                                           },
                                           guard_icon_);
   }
 }
-bool GuardBehaviour::DidSpeak() const {
-  return state_ == GuardState::kSpoken;
+bool GuardBehaviour::IsDialogFinished() const {
+  return state_ == GuardState::kDialogFinished;
+}
+
+float GuardBehaviour::CalculateSpeed(float player_dist, QPointF guard_position) {
+  QPointF guard_vector = main_position_ - guard_position;
+  float guard_dist = std::hypotf(guard_vector.x(), guard_vector.y());
+  float player_time = player_dist / 5.0f;
+  return guard_dist / player_time * 1.1f;
 }
 
 }  // namespace game

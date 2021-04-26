@@ -22,7 +22,6 @@ void DialogSystem::Run(ecs::World* world) {
 
   ecs::Entity* dialog_entity = world->ScanEntities<DialogComponent>().Peek();
 
-  bool fresh_dialog = false;
   if (dialog_entity == nullptr) {
     dialog_context_->Hide();
     last_dialog_ = dialog_entity;
@@ -31,13 +30,14 @@ void DialogSystem::Run(ecs::World* world) {
 
   auto& dialog = dialog_entity->GetComponent<DialogComponent>();
 
+  bool is_fresh_dialog = false;
   if (dialog_entity != last_dialog_) {
     dialog_context_->Show(dialog.icon);
-    fresh_dialog = true;
+    is_fresh_dialog = true;
   }
 
   if (input_context_->GetFrameKeys().count(constants::Keys::kEnter)
-      || fresh_dialog) {
+      || is_fresh_dialog) {
     NextStep(&dialog);
   }
 
@@ -62,8 +62,7 @@ void DialogSystem::NextStep(DialogComponent* dialog) {
                                       OptionCallback(std::move(id));
                                     });
     } else if (dialog->current_step == dialog->dialog->GetStepCount()) {
-      std::optional<QString> chosen = std::nullopt;
-      dialog->finish_handler(chosen);
+      dialog->finish_handler(std::nullopt);
     }
   } else {
     dialog_context_->SetText(dialog->dialog->GetPart(dialog->current_step));
@@ -76,7 +75,7 @@ void DialogSystem::OptionCallback(QString id) {
     dialog.finish_handler(id);
     dialog.current_step++;
   } else {
-    // howd that happen??
+    throw std::runtime_error("Invalid callback state");
   }
 }
 

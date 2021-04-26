@@ -15,15 +15,16 @@ class GuardMiniGame : public resource::MiniGame {
     void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void SetPlayerPos(const QPointF& player_pos);
+
    private:
     QPointF player_pos_;
   };
 
-
  public:
   using Callback = std::function<void()>;
-  explicit GuardMiniGame(const Callback& callback, QWidget* container);
+  explicit GuardMiniGame(Callback callback, QWidget* container);
   void Process(QPointF player_pos);
+
  private:
   int timer_ = 0;
   NimbusDrawer* nimbus_;

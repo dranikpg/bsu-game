@@ -23,9 +23,9 @@ void resource::Level::CreateCollider(ecs::World* world,
 
 void resource::Level::CreateMap(ecs::World* world, const QString& path) {
   QPixmap background(path);
-  world->CreateEntity().AddComponent<game::PositionComponent>(QPoint(
+  world->CreateEntity().AddComponent<game::PositionComponent>(
           background.width() / 2,
-          background.height() / 2))
+          background.height() / 2)
       .AddComponent<game::SpriteComponent>(background,
                                            SpriteLayer::kBackground);
 }
@@ -66,11 +66,9 @@ QPointF Level::ProjectToScreen(ecs::World* world,
   auto[camera, camera_pos] = camera_entity->Unpack<game::CameraComponent,
                                                    game::PositionComponent>();
   point -= camera_pos.position;
-  point *= 1.0 / camera.scale;
+  point /= camera.scale;
   QSize window_size = contexts.mini_game_context->GetContainer()->size();
-  point.rx() += window_size.width() / 2;
-  point.ry() += window_size.height() / 2;
-  return point;
+  return point + QPointF(window_size.width() / 2, window_size.height() / 2);
 }
 
 }  // namespace resource

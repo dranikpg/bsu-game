@@ -11,6 +11,7 @@ class MiniGameContext {
   void Start();
   void Stop();
   QWidget* GetContainer() const;
+
  private:
   bool active_;
   QWidget* container_;

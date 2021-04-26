@@ -14,15 +14,16 @@ class Dialog {
 
   Dialog() = default;
   explicit Dialog(std::vector<QString> parts);
-  Dialog(std::vector<QString> parts, std::map<QString, QString> options);
+  Dialog(std::vector<QString> parts, OptionBag options);
 
   const QString& GetPart(int index) const;
   const std::vector<QString>& GetParts() const;
-  const std::map<QString, QString>& GetOptions() const;
+  const OptionBag& GetOptions() const;
   int GetStepCount() const;
+
  private:
   std::vector<QString> parts_;
-  std::map<QString, QString> options_;
+  OptionBag options_;
 };
 
 }  // namespace resource

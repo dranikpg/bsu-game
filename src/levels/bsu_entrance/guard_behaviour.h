@@ -9,7 +9,7 @@
 #include "../../resources/path.h"
 #include "../../resources/dialog.h"
 #include "../../components/behaviour_component.h"
-#include "../../utils/pix_rect.h"
+#include "../../utils/pixmap_rect.h"
 
 
 namespace game {
@@ -18,21 +18,22 @@ class GuardBehaviour : public resource::Behaviour {
  public:
   GuardBehaviour() = default;
   GuardBehaviour(ecs::Entity* player,
-                 std::shared_ptr<resource::Path>  guard_path,
+                 std::shared_ptr<resource::Path> guard_path,
                  const QPointF& main_position);
 
   void Process(ecs::Entity* entity) override;
-  bool DidSpeak() const;
+  bool IsDialogFinished() const;
 
  private:
   void ShowDialog(ecs::Entity* entity);
+  float CalculateSpeed(float player_dist, QPointF guard_position);
 
  private:
   enum class GuardState {
     kNone,
     kGuarding,
     kWandering,
-    kSpoken
+    kDialogFinished
   };
 
   ecs::Entity* player_ = nullptr;
@@ -40,7 +41,7 @@ class GuardBehaviour : public resource::Behaviour {
   QPointF main_position_;
   GuardState state_ = GuardState::kNone;
 
-  utils::PixRect guard_icon_;
+  utils::PixmapRect guard_icon_;
   resource::Dialog dialog_;
 
   const float kGuardWanderSpeed = 3;

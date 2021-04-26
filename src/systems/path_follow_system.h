@@ -22,6 +22,9 @@ class PathFollowSystem : public ecs::System {
   void WaitOneTerm(PathFollowComponent* pf_component);
   void HandleState(ecs::Entity* entity);
   void HandleResolvingState(ecs::Entity* entity);
+
+ private:
+  const float kPrecision = 4;
 };
 
 }  // namespace game

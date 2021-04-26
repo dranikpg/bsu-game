@@ -29,11 +29,9 @@ void RenderingSystem::Run(World* world) {
     auto[camera, camera_pos] = camera_entity->Unpack<CameraComponent, PositionComponent>();
     float scale = camera.scale;
     painter.scale(scale, scale);
-    painter.translate(
-        -camera_pos.position.x()
-            + 1 / scale * window_context_->GetSize().width() / 2,
-        -camera_pos.position.y()
-            + 1 / scale * window_context_->GetSize().height() / 2);
+    painter.translate(-camera_pos.position);
+    painter.translate(window_context_->GetSize().width() / scale / 2,
+                      window_context_->GetSize().height() / scale / 2);
   }
 
   std::vector<ecs::Entity*> current_layer;
@@ -47,11 +45,7 @@ void RenderingSystem::Run(World* world) {
         current_layer.push_back(&entity);
       }
     }
-    std::sort(current_layer.begin(), current_layer.end(),
-              [](const ecs::Entity* l, const ecs::Entity* r) {
-                return l->GetComponent<PositionComponent>().position.y() <
-                    r->GetComponent<PositionComponent>().position.y();
-              });
+    std::sort(current_layer.begin(), current_layer.end(), EntityYSort);
     for (auto& entity: current_layer) {
       auto[sprite, position] = entity->Unpack<SpriteComponent,
                                               PositionComponent>();
@@ -64,6 +58,11 @@ void RenderingSystem::Run(World* world) {
   }
 
   painter.restore();
+}
+
+bool RenderingSystem::EntityYSort(const ecs::Entity* l, const ecs::Entity* r) {
+  return l->GetComponent<PositionComponent>().position.y() <
+      r->GetComponent<PositionComponent>().position.y();
 }
 
 }  // namespace game
