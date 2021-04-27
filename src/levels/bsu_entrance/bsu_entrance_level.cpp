@@ -24,8 +24,7 @@ void BsuEntranceLevel::Load(ecs::World* world) {
   world_ = world;
   map::MapLoader::Load(QFile(":/BSU_entrance.json"), this);
 
-  guard_behaviour_ =
-      std::make_shared<GuardBehaviour>(player_, guard_path_, guard_pos_);
+  guard_behaviour_ = std::make_shared<GuardBehaviour>(player_, guard_path_, guard_pos_);
   guard_->GetComponent<BehaviourComponent>().behaviour = guard_behaviour_;
 }
 
@@ -45,8 +44,7 @@ void BsuEntranceLevel::CreateMap(const QString& path) {
   resource::Level::CreateMap(world_, path);
 }
 
-void BsuEntranceLevel::CreateObject(map::MapLayer layer,
-                                    const map::MapObject& object) {
+void BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapObject& object) {
   if (layer == map::MapLayer::kCollision) {
     CreateCollider(world_, object);
     return;
@@ -59,8 +57,7 @@ void BsuEntranceLevel::CreateObject(map::MapLayer layer,
   }
 }
 
-void BsuEntranceLevel::CreatePath(resource::Path path,
-                                  const QString& name) {
+void BsuEntranceLevel::CreatePath(resource::Path path, const QString& name) {
   if (name == "guard_path") {
     guard_path_ = std::make_shared<resource::Path>(std::move(path));
   }

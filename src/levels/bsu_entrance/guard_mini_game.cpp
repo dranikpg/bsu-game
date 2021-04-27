@@ -17,8 +17,7 @@ void game::GuardMiniGame::Process(QPointF player_pos) {
   }
 }
 
-game::GuardMiniGame::GuardMiniGame(game::GuardMiniGame::Callback callback,
-                                   QWidget* container)
+game::GuardMiniGame::GuardMiniGame(game::GuardMiniGame::Callback callback, QWidget* container)
     : callback_(std::move(callback)) {
   nimbus_ = new NimbusDrawer();
   nimbus_->setParent(container);
