@@ -15,13 +15,16 @@ class PathFollowSystem : public ecs::System {
   void Run(ecs::World* world) override;
 
  private:
-  void MoveTowardsGoal(QPoint goal,
+  void MoveTowardsGoal(QPointF goal,
                         float speed,
                         ecs::Entity* entity);
   bool SetNextGoal(PathFollowComponent* pf_component);
   void WaitOneTerm(PathFollowComponent* pf_component);
   void HandleState(ecs::Entity* entity);
   void HandleResolvingState(ecs::Entity* entity);
+
+ private:
+  const float kPrecision = 4;
 };
 
 }  // namespace game

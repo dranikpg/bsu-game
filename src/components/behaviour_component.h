@@ -10,7 +10,6 @@ namespace game {
 
 struct BehaviourComponent : public ecs::Component {
   explicit BehaviourComponent(std::shared_ptr<resource::Behaviour> behaviour_resource);
-  void SetBehaviourResource(std::shared_ptr<resource::Behaviour> behaviour_resource);
 
   std::shared_ptr<resource::Behaviour> behaviour;
 };

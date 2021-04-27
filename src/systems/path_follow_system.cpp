@@ -9,6 +9,8 @@
 using constants::PathFollowState;
 using constants::PathFollowType;
 
+// TODO(shaun) support paths with only one point
+
 namespace game {
 
 void PathFollowSystem::Run(ecs::World* world) {
@@ -17,6 +19,10 @@ void PathFollowSystem::Run(ecs::World* world) {
       PositionComponent,
       ImpulseComponent>()) {
     auto& pf_component = entity.GetComponent<PathFollowComponent>();
+    // FIX: better empty path handling?
+    if (pf_component.path.Empty()) {
+      continue;
+    }
     HandleState(&entity);
     while (pf_component.state == PathFollowState::kResolvingWaiting ||
         pf_component.state == PathFollowState::kResolvingMoving) {
@@ -34,7 +40,7 @@ void PathFollowSystem::HandleState(ecs::Entity* entity) {
       break;
     }
     case PathFollowState::kMoving: {
-      QPoint goal = pf_component.path.
+      QPointF goal = pf_component.path.
           Point(pf_component.current_waypoint).point;
       float speed = pf_component.speed;
       MoveTowardsGoal(goal, speed, entity);
@@ -65,14 +71,16 @@ void PathFollowSystem::HandleResolvingState(ecs::Entity* entity) {
   }
 }
 
-void PathFollowSystem::MoveTowardsGoal(QPoint goal,
-                                        float speed,
-                                        ecs::Entity* entity) {
-  auto [position_component, impulse_component, pf_component] = entity->Unpack<
-      PositionComponent, ImpulseComponent, PathFollowComponent>();
-  auto position = position_component.position;
+void PathFollowSystem::MoveTowardsGoal(QPointF goal,
+                                       float speed,
+                                       ecs::Entity* entity) {
+  auto[position_component, impulse_component, pf_component] =
+  entity->Unpack<PositionComponent, ImpulseComponent, PathFollowComponent>();
+  QPointF position = position_component.position;
   auto& shift = impulse_component.shift;
-  if (position == goal) {
+  if ((abs(position.x() - goal.x()) < kPrecision) &&
+      (abs(position.y() - goal.y()) < kPrecision)) {
+    position = goal;
     pf_component.state = PathFollowState::kResolvingMoving;
   }
 
@@ -80,21 +88,10 @@ void PathFollowSystem::MoveTowardsGoal(QPoint goal,
   direction.normalize();
 
   QVector2D shift_vec(direction * speed);
-  QVector2D goal_to_pos(QVector2D(goal) - (QVector2D(position) + shift_vec));
 
-  // i use (shift =) not (shift +=) cause object that use PathFollowing
-  // cannot have another shift modifier
-  if (abs(QVector2D::dotProduct(direction, goal_to_pos)) < 0.1f) {
-    shift = goal - position;
-  } else {
-    shift = QPoint(ceil(shift_vec.x()),
-                   ceil(shift_vec.y()));
-    QPoint next_position = position + shift;
-    if ((abs((goal-next_position).x()) <= 1) &&
-        (abs((goal-next_position).y()) <= 1)) {
-      shift = goal - position;
-    }
-  }
+  // TODO(shaun) big speed
+
+  shift = {shift_vec.x(), shift_vec.y()};
 }
 
 bool PathFollowSystem::SetNextGoal(

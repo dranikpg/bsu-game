@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="left-up" width="30" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="195">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="left-up" width="30" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="198">
  <editorsettings>
-  <export target="try.json" format="json"/>
+  <export target="../assets/BSU_entrance.json" format="json"/>
  </editorsettings>
  <imagelayer id="2" name="background" offsetx="0.0963134" offsety="-0.0129801">
-  <image source="BSU_entrance.png" width="720" height="512"/>
+  <image source="../assets/BSU_entrance.png" width="720" height="512"/>
  </imagelayer>
+ <objectgroup id="5" name="path">
+  <object id="197" name="guard_path" x="310.533" y="224.604">
+   <polygon points="0,0 122.051,0.339041 46.1824,65.5593 -61.6307,65.5593 -153.471,13.6493"/>
+  </object>
+ </objectgroup>
  <objectgroup id="3" name="collision">
   <object id="2" x="0" y="-0.666667" width="278.333" height="206.667"/>
   <object id="4" x="340.333" y="-0.666667" width="379.667" height="206.667"/>
@@ -142,7 +147,7 @@
   <object id="194" x="522.909" y="234.912" width="4.25" height="45.875"/>
  </objectgroup>
  <objectgroup id="4" name="entity">
-  <object id="123" name="chel" x="79.3182" y="468.227" width="16.7273" height="23.4545"/>
-  <object id="124" name="guard" x="418.841" y="213.795" width="50" height="16.1818"/>
+  <object id="123" name="player" x="79.3182" y="468.227" width="16.7273" height="23.4545"/>
+  <object id="124" name="guard" x="284.322" y="214.53" width="50" height="16.1818"/>
  </objectgroup>
 </map>

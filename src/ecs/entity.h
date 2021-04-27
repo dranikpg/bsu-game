@@ -30,7 +30,7 @@ class Entity : public std::enable_shared_from_this<Entity> {
    * @return reference to the component
    */
   template<typename T>
-  T& GetComponent();
+  T& GetComponent() const;
 
   /**
    * Return tuple of component references
@@ -59,7 +59,7 @@ class Entity : public std::enable_shared_from_this<Entity> {
 
  private:
   template<typename T>
-  T* GetComponentPointer();
+  T* GetComponentPointer() const;
 
  private:
   std::unordered_map<std::size_t, std::unique_ptr<Component>> components_;
@@ -73,7 +73,7 @@ bool Entity::HasComponent() {
 }
 
 template<typename T>
-T* Entity::GetComponentPointer() {
+T* Entity::GetComponentPointer() const {
   static_assert(std::is_base_of<Component, T>::value,
                 "T must inherit Component!");
   auto it = components_.find(ID<T>());
@@ -85,7 +85,7 @@ T* Entity::GetComponentPointer() {
 }
 
 template<typename T>
-T& Entity::GetComponent() {
+T& Entity::GetComponent() const {
   T* ptr = GetComponentPointer<T>();
   if (ptr == nullptr) {
     throw std::invalid_argument("Component class not present");

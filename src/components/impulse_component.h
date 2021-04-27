@@ -3,16 +3,16 @@
 
 #include "../ecs/component.h"
 
-#include <QPoint>
+#include <QPointF>
 
 namespace game {
 
 struct ImpulseComponent : public ecs::Component {
   ImpulseComponent() = default;
-  explicit ImpulseComponent(const QPoint& shift);
-  ImpulseComponent(int x, int y);
+  explicit ImpulseComponent(const QPointF& shift);
+  ImpulseComponent(float x, float y);
 
-  QPoint shift;
+  QPointF shift;
 };
 }  // namespace game
 

@@ -2,7 +2,11 @@
 
 namespace game {
 
-BoundsComponent::BoundsComponent(const QPoint& bounds) : bounds(bounds) {}
+BoundsComponent::BoundsComponent(const QPointF& bounds) : bounds(bounds) {}
 
-BoundsComponent::BoundsComponent(int x, int y) : bounds(x, y) {}
+BoundsComponent::BoundsComponent(float x, float y) : bounds(x, y) {}
+
+BoundsComponent::BoundsComponent(const QSizeF& bounds) :
+    BoundsComponent(bounds.width(), bounds.height()) {}
+
 }  // namespace game

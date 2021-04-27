@@ -9,11 +9,14 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include "../exceptions/invalid_path_exception.h"
+#include "../exceptions/json_format_exception.h"
+
 namespace utils {
 
 AseAnimationParser::AnimationBag AseAnimationParser::Parse(QFile file) {
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    throw InvalidPathException("Invalid file path: " + file.fileName().toStdString());
+    throw InvalidPathException(file);
   }
   QString json_src = file.readAll();
   QJsonDocument json_document = QJsonDocument::fromJson(json_src.toUtf8());
@@ -79,12 +82,6 @@ std::vector<std::pair<QRect, uint16_t>> AseAnimationParser::ParseFrames(const QJ
 }
 
 AseAnimationParser::InvalidPixmapException::InvalidPixmapException(const std::string& arg)
-    : runtime_error(arg) {}
-
-AseAnimationParser::InvalidPathException::InvalidPathException(const std::string& arg)
-    : runtime_error(arg) {}
-
-AseAnimationParser::JsonFormatException::JsonFormatException(const std::string& arg)
     : runtime_error(arg) {}
 
 }  // namespace utils

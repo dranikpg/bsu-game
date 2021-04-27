@@ -14,8 +14,8 @@ void MovementSystem::Run(World* world) {
     auto[impulse, position] = entity.Unpack<ImpulseComponent, PositionComponent>();
     if (entity.HasComponent<ColliderComponent, BoundsComponent>()) {
       auto[entity_pos, entity_bounds] = entity.Unpack<PositionComponent, BoundsComponent>();
-      QPoint destination(0, 0);
-      QRect entity_rect(0, 0, entity_bounds.bounds.x(), entity_bounds.bounds.y());
+      QPointF destination(0, 0);
+      QRectF entity_rect(0, 0, entity_bounds.bounds.x(), entity_bounds.bounds.y());
       entity_rect.moveCenter(entity_pos.position);
       if (!IsCollidingXY(world, &entity, entity_rect, impulse.shift)) {
         destination = impulse.shift;
@@ -35,7 +35,7 @@ void MovementSystem::Run(World* world) {
 }
 
 bool MovementSystem::Intersects(World* world, Entity* entity,
-                                const QRect& target) const {
+                                const QRectF& target) const {
   for (auto& another_entity : world->ScanEntities<PositionComponent, ColliderComponent,
                                                   BoundsComponent>()) {
     if (entity == &another_entity) {
@@ -43,7 +43,7 @@ bool MovementSystem::Intersects(World* world, Entity* entity,
     }
 
     auto[pos_point, bounds] = another_entity.Unpack<PositionComponent, BoundsComponent>();
-    QRect colliding_rect(0, 0, bounds.bounds.x(), bounds.bounds.y());
+    QRectF colliding_rect(0, 0, bounds.bounds.x(), bounds.bounds.y());
     colliding_rect.moveCenter(pos_point.position);
 
     if (target.intersects(colliding_rect)) {
@@ -55,21 +55,21 @@ bool MovementSystem::Intersects(World* world, Entity* entity,
 
 bool MovementSystem::IsCollidingXY(World* world,
                                   Entity* entity,
-                                  const QRect& entity_rect,
-                                  QPoint x_y_shift) const {
-  QRect dest_rect = entity_rect.translated(x_y_shift.x(), x_y_shift.y());
+                                  const QRectF& entity_rect,
+                                  QPointF x_y_shift) const {
+  QRectF dest_rect = entity_rect.translated(x_y_shift.x(), x_y_shift.y());
 
   return Intersects(world, entity, dest_rect);
 }
 
 bool MovementSystem::IsCollidingX(World* world,
                                   Entity* entity,
-                                  const QRect& entity_rect,
-                                  int x_shift) const {
-  QRect dest_rect = entity_rect.translated(x_shift, 0);
+                                  const QRectF& entity_rect,
+                                  float x_shift) const {
+  QRectF dest_rect = entity_rect.translated(x_shift, 0);
 
-  QRect first_collision_case(entity_rect.topLeft(), dest_rect.bottomRight());
-  QRect second_collision_case(dest_rect.topLeft(), entity_rect.bottomRight());
+  QRectF first_collision_case(entity_rect.topLeft(), dest_rect.bottomRight());
+  QRectF second_collision_case(dest_rect.topLeft(), entity_rect.bottomRight());
 
   return (Intersects(world, entity, first_collision_case) ||
       Intersects(world, entity, second_collision_case));
@@ -77,12 +77,12 @@ bool MovementSystem::IsCollidingX(World* world,
 
 bool MovementSystem::IsCollidingY(World* world,
                                   Entity* entity,
-                                  const QRect& entity_rect,
-                                  int y_shift) const {
-  QRect dest_rect = entity_rect.translated(0, y_shift);
+                                  const QRectF& entity_rect,
+                                  float y_shift) const {
+  QRectF dest_rect = entity_rect.translated(0, y_shift);
 
-  QRect first_collision_case(dest_rect.topLeft(), entity_rect.bottomRight());
-  QRect second_collision_case(entity_rect.topLeft(), dest_rect.bottomRight());
+  QRectF first_collision_case(dest_rect.topLeft(), entity_rect.bottomRight());
+  QRectF second_collision_case(entity_rect.topLeft(), dest_rect.bottomRight());
 
   return (Intersects(world, entity, first_collision_case) ||
       Intersects(world, entity, second_collision_case));

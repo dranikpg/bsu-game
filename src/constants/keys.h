@@ -7,7 +7,8 @@ enum class Keys {
   kUp,
   kLeft,
   kRight,
-  kDown
+  kDown,
+  kEnter
 };
 }  // namespace constants
 #endif  // SRC_CONSTANTS_KEYS_H_

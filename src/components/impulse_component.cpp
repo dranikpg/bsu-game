@@ -2,7 +2,7 @@
 
 namespace game {
 
-ImpulseComponent::ImpulseComponent(const QPoint& shift) : shift(shift) {}
+ImpulseComponent::ImpulseComponent(const QPointF& shift) : shift(shift) {}
 
-ImpulseComponent::ImpulseComponent(int x, int y) : shift(x, y) {}
+ImpulseComponent::ImpulseComponent(float x, float y) : shift(x, y) {}
 }  // namespace game

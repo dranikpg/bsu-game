@@ -40,8 +40,8 @@ std::pair<AnimationType, std::shared_ptr<Animation>>
 MovementAnimationSyncSystem::GetMovAnimation(
     const MovementAnimationSyncComponent& sync,
     const ImpulseComponent& impulse) {
-  int x_shift = impulse.shift.x();
-  int y_shift = impulse.shift.y();
+  float x_shift = impulse.shift.x();
+  float y_shift = impulse.shift.y();
 
   AnimationType deduced_type = AnimationType::_LAST;
 

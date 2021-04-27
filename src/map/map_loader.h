@@ -38,7 +38,7 @@ class MapLoader {
                                                 const QString& name);
     static MapObject ParseMapObject(const QJsonObject& obj);
     static std::pair<resource::Path, QString> ParsePath(const QJsonObject& obj);
-    static std::pair<QPoint, QString> ParsePoint(const QJsonObject& obj);
+    static std::pair<QPointF, QString> ParsePoint(const QJsonObject& obj);
 
 
  private:

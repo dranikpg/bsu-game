@@ -3,7 +3,7 @@
 
 namespace resource {
 
-Path::WayPoint::WayPoint(int x, int y, int pause = 0)
+Path::WayPoint::WayPoint(float x, float y, int pause = 0)
   : point(x, y), pauseFrames(pause) {}
 
 const Path::WayPoint& Path::Point(int idx) const {
@@ -19,5 +19,16 @@ void Path::ReversePath() {
 }
 
 Path::Path(std::vector<WayPoint>&& points) : points_(std::move(points)) {}
+
+Path::Path(QPointF start, QPointF target) {
+  points_ = {
+      WayPoint(start.x(), start.y(), 0),
+      WayPoint(target.x(), target.y(), 0)
+  };
+}
+
+bool Path::Empty() const {
+  return points_.empty();
+}
 
 }  // namespace resource

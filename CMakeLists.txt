@@ -34,7 +34,6 @@ set(SOURCES
         src/resources/level.cpp
         src/systems/level_system.cpp
         src/context/level_context.cpp
-        src/levels/example/example_level.cpp
         src/utils/parser/ase_animation_parser.cpp
         src/systems/movement_animation_sync_system.cpp
         src/components/movement_animation_sync_component.cpp
@@ -43,7 +42,18 @@ set(SOURCES
         src/levels/bsu_entrance/bsu_entrance_level.cpp
         src/levels/bsu_entrance/guard_behaviour.cpp
         src/components/path_follow_component.cpp
-        src/systems/path_follow_system.cpp)
+        src/systems/path_follow_system.cpp
+        src/components/camera_component.cpp
+        src/resources/dialog.cpp
+        src/context/dialog_context.cpp
+        src/systems/dialog_system.cpp
+        src/components/dialog_component.cpp
+        src/utils/pixmap_rect.cpp
+        src/utils/parser/dialog_parser.cpp
+        src/utils/exceptions/invalid_path_exception.cpp
+        src/utils/exceptions/json_format_exception.cpp
+        src/context/mini_game_context.cpp
+        src/levels/bsu_entrance/guard_mini_game.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

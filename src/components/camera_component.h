@@ -5,7 +5,10 @@
 
 namespace game {
 
-class CameraComponent : public ecs::Component {
+struct CameraComponent : public ecs::Component {
+  explicit CameraComponent(float scale = 1);
+
+  float scale;
 };
 
 }  // namespace game

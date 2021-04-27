@@ -2,8 +2,8 @@
 
 namespace game {
 
-PositionComponent::PositionComponent(const QPoint& pos) : position(pos) {
+PositionComponent::PositionComponent(const QPointF& pos) : position(pos) {
 }
-PositionComponent::PositionComponent(int x, int y) : position(x, y) {}
+PositionComponent::PositionComponent(float x, float y) : position(x, y) {}
 
 }  // namespace game

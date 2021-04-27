@@ -1,6 +1,8 @@
 #ifndef SRC_SYSTEMS_RENDERING_SYSTEM_H_
 #define SRC_SYSTEMS_RENDERING_SYSTEM_H_
 
+#include <vector>
+
 #include "../ecs/ecs.h"
 #include "../context/painter_context.h"
 #include "../context/window_context.h"
@@ -16,6 +18,9 @@ class RenderingSystem : public System {
  public:
   RenderingSystem(PainterContext* painter_context, WindowContext* window_context);
   void Run(World* world) override;
+
+ private:
+  static bool EntityYSort(const ecs::Entity* l, const ecs::Entity* r);
 
  private:
   PainterContext* painter_context_;

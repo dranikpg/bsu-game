@@ -1,15 +1,15 @@
 #ifndef SRC_MAP_MAP_OBJECT_H_
 #define SRC_MAP_MAP_OBJECT_H_
 
-#include <QPoint>
-#include <QSize>
+#include <QPointF>
+#include <QSizeF>
 #include <QString>
 
 namespace map {
 
 struct MapObject {
-  QPoint position;
-  QSize size;
+  QPointF position;
+  QSizeF size;
   QString name;
 };
 
