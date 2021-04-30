@@ -80,18 +80,23 @@ void PathFollowSystem::MoveTowardsGoal(QPointF goal,
   auto& shift = impulse_component.shift;
   if ((abs(position.x() - goal.x()) < kPrecision) &&
       (abs(position.y() - goal.y()) < kPrecision)) {
-    position = goal;
+    shift = goal - position;
     pf_component.state = PathFollowState::kResolvingMoving;
+  } else {
+    QVector2D direction(goal - position);
+    direction.normalize();
+
+    QVector2D shift_vec(direction * speed);
+    QPointF pos_after_shift = position + QPointF{shift_vec.x(), shift_vec.y()};
+    QVector2D goal_to_new(pos_after_shift - goal);
+    goal_to_new.normalize();
+
+    if (abs(QVector2D::dotProduct(goal_to_new, direction) - 1) < 0.5f) {
+      shift = goal - position;
+    } else {
+      shift = {shift_vec.x(), shift_vec.y()};
+    }
   }
-
-  QVector2D direction(goal - position);
-  direction.normalize();
-
-  QVector2D shift_vec(direction * speed);
-
-  // TODO(shaun) big speed
-
-  shift = {shift_vec.x(), shift_vec.y()};
 }
 
 bool PathFollowSystem::SetNextGoal(
