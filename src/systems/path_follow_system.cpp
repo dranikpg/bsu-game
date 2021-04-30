@@ -19,7 +19,6 @@ void PathFollowSystem::Run(ecs::World* world) {
       PositionComponent,
       ImpulseComponent>()) {
     auto& pf_component = entity.GetComponent<PathFollowComponent>();
-    // FIX: better empty path handling?
     if (pf_component.path.Empty()) {
       continue;
     }
