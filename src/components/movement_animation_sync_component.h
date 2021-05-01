@@ -14,11 +14,14 @@ namespace game {
 
 struct MovementAnimationSyncComponent : public ecs::Component {
   explicit MovementAnimationSyncComponent(std::multimap<constants::AnimationType,
-                                  std::shared_ptr<resource::Animation>> animations);
+                                  std::shared_ptr<resource::Animation>> animations,
+                                  uint16_t pause_before_default = 0);
 
   std::shared_ptr<resource::Animation> current_animation;
   AnimationType current_animation_type;
   std::multimap<constants::AnimationType, std::shared_ptr<resource::Animation>> animations;
+  uint16_t pause_before_default;
+  uint16_t current_pause_time;
 };
 
 }  // namespace game

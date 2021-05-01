@@ -90,7 +90,7 @@ void BsuEntranceLevel::CreateGuard(ecs::World* world,
       .AddComponent<AnimationComponent>(anims["main"])
       .AddComponent<MovementAnimationSyncComponent>(sync_pack)
       .AddComponent<PathFollowComponent>(
-          resource::Path(object.position, object.position),
+          resource::Path(object.position),
           constants::PathFollowType::kOnce,
           1);
 }

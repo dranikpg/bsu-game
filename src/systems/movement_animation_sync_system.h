@@ -28,6 +28,8 @@ class MovementAnimationSyncSystem : public ecs::System {
   GetMovAnimation(const MovementAnimationSyncComponent&, const ImpulseComponent&);
   std::pair<AnimationType, std::shared_ptr<Animation>>
   GetDefaultAnimation(const MovementAnimationSyncComponent&);
+  std::pair<AnimationType, std::shared_ptr<Animation>>
+  GetStayPauseAnimation(const MovementAnimationSyncComponent&);
 };
 
 }  // namespace game
