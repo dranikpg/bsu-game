@@ -40,7 +40,7 @@ set(SOURCES
         src/systems/behaviour_system.cpp
         src/components/behaviour_component.cpp
         src/levels/bsu_entrance/bsu_entrance_level.cpp
-        src/levels/bsu_entrance/guard_behaviour.cpp
+        src/levels/bsu_lobby/guard_behaviour.cpp
         src/components/path_follow_component.cpp
         src/systems/path_follow_system.cpp
         src/components/camera_component.cpp
@@ -53,7 +53,7 @@ set(SOURCES
         src/utils/exceptions/invalid_path_exception.cpp
         src/utils/exceptions/json_format_exception.cpp
         src/context/mini_game_context.cpp
-        src/levels/bsu_entrance/guard_mini_game.cpp)
+        src/levels/bsu_lobby/guard_mini_game.cpp src/levels/bsu_lobby/bsu_lobby_level.cpp src/levels/bsu_lobby/bsu_lobby_level.h src/levels/bsu_lobby/canteen_mini_game.cpp src/levels/bsu_lobby/canteen_mini_game.h)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

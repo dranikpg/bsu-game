@@ -7,5 +7,18 @@
         <file>BSU_entrance.png</file>
         <file>player.json</file>
         <file>player.png</file>
+        <file>hall.png</file>
+        <file>lobby.json</file>
+        <file>canteen.png</file>
+        <file>chel_for_bufet.png</file>
+        <file>chiabatta.png</file>
+        <file>hearts1.png</file>
+        <file>hearts2.png</file>
+        <file>hearts3.png</file>
+        <file>bufet_levels1.png</file>
+        <file>bufet_levels2.png</file>
+        <file>bufet_levels3.png</file>
+        <file>bufet_levels4.png</file>
+        <file>bufet_levels5.png</file>
     </qresource>
 </RCC>

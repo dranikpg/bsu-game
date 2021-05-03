@@ -45,7 +45,7 @@ class GuardBehaviour : public resource::Behaviour {
   resource::Dialog dialog_;
 
   const float kGuardWanderSpeed = 3;
-  const float kRunRadius = 150;
+  const float kRunRadius = 170;
   const float kSpeakRadius = 100;
 };
 

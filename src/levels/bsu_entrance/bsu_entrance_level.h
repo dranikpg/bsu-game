@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "guard_behaviour.h"
-#include "guard_mini_game.h"
+#include "../bsu_lobby/guard_behaviour.h"
+#include "../bsu_lobby/guard_mini_game.h"
 #include "../../ecs/world.h"
 #include "../../resources/level.h"
 #include "../../resources/behaviour.h"
@@ -15,7 +15,7 @@ namespace game {
 class BsuEntranceLevel : public resource::Level {
  public:
   ~BsuEntranceLevel() override;
-  void Dispose(ecs::World* word) override;
+  void Dispose(ecs::World* world) override;
   void Load(ecs::World* world) override;
   void Process(ecs::World* world, ContextBag) override;
   void CreateMap(const QString& path) override;
@@ -23,25 +23,9 @@ class BsuEntranceLevel : public resource::Level {
   void CreatePath(resource::Path path, const QString& name) override;
 
  private:
-  void CreateGuard(ecs::World* world, const map::MapObject& object);
-  void StartMiniGame(ContextBag contexts);
-  QPointF ProjectPlayerPos(ecs::World* world, ContextBag contexts);
-
- private:
-  enum class State {
-    kNone,
-    kMiniGame,
-    kFinished
-  };
-
-  State state_;
   ecs::World* world_;
   ecs::Entity* player_ = nullptr;
-  ecs::Entity* guard_ = nullptr;
-  std::shared_ptr<GuardMiniGame> mini_game_;
-  std::shared_ptr<resource::Path> guard_path_;
-  std::shared_ptr<GuardBehaviour> guard_behaviour_;
-  QPointF guard_pos_;
+  QPointF door_pos_;
 };
 
 }  // namespace game

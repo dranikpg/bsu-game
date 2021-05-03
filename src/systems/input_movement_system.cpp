@@ -6,6 +6,7 @@
 #include "../components/bounds_component.h"
 #include "../components/impulse_component.h"
 #include "../components/input_movement_component.h"
+#include <QDebug>
 
 using constants::Keys;
 
@@ -16,6 +17,7 @@ InputMovementSystem::InputMovementSystem(InputContext* input) : input_(input) {}
 void InputMovementSystem::Run(World* world) {
   for (auto[impulse, input_marker] : world->Scan<ImpulseComponent, InputMovementComponent>()) {
     std::set<Keys> keys = input_->GetKeys();
+    impulse.shift = QPointF(0, 0);
     for (auto key : keys) {
       switch (key) {
         case Keys::kUp:
@@ -33,13 +35,13 @@ void InputMovementSystem::Run(World* world) {
         default:
           break;
       }
-      if (impulse.shift.isNull()) {
-        continue;
-      }
-      float length = std::hypotf(impulse.shift.x(), impulse.shift.y());
-      impulse.shift.rx() *= kSpeed_ / length;
-      impulse.shift.ry() *= kSpeed_ / length;
     }
+    if (impulse.shift.isNull()) {
+      continue;
+    }
+    float length = std::hypotf(impulse.shift.x(), impulse.shift.y());
+    impulse.shift.rx() *= kSpeed_ / length;
+    impulse.shift.ry() *= kSpeed_ / length;
   }
 }
 }  // namespace game

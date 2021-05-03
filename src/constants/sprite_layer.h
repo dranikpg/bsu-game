@@ -6,6 +6,7 @@ namespace constants {
 enum class SpriteLayer {
   kBackground,
   kForeground,
+  kDynamic,
   _LAST
 };
 
