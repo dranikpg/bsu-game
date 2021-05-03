@@ -53,7 +53,11 @@ set(SOURCES
         src/utils/exceptions/invalid_path_exception.cpp
         src/utils/exceptions/json_format_exception.cpp
         src/context/mini_game_context.cpp
-        src/levels/bsu_entrance/guard_mini_game.cpp)
+        src/levels/bsu_entrance/guard_mini_game.cpp
+        src/context/splash_context.cpp
+        src/components/splash_component.cpp
+        src/systems/splash_system.cpp
+        src/widgets/typing_label.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

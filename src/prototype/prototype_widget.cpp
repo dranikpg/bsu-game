@@ -18,18 +18,12 @@
 #include "../systems/behaviour_system.h"
 #include "../systems/dialog_system.h"
 #include "../systems/path_follow_system.h"
+#include "../systems/splash_system.h"
 
-#include "../components/sprite_component.h"
-#include "../components/impulse_component.h"
-#include "../components/animation_component.h"
-#include "../components/position_component.h"
-#include "../components/camera_component.h"
-#include "../components/input_movement_component.h"
-#include "../components/dialog_component.h"
+#include "../components/components.h"
 
 #include "../resources/animation.h"
 #include "../resources/dialog.h"
-
 #include "../utils/parser/ase_animation_parser.h"
 #include "../map/map_loader.h"
 
@@ -39,6 +33,7 @@ PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;
   systems.emplace_back(
       std::make_unique<game::LevelSystem>(&level_context_, &mini_game_context_, &input_context_));
+  systems.emplace_back(std::make_unique<game::SplashSystem>(&splash_context_, &input_context_));
   systems.emplace_back(
       std::make_unique<game::RenderingSystem>(&painter_context_, &window_context_));
   systems.emplace_back(std::make_unique<game::AnimationSystem>());
@@ -46,8 +41,7 @@ PrototypeWidget::PrototypeWidget() {
   systems.emplace_back(std::make_unique<game::MovementAnimationSyncSystem>());
   systems.emplace_back(std::make_unique<game::MovementSystem>());
   systems.emplace_back(std::make_unique<game::BehaviourSystem>());
-  systems.emplace_back(std::make_unique<game::DialogSystem>(&input_context_,
-                                                            &dialog_context_));
+  systems.emplace_back(std::make_unique<game::DialogSystem>(&input_context_, &dialog_context_));
   systems.emplace_back(std::make_unique<game::PathFollowSystem>());
 
   world_.Init(std::move(systems));
@@ -57,9 +51,19 @@ PrototypeWidget::PrototypeWidget() {
   dialog_context_.Init(&dialog_box_);
   mini_game_box_.setParent(this);
   mini_game_context_.Init(&mini_game_box_);
+  splash_box_.setParent(this);
+  splash_context_.Init(&splash_box_);
 
   // Load first level
   level_context_.Load<game::BsuEntranceLevel>();
+
+  QPixmap icon(":/guard-sheet.png");
+  world_.CreateEntity().AddComponent<game::SplashComponent>(
+      utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
+      "Hello! I'm your master \nWelcome to the game!",
+      []() {
+        qDebug() << "finished";
+      });
 
   connect(&timer_, &QTimer::timeout, [this]() {
     update();
@@ -91,5 +95,6 @@ void PrototypeWidget::resizeEvent(QResizeEvent* event) {
   dialog_box_.resize(width(), 100);
   dialog_box_.move(0, height() - 100);
   mini_game_box_.resize(width(), height());
+  splash_box_.resize(width(), height());
 }
 

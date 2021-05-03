@@ -1,0 +1,20 @@
+#splash {
+    background-color: rgba(20, 20, 20, 220);
+}
+#splash-text {
+    color: white;
+    font: bold;
+    font-size: 20px;
+}
+#splash-button {
+    color: white;
+    font-size: 3em;
+    padding: 10px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: beige;
+}
+#splash-button:hover {
+    border-color: aqua;
+}
