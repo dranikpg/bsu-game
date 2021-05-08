@@ -41,7 +41,7 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
     QPointF guard_position = entity->GetComponent<PositionComponent>().position;
     state_ = GuardState::kGuarding;
     path = PathFollowComponent(
-        resource::Path(guard_position, {player_pos.x(), guard_position.y()}),
+        resource::Path({player_pos.x(), guard_position.y()}),
         constants::PathFollowType::kOnce,
         5);  // CalculateSpeed(player_dist, guard_position))
   } else if (player_dist > kRunRadius

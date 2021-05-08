@@ -169,7 +169,6 @@ void game::CanteenMiniGame::NimbusDrawer::paintEvent(QPaintEvent* event) {
   painter.restore();
   painter.drawPixmap(container_->x(), container_->y(), container_->width(),
                      container_->height(), background);
-  qDebug() << static_cast<int>(state);
   if (state == State::kWaiting && timer < 200) {
     QPixmap level;
     if (curr_level == 1) {
@@ -183,7 +182,6 @@ void game::CanteenMiniGame::NimbusDrawer::paintEvent(QPaintEvent* event) {
                        container_->y() + container_->height() / 2 - level.height() / 2,
                        level);
   } else if (state == State::kGameEnding) {
-    qDebug() << "sssss";
     QPixmap game_end(":/bufet_levels5.png");
     painter.drawPixmap(container_->x() + container_->width() / 2 - game_end.width() / 2,
                        container_->y() + container_->height() / 2 - game_end.height() / 2,
