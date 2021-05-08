@@ -2,6 +2,7 @@
 
 #include <utility>
 
+#include <QFont>
 
 namespace context {
 

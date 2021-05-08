@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QTimer>
 #include <QPushButton>
+#include <QFontDatabase>
 
 #include "../systems/rendering_system.h"
 #include "../systems/animation_system.h"
@@ -45,6 +46,9 @@ PrototypeWidget::PrototypeWidget() {
   systems.emplace_back(std::make_unique<game::PathFollowSystem>());
 
   world_.Init(std::move(systems));
+
+  // load font
+  QFontDatabase::addApplicationFont(":/chrono_type.ttf");
 
   // init ui
   dialog_box_.setParent(this);

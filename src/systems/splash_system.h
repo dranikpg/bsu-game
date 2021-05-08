@@ -11,6 +11,7 @@ class SplashSystem : public ecs::System {
  public:
   SplashSystem(context::SplashContext* splash_context, context::InputContext* input_context);
   void Run(ecs::World* world) override;
+
  private:
   bool active_ = false;
   context::SplashContext* splash_context_;

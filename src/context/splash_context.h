@@ -17,11 +17,10 @@ class SplashContext {
  public:
   void Init(QWidget* container);
   void Show(utils::PixmapRect icon, QString text, std::function<void()> callback);
+
  private:
   std::function<void()> callback_;
-
   QWidget* container_;
-
   QLabel* icon_;
   QPushButton* button_;
   ui::TypingLabel* text_;

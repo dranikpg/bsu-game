@@ -3,12 +3,12 @@
 }
 #splash-text {
     color: white;
-    font: bold;
-    font-size: 20px;
+    font: 30px "ChronoType";
 }
 #splash-button {
     color: white;
-    font-size: 3em;
+    font: 30px "ChronoType";
+    font-weight: bold;
     padding: 10px;
     border-radius: 10px;
     border-style: solid;
