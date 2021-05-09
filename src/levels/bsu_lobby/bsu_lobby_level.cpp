@@ -33,7 +33,8 @@ void BsuLobbyLevel::Load(ecs::World* world) {
 
 void BsuLobbyLevel::Process(ecs::World* world, ContextBag contexts) {
   if (std::hypotf((canteen_pos_ - player_->GetComponent<PositionComponent>().position).x(),
-                  (canteen_pos_ - player_->GetComponent<PositionComponent>().position).y()) < 100 && state_ == State::kNone) {
+                  (canteen_pos_ - player_->GetComponent<PositionComponent>().position).y()) < 100 &&
+                  state_ == State::kNone) {
     StartMiniGame(contexts);
   } else if (state_ == State::kMiniGame) {
     mini_game_->Process();

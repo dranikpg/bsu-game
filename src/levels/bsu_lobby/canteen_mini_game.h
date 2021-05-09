@@ -9,6 +9,8 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include <set>
+#include <utility>
 
 namespace game {
 
@@ -29,12 +31,12 @@ class CanteenMiniGame : public resource::MiniGame {
     kGameEnding
   };
 
-  class NimbusDrawer : public QWidget {
+  class CanteenDrawer : public QWidget {
    public:
-    NimbusDrawer(QWidget* container, std::shared_ptr<std::map<PlayerColumn, std::vector<double>>> opa);
+    CanteenDrawer(QWidget* container,
+                  std::shared_ptr<std::map<PlayerColumn, std::vector<double>>> opa);
     void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
-    void SetPlayerPos(const QPointF& player_pos);
     double GetCoordinate(const PlayerColumn& state);
 
     std::shared_ptr<PlayerColumn> player_state_ = nullptr;
@@ -48,8 +50,8 @@ class CanteenMiniGame : public resource::MiniGame {
   CanteenMiniGame(Callback callback, QWidget* container, context::InputContext* input);
   void Process();
   void EraseChiabattas(const std::set<std::pair<PlayerColumn, double>>& for_erasing);
-  void ProccesChiabattas(std::set<std::pair<PlayerColumn, double>>& for_erasing);
-  void CollidingChiabattas(std::set<std::pair<PlayerColumn, double>>& for_erasing);
+  void ProccesChiabattas(std::set<std::pair<PlayerColumn, double>>* for_erasing);
+  void CollidingChiabattas(std::set<std::pair<PlayerColumn, double>>* for_erasing);
 
   static int timer;
   static int curr_level;
@@ -58,7 +60,7 @@ class CanteenMiniGame : public resource::MiniGame {
 
  private:
   void AddChiabata(int rand);
-  NimbusDrawer* nimbus_;
+  CanteenDrawer* nimbus_;
   Callback callback_;
   std::shared_ptr<std::map<PlayerColumn, std::vector<double>>> chiabatas_;
   QWidget* container_ = nullptr;

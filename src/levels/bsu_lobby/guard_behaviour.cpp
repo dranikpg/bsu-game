@@ -2,7 +2,6 @@
 
 #include <optional>
 #include <cmath>
-#include <utility>
 #include <memory>
 
 #include <QString>

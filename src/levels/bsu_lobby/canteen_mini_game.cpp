@@ -4,7 +4,6 @@
 #include <utility>
 #include <QDebug>
 #include <random>
-#include "../../constants/keys.h"
 
 int game::CanteenMiniGame::timer = 0;
 int game::CanteenMiniGame::curr_level = 1;
@@ -31,13 +30,13 @@ void game::CanteenMiniGame::Process() {
 
   std::set<std::pair<PlayerColumn, double>> for_erase;
   if (timer % curr_speed_ == 0 && state == State::kGame) {
-    CollidingChiabattas(for_erase);
+    CollidingChiabattas(&for_erase);
     EraseChiabattas(for_erase);
     for_erase.clear();
     if (count_chia_ <= 10) {
       AddChiabata(timer);
     }
-    ProccesChiabattas(for_erase);
+    ProccesChiabattas(&for_erase);
     EraseChiabattas(for_erase);
     if (curr_num_chia_ == 0) {
       timer = 0;
@@ -82,10 +81,10 @@ game::CanteenMiniGame::CanteenMiniGame(game::CanteenMiniGame::Callback callback,
                                        QWidget* container,
                                        context::InputContext* input) :
                                        callback_(std::move(callback)),
-                                       input_(input){
+                                       input_(input) {
   container_ = container;
   chiabatas_ = std::make_shared<std::map<PlayerColumn, std::vector<double>>>();
-  nimbus_ = new NimbusDrawer(container, chiabatas_);
+  nimbus_ = new CanteenDrawer(container, chiabatas_);
   chel_ty = std::make_shared<PlayerColumn>(PlayerColumn::kFist);
   nimbus_->player_state_ = chel_ty;
   nimbus_->setParent(container);
@@ -94,7 +93,8 @@ game::CanteenMiniGame::CanteenMiniGame(game::CanteenMiniGame::Callback callback,
   curr_speed_ = kFirstSpeed;
 }
 
-double game::CanteenMiniGame::NimbusDrawer::GetCoordinate(const game::CanteenMiniGame::PlayerColumn& state) {
+double game::CanteenMiniGame::CanteenDrawer::GetCoordinate(
+                                  const game::CanteenMiniGame::PlayerColumn& state) {
   switch (state) {
     case PlayerColumn::kFist:
       return container_->width() / 8.;
@@ -125,24 +125,26 @@ void game::CanteenMiniGame::EraseChiabattas(const std::set<std::pair<PlayerColum
   }
 }
 
-void game::CanteenMiniGame::ProccesChiabattas(std::set<std::pair<PlayerColumn, double>>& for_erasing) {
+void game::CanteenMiniGame::ProccesChiabattas(
+                            std::set<std::pair<PlayerColumn, double>>* for_erasing) {
   QPixmap chel(":/chel_for_bufet.png");
   for (auto& column : *chiabatas_) {
     for (auto& chiabata : column.second) {
       if (chiabata > container_->y() + container_->height() - chel.height()) {
-        for_erasing.insert({column.first, chiabata});
+        for_erasing->insert({column.first, chiabata});
         continue;
       }
       chiabata += 70;
       if (chiabata > nimbus_->y() + nimbus_->height() - chel.height()) {
-        for_erasing.insert({column.first, chiabata});
+        for_erasing->insert({column.first, chiabata});
         lifes--;
       }
     }
   }
 }
 
-void game::CanteenMiniGame::CollidingChiabattas(std::set<std::pair<PlayerColumn, double>>& for_erasing) {
+void game::CanteenMiniGame::CollidingChiabattas(
+                                    std::set<std::pair<PlayerColumn, double>>* for_erasing) {
   QPixmap chel(":/chel_for_bufet.png");
   QRect chelic(0,
                container_->y() + container_->height() - chel.height(),
@@ -152,17 +154,12 @@ void game::CanteenMiniGame::CollidingChiabattas(std::set<std::pair<PlayerColumn,
   for (auto chiabatta : (*chiabatas_)[*chel_ty]) {
     QRect kekes(0, chiabatta, chia.width(), chia.height());
     if (chelic.intersects(kekes)) {
-      for_erasing.insert({*chel_ty, chiabatta});
+      for_erasing->insert({*chel_ty, chiabatta});
     }
   }
 }
 
-
-void game::CanteenMiniGame::NimbusDrawer::SetPlayerPos(const QPointF& player_pos) {
-
-}
-
-void game::CanteenMiniGame::NimbusDrawer::paintEvent(QPaintEvent* event) {
+void game::CanteenMiniGame::CanteenDrawer::paintEvent(QPaintEvent* event) {
   QPixmap background(":/canteen.png");
   QPainter painter(this);
   painter.save();
@@ -196,7 +193,8 @@ void game::CanteenMiniGame::NimbusDrawer::paintEvent(QPaintEvent* event) {
   QPixmap chiabata(":/chiabatta.png");
   for (const auto& column : *opa_) {
     for (auto coord : column.second) {
-      painter.drawPixmap(QPointF(GetCoordinate(column.first) - chiabata.width() / 2., coord), chiabata);
+      painter.drawPixmap(
+          QPointF(GetCoordinate(column.first) - chiabata.width() / 2., coord), chiabata);
     }
   }
   QPixmap chel(":/chel_for_bufet");
@@ -213,12 +211,12 @@ void game::CanteenMiniGame::NimbusDrawer::paintEvent(QPaintEvent* event) {
   painter.drawPixmap(x(), y(), hearts);
 }
 
-void game::CanteenMiniGame::NimbusDrawer::resizeEvent(QResizeEvent* event) {
+void game::CanteenMiniGame::CanteenDrawer::resizeEvent(QResizeEvent* event) {
   resize(container_->size());
   update();
 }
 
-game::CanteenMiniGame::NimbusDrawer::NimbusDrawer(QWidget* container,
-                                                  std::shared_ptr<std::map<PlayerColumn,
+game::CanteenMiniGame::CanteenDrawer::CanteenDrawer(QWidget* container,
+                                                    std::shared_ptr<std::map<PlayerColumn,
                                                   std::vector<double>>> opa)
                                                   : container_(container), opa_(std::move(opa)) {}

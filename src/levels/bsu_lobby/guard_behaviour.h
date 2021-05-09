@@ -1,5 +1,5 @@
-#ifndef SRC_LEVELS_BSU_ENTRANCE_GUARD_BEHAVIOUR_H_
-#define SRC_LEVELS_BSU_ENTRANCE_GUARD_BEHAVIOUR_H_
+#ifndef SRC_LEVELS_BSU_LOBBY_GUARD_BEHAVIOUR_H_
+#define SRC_LEVELS_BSU_LOBBY_GUARD_BEHAVIOUR_H_
 
 #include <memory>
 
@@ -10,7 +10,7 @@
 #include "../../resources/dialog.h"
 #include "../../components/behaviour_component.h"
 #include "../../utils/pixmap_rect.h"
-
+#include <utility>
 
 namespace game {
 
@@ -51,4 +51,4 @@ class GuardBehaviour : public resource::Behaviour {
 
 }  // namespace game
 
-#endif  // SRC_LEVELS_BSU_ENTRANCE_GUARD_BEHAVIOUR_H_
+#endif  // SRC_LEVELS_BSU_LOBBY_GUARD_BEHAVIOUR_H_
