@@ -19,9 +19,9 @@ void SplashSystem::Run(ecs::World* world) {
     auto& spc = e.GetComponent<SplashComponent>();
     active_ = true;
     splash_context_->Show(spc.icon, std::move(spc.text),
-                          [this, fwd = std::move(spc.callback)]() {
+                          [this, callback = std::move(spc.callback)]() {
                             active_ = false;
-                            fwd();
+                            callback();
                           });
     world->EraseEntity(&e);
   }

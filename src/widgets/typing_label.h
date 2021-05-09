@@ -10,8 +10,9 @@ class TypingLabel : public QLabel {
  public:
   TypingLabel();
   void setText(const QString& text);
+
  private:
-  const int kSpeed = 50;
+  const int kTypingInterval = 50;
   QString text_;
 };
 

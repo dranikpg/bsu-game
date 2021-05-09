@@ -66,7 +66,6 @@ PrototypeWidget::PrototypeWidget() {
       utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
       "Hello! I'm your master \nWelcome to the game!",
       []() {
-        qDebug() << "finished";
       });
 
   connect(&timer_, &QTimer::timeout, [this]() {
