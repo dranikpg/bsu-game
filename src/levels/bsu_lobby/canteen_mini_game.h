@@ -11,6 +11,7 @@
 #include <vector>
 #include <set>
 #include <utility>
+#include <QPixmap>
 
 namespace game {
 
@@ -43,6 +44,17 @@ class CanteenMiniGame : public resource::MiniGame {
    private:
     QWidget* container_ = nullptr;
     std::shared_ptr<std::map<PlayerColumn, std::vector<double>>> opa_;
+    QPixmap background_ = QPixmap(":/canteen.png");
+    QPixmap chiabata_ = QPixmap(":/chiabatta.png");
+    QPixmap chel_ = QPixmap(":/chel_for_bufet");
+    std::vector<QPixmap> levels_ = {QPixmap(":/bufet_levels1.png"),
+                                   QPixmap(":/bufet_levels2.png"),
+                                   QPixmap(":/bufet_levels3.png"),
+                                   QPixmap(":/bufet_levels4.png"),
+                                   QPixmap(":/bufet_levels5.png")};
+    std::vector<QPixmap> hearts_ = {QPixmap(":/hearts3.png"),
+                                   QPixmap(":/hearts2.png"),
+                                   QPixmap(":/hearts1.png")};
   };
 
  public:
@@ -60,7 +72,7 @@ class CanteenMiniGame : public resource::MiniGame {
 
  private:
   void AddChiabata(int rand);
-  CanteenDrawer* nimbus_;
+  CanteenDrawer* canteen_;
   Callback callback_;
   std::shared_ptr<std::map<PlayerColumn, std::vector<double>>> chiabatas_;
   QWidget* container_ = nullptr;
@@ -72,6 +84,8 @@ class CanteenMiniGame : public resource::MiniGame {
   int curr_speed_;
   int count_chia_ = 0;
   int curr_num_chia_ = 0;
+  QRect chel_size_ = QPixmap(":/chel_for_bufet.png").rect();
+  QRect chia_size_ = QPixmap(":/chiabatta.png").rect();
 };
 
 }  // namespace game
