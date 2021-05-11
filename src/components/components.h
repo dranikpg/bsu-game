@@ -13,5 +13,6 @@
 #include "path_follow_component.h"
 #include "position_component.h"
 #include "sprite_component.h"
+#include "splash_component.h"
 
 #endif  // SRC_COMPONENTS_COMPONENTS_H_

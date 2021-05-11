@@ -7,5 +7,7 @@
         <file>BSU_entrance.png</file>
         <file>player.json</file>
         <file>player.png</file>
+        <file>style.css</file>
+        <file>chrono_type.ttf</file>
     </qresource>
 </RCC>
