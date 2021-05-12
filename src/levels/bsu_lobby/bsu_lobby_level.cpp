@@ -126,6 +126,3 @@ void BsuLobbyLevel::CreateCanteen(ecs::World* world, const map::MapObject& objec
 }
 
 }  // namespace game
-
-
-

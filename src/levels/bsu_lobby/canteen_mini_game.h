@@ -83,7 +83,7 @@ class CanteenMiniGame : public resource::MiniGame {
   const int kUnreal = 30;
   int curr_speed_;
   int count_chia_ = 0;
-  int curr_num_chia_ = 0;
+  int current_chiabatta_ = 0;
   QRect chel_size_ = QPixmap(":/chel_for_bufet.png").rect();
   QRect chia_size_ = QPixmap(":/chiabatta.png").rect();
 };

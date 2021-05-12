@@ -12,12 +12,12 @@ game::CanteenMiniGame::State game::CanteenMiniGame::state = State::kWaiting;
 
 void game::CanteenMiniGame::Process() {
   timer++;
-  if (curr_num_chia_ == 0 && state == State::kWaiting) {
+  if (current_chiabatta_ == 0 && state == State::kWaiting) {
     if (timer > 270) {
       state = State::kGame;
       timer = 0;
       count_chia_ = 0;
-      curr_num_chia_ = 0;
+      current_chiabatta_ = 0;
       if (curr_level == 1) {
         curr_speed_ = kFirstSpeed;
       } else if (curr_level == 2) {
@@ -38,7 +38,7 @@ void game::CanteenMiniGame::Process() {
     }
     ProccesChiabattas(&for_erase);
     EraseChiabattas(for_erase);
-    if (curr_num_chia_ == 0) {
+    if (current_chiabatta_ == 0) {
       timer = 0;
       state = State::kWaiting;
       curr_level++;
@@ -110,7 +110,7 @@ double game::CanteenMiniGame::CanteenDrawer::GetCoordinate(
 void game::CanteenMiniGame::AddChiabata(int rand) {
   (*chiabatas_)[static_cast<PlayerColumn>(std::rand() % 4)].push_back(canteen_->y() / 6.);
   count_chia_++;
-  curr_num_chia_++;
+  current_chiabatta_++;
 }
 
 void game::CanteenMiniGame::EraseChiabattas(const std::set<std::pair<PlayerColumn,
@@ -120,7 +120,7 @@ void game::CanteenMiniGame::EraseChiabattas(const std::set<std::pair<PlayerColum
                           (*chiabatas_)[chiabata.first].end(), chiabata.second);
     if (elem != (*chiabatas_)[chiabata.first].end()) {
       (*chiabatas_)[chiabata.first].erase(elem);
-      curr_num_chia_--;
+      current_chiabatta_--;
     }
   }
 }
