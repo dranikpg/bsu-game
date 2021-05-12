@@ -4,7 +4,6 @@
 #include "../../utils/parser/ase_animation_parser.h"
 #include "../../map/map_loader.h"
 #include "../../context/level_context.h"
-#include "../../levels/bsu_lobby/bsu_lobby_level.h"
 #include "../../utils/parser/dialog_parser.h"
 
 #include <map>
