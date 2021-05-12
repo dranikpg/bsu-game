@@ -53,7 +53,9 @@ set(SOURCES
         src/utils/exceptions/invalid_path_exception.cpp
         src/utils/exceptions/json_format_exception.cpp
         src/context/mini_game_context.cpp
-        src/levels/bsu_lobby/guard_mini_game.cpp src/levels/bsu_lobby/bsu_lobby_level.cpp src/levels/bsu_lobby/canteen_mini_game.cpp)
+        src/levels/bsu_lobby/guard_mini_game.cpp
+        src/levels/bsu_lobby/bsu_lobby_level.cpp
+        src/levels/bsu_lobby/canteen_mini_game.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
