@@ -55,7 +55,12 @@ set(SOURCES
         src/context/mini_game_context.cpp
         src/levels/bsu_lobby/guard_mini_game.cpp
         src/levels/bsu_lobby/bsu_lobby_level.cpp
-        src/levels/bsu_lobby/canteen_mini_game.cpp)
+        src/levels/bsu_lobby/canteen_mini_game.cpp
+        src/levels/bsu_entrance/guard_mini_game.cpp
+        src/context/splash_context.cpp
+        src/components/splash_component.cpp
+        src/systems/splash_system.cpp
+        src/widgets/typing_label.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

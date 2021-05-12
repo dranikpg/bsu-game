@@ -20,5 +20,7 @@
         <file>bufet_levels3.png</file>
         <file>bufet_levels4.png</file>
         <file>bufet_levels5.png</file>
+        <file>style.css</file>
+        <file>chrono_type.ttf</file>
     </qresource>
 </RCC>

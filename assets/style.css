@@ -1,0 +1,20 @@
+#splash {
+    background-color: rgba(20, 20, 20, 220);
+}
+#splash-text {
+    color: white;
+    font: 30px "ChronoType";
+}
+#splash-button {
+    color: white;
+    font: 30px "ChronoType";
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: beige;
+}
+#splash-button:hover {
+    border-color: aqua;
+}
