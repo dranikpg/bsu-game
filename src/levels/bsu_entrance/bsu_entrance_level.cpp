@@ -38,7 +38,6 @@ void BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapObject& o
   if (layer == map::MapLayer::kCollision) {
     if (object.name == "door") {
       door_pos_ = object.position;
-      qDebug() << door_pos_;
     }
     CreateCollider(world_, object);
     return;
