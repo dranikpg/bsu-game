@@ -12,9 +12,9 @@
 
 namespace resource {
 
-void resource::Level::CreateCollider(ecs::World* world,
+ecs::Entity& resource::Level::CreateCollider(ecs::World* world,
                                      const map::MapObject& map_object) {
-  world->CreateEntity().AddComponent<game::ColliderComponent>()
+  return world->CreateEntity().AddComponent<game::ColliderComponent>()
       .AddComponent<game::PositionComponent>(map_object.position.x(),
                                              map_object.position.y())
       .AddComponent<game::BoundsComponent>(map_object.size.width(),

@@ -1,6 +1,5 @@
-#ifndef SRC_LEVELS_BSU_ENTRANCE_GUARD_MINI_GAME_H_
-#define SRC_LEVELS_BSU_ENTRANCE_GUARD_MINI_GAME_H_
-
+#ifndef SRC_LEVELS_BSU_LOBBY_GUARD_MINI_GAME_H_
+#define SRC_LEVELS_BSU_LOBBY_GUARD_MINI_GAME_H_
 #include "../../resources/mini_game.h"
 
 #include <QWidget>
@@ -33,4 +32,4 @@ class GuardMiniGame : public resource::MiniGame {
 
 }  // namespace game
 
-#endif  // SRC_LEVELS_BSU_ENTRANCE_GUARD_MINI_GAME_H_
+#endif  // SRC_LEVELS_BSU_LOBBY_GUARD_MINI_GAME_H_

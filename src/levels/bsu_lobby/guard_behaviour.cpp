@@ -2,7 +2,6 @@
 
 #include <optional>
 #include <cmath>
-#include <utility>
 #include <memory>
 
 #include <QString>
@@ -12,6 +11,8 @@
 #include "../../components/position_component.h"
 #include "../../components/path_follow_component.h"
 #include "../../utils/parser/dialog_parser.h"
+
+#include <QDebug>
 
 namespace game {
 
@@ -31,16 +32,17 @@ GuardBehaviour::GuardBehaviour(ecs::Entity* player,
 void GuardBehaviour::Process(ecs::Entity* entity) {
   QPointF player_vector =
       main_position_ - player_->GetComponent<PositionComponent>().position;
+  QPointF player_pos = player_->GetComponent<PositionComponent>().position;
   float player_dist = std::hypotf(player_vector.x(), player_vector.y());
   auto& path = entity->GetComponent<PathFollowComponent>();
 
-  if (player_dist < kRunRadius && state_ == GuardState::kWandering) {
+  if (player_dist < kRunRadius) {
     QPointF guard_position = entity->GetComponent<PositionComponent>().position;
     state_ = GuardState::kGuarding;
     path = PathFollowComponent(
-        resource::Path(main_position_),
+        resource::Path({player_pos.x(), guard_position.y()}),
         constants::PathFollowType::kOnce,
-        CalculateSpeed(player_dist, guard_position));
+        5);  // CalculateSpeed(player_dist, guard_position))
   } else if (player_dist > kRunRadius
               && (state_ == GuardState::kGuarding || state_ == GuardState::kNone)) {
     state_ = GuardState::kWandering;
