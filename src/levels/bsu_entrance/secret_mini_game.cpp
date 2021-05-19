@@ -130,7 +130,7 @@ SecretMiniGame::Drawer::Drawer(QWidget* container, ecs::World* world) : containe
   anims_ = utils::AseAnimationParser::Parse(QFile(":/target.json"));
   target = &world->CreateEntity().AddComponent<ImpulseComponent>()
       .AddComponent<AnimationComponent>(anims_["running_right"])
-      .AddComponent<SpriteComponent>(QRect(1,1,1,1));
+      .AddComponent<SpriteComponent>(QRect(1, 1, 1, 1));
 }
 
 void SecretMiniGame::Drawer::resizeEvent(QResizeEvent* event) {

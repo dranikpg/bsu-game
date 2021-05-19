@@ -3,6 +3,9 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
+#include <string>
+#include <utility>
 #include <QMouseEvent>
 
 #include "../../resources/mini_game.h"
@@ -51,7 +54,7 @@ class SecretMiniGame {
     ecs::Entity* pudge_ = nullptr;
     ecs::Entity* target = nullptr;
   };
- public:
+
   using Callback = std::function<void()>;
   SecretMiniGame(Callback callback, QWidget* container, context::InputContext* input, ecs::World*);
   void Process();
