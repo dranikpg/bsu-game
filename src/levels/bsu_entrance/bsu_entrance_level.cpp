@@ -7,7 +7,6 @@
 #include "../../levels/bsu_lobby/bsu_lobby_level.h"
 
 #include <cmath>
-#include <QDebug>
 
 namespace game {
 

@@ -12,8 +12,6 @@
 #include "../../components/path_follow_component.h"
 #include "../../utils/parser/dialog_parser.h"
 
-#include <QDebug>
-
 namespace game {
 
 GuardBehaviour::GuardBehaviour(ecs::Entity* player,

@@ -6,7 +6,6 @@
 #include "../components/bounds_component.h"
 #include "../components/impulse_component.h"
 #include "../components/input_movement_component.h"
-#include <QDebug>
 
 using constants::Keys;
 

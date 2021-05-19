@@ -2,7 +2,6 @@
 
 #include <utility>
 #include <QPainter>
-#include <QDebug>
 #include <QPixmap>
 #include <cmath>
 
@@ -198,8 +197,8 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
         stop_ = false;
       }
     }
-    QRect popa = animation1.animation_resource->GetFrame(animation1.frame_index);
-    painter.drawPixmap(coordinates[0].first, QPixmap(":/target.png"), popa);
+    QRect curr = animation1.animation_resource->GetFrame(animation1.frame_index);
+    painter.drawPixmap(coordinates[0].first, QPixmap(":/target.png"), curr);
   }
 }
 

@@ -11,8 +11,6 @@
 #include <utility>
 #include <cmath>
 
-#include <QDebug>
-
 namespace game {
 BsuLobbyLevel::~BsuLobbyLevel() = default;
 
