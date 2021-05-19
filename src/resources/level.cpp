@@ -51,7 +51,7 @@ ecs::Entity& resource::Level::CreatePlayer(ecs::World* world,
       .AddComponent<game::SpriteComponent>(QRect(0, -16, 64, 64),
                                            SpriteLayer::kForeground)
       .AddComponent<game::AnimationComponent>(anims["main"])
-      .AddComponent<game::MovementAnimationSyncComponent>(sync_pack)
+      .AddComponent<game::MovementAnimationSyncComponent>(sync_pack, 1024)
       .AddComponent<game::ImpulseComponent>()
       .AddComponent<game::CameraComponent>(1);
 

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QTimer>
+#include <QMouseEvent>
 
 #include "../ecs/ecs.h"
 

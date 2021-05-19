@@ -100,4 +100,3 @@ void PrototypeWidget::resizeEvent(QResizeEvent* event) {
   mini_game_box_.resize(width(), height());
   splash_box_.resize(width(), height());
 }
-
