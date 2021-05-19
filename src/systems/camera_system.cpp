@@ -14,6 +14,8 @@
 
 namespace game {
 
+const float CameraSystem::kLerpFactor = 0.07f;
+
 void CameraSystem::Run(ecs::World* world) {
   ecs::Entity* camera = world->ScanEntities<PositionComponent, CameraComponent>().Peek();
   ecs::Entity* target = world->ScanEntities<PositionComponent, CameraFollowComponent>().Peek();
@@ -27,7 +29,6 @@ void CameraSystem::Run(ecs::World* world) {
   auto[camera_pos, camera_info] = camera->Unpack<PositionComponent, CameraComponent>();
   auto[map_pos, map_bounds] = map->Unpack<PositionComponent, BoundsComponent>();
 
-  // difvv
   QPointF dif_vector = target_pos.position - camera_pos.position;
   camera_pos.position += kLerpFactor * dif_vector;
 

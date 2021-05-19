@@ -24,7 +24,7 @@ ecs::Entity& resource::Level::CreateCollider(ecs::World* world,
 void resource::Level::CreateMap(ecs::World* world, const QString& path) {
   QPixmap background(path);
   world->CreateEntity()
-      .AddComponent<game::PositionComponent>(background.width()/2, background.height()/2)
+      .AddComponent<game::PositionComponent>(background.width() / 2, background.height() / 2)
       .AddComponent<game::SpriteComponent>(background, SpriteLayer::kBackground)
       .AddComponent<game::BoundsComponent>(background.width(), background.height())
       .AddComponent<game::MapComponent>();
@@ -69,7 +69,7 @@ QPointF Level::ProjectToScreen(ecs::World* world,
   point -= camera_pos.position;
   point /= camera.scale;
   QSize window_size = contexts.mini_game_context->GetContainer()->size();
-  return point + QPointF(window_size.width()/2, window_size.height()/2);
+  return point + QPointF(window_size.width() / 2, window_size.height() / 2);
 }
 
 void Level::CreateCamera(ecs::World* world) {

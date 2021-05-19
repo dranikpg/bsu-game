@@ -11,9 +11,10 @@ class CameraSystem : public ecs::System {
  public:
   explicit CameraSystem(context::WindowContext *window_context);
   void Run(ecs::World *world) override;
+
  private:
   context::WindowContext* window_context_;
-  static constexpr float kLerpFactor = 0.07f;
+  static const float kLerpFactor;
 };
 
 }  // namespace game
