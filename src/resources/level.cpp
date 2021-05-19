@@ -12,8 +12,8 @@
 
 namespace resource {
 
-ecs::Entity &resource::Level::CreateCollider(ecs::World *world,
-                                             const map::MapObject &map_object) {
+ecs::Entity& resource::Level::CreateCollider(ecs::World* world,
+                                             const map::MapObject& map_object) {
   return world->CreateEntity().AddComponent<game::ColliderComponent>()
       .AddComponent<game::PositionComponent>(map_object.position.x(),
                                              map_object.position.y())
@@ -21,7 +21,7 @@ ecs::Entity &resource::Level::CreateCollider(ecs::World *world,
                                            map_object.size.height());
 }
 
-void resource::Level::CreateMap(ecs::World *world, const QString &path) {
+void resource::Level::CreateMap(ecs::World* world, const QString& path) {
   QPixmap background(path);
   world->CreateEntity()
       .AddComponent<game::PositionComponent>(background.width()/2, background.height()/2)
@@ -30,8 +30,8 @@ void resource::Level::CreateMap(ecs::World *world, const QString &path) {
       .AddComponent<game::MapComponent>();
 }
 
-ecs::Entity &resource::Level::CreatePlayer(ecs::World *world,
-                                           const map::MapObject &object) {
+ecs::Entity& resource::Level::CreatePlayer(ecs::World* world,
+                                           const map::MapObject& object) {
   CreateCamera(world);
 
   auto anims = utils::AseAnimationParser::Parse(QFile(":/player.json"));
@@ -44,7 +44,7 @@ ecs::Entity &resource::Level::CreatePlayer(ecs::World *world,
   sync_pack.insert(std::make_pair(AnimationType::kDown, anims["down"]));
   sync_pack.insert(std::make_pair(AnimationType::kUp, anims["up"]));
 
-  ecs::Entity &player = world->CreateEntity()
+  ecs::Entity& player = world->CreateEntity()
       .AddComponent<game::PositionComponent>(object.position)
       .AddComponent<game::BoundsComponent>(object.size.width(),
                                            object.size.height())
@@ -59,10 +59,10 @@ ecs::Entity &resource::Level::CreatePlayer(ecs::World *world,
   return player;
 }
 
-QPointF Level::ProjectToScreen(ecs::World *world,
+QPointF Level::ProjectToScreen(ecs::World* world,
                                Level::ContextBag contexts,
                                QPointF point) {
-  ecs::Entity *camera_entity = world->ScanEntities<game::CameraComponent,
+  ecs::Entity* camera_entity = world->ScanEntities<game::CameraComponent,
                                                    game::PositionComponent>().Peek();
   auto[camera, camera_pos] = camera_entity->Unpack<game::CameraComponent,
                                                    game::PositionComponent>();
@@ -72,7 +72,7 @@ QPointF Level::ProjectToScreen(ecs::World *world,
   return point + QPointF(window_size.width()/2, window_size.height()/2);
 }
 
-void Level::CreateCamera(ecs::World *world) {
+void Level::CreateCamera(ecs::World* world) {
   world->CreateEntity()
       .AddComponent<game::PositionComponent>(0, 0)
       .AddComponent<game::CameraComponent>(1.5f);
