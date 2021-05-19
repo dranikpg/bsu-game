@@ -7,6 +7,10 @@ namespace game {
 
 void AnimationSystem::Run(World* world) {
   for (auto[sprite, animation] : world->Scan<SpriteComponent, AnimationComponent>()) {
+    if (animation.frame_time == 0) {
+      sprite.SetGraphics(animation.animation_resource->GetPixmap(),
+                         animation.animation_resource->GetFrame(animation.frame_index));
+    }
     ++animation.frame_time;
     if (animation.frame_time > animation.frame_length) {
       animation.frame_time = 1;
