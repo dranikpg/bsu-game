@@ -59,7 +59,9 @@ set(SOURCES
         src/context/splash_context.cpp
         src/components/splash_component.cpp
         src/systems/splash_system.cpp
-        src/widgets/typing_label.cpp)
+        src/widgets/typing_label.cpp
+        src/levels/bsu_sixth_floor/bulatov_mini_game/bulatov_mini_game.cpp
+        src/levels/bsu_sixth_floor/bulatov_mini_game/answer_widget.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

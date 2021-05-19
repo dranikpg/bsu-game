@@ -22,5 +22,7 @@
         <file>bufet_levels5.png</file>
         <file>style.css</file>
         <file>chrono_type.ttf</file>
+        <file>bulatov_chellenge.json</file>
+        <file>bulatov_chellenge.png</file>
     </qresource>
 </RCC>

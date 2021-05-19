@@ -75,9 +75,13 @@ void BsuLobbyLevel::CreatePath(resource::Path path, const QString& name) {
 
 void BsuLobbyLevel::StartMiniGame(ContextBag contexts) {
   contexts.mini_game_context->Start();
-  mini_game_ = std::make_shared<CanteenMiniGame>(
+  //debug
+  // mini_game_ = std::make_shared<BulatovMiniGame>(
+  //     [this]() { state_ = State::kFinishedDialog; },
+  //     contexts.mini_game_context->GetContainer(), contexts.input_context);
+  mini_game_ = std::make_shared<BulatovMiniGame>(
       [this]() { state_ = State::kFinishedDialog; },
-      contexts.mini_game_context->GetContainer(), contexts.input_context);
+      contexts.mini_game_context->GetContainer(), world_);
   state_ = State::kMiniGame;
 }
 

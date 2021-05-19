@@ -9,6 +9,10 @@
 #include "../../resources/level.h"
 #include "../../resources/behaviour.h"
 #include "../../levels/bsu_lobby/canteen_mini_game.h"
+
+//debug
+#include "../bsu_sixth_floor/bulatov_mini_game/bulatov_mini_game.h"
+
 #include "../../resources/path.h"
 
 namespace game {
@@ -43,7 +47,8 @@ class BsuLobbyLevel : public resource::Level {
   ecs::Entity* guard_ = nullptr;
   ecs::Entity* block_ = nullptr;
   ecs::Entity* canteen_;
-  std::shared_ptr<CanteenMiniGame> mini_game_;
+  //debug
+  std::shared_ptr<BulatovMiniGame> mini_game_;
   std::shared_ptr<resource::Path> guard_path_;
   std::shared_ptr<GuardBehaviour> guard_behaviour_;
   QPointF guard_pos_;
