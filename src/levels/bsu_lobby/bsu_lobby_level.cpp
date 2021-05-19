@@ -32,7 +32,6 @@ void BsuLobbyLevel::Process(ecs::World* world, ContextBag contexts) {
   if (std::hypotf((canteen_pos_ - player_->GetComponent<PositionComponent>().position).x(),
                   (canteen_pos_ - player_->GetComponent<PositionComponent>().position).y()) < 100 &&
                   state_ == State::kNone) {
-    qDebug() << "adfsa";
     StartMiniGame(contexts);
   } else if (state_ == State::kMiniGame) {
     mini_game_->Process();
@@ -109,5 +108,4 @@ QPointF BsuLobbyLevel::ProjectPlayerPos(ecs::World* world,
   point.ry() -= player_->GetComponent<BoundsComponent>().bounds.y() * 2;
   return ProjectToScreen(world, contexts, point);
 }
-
 }  // namespace game

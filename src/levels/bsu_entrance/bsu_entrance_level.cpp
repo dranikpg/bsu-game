@@ -25,7 +25,7 @@ void BsuEntranceLevel::Load(ecs::World* world) {
 
 void BsuEntranceLevel::Process(ecs::World* world, ContextBag contexts) {
   auto [pl_pos] = player_->Unpack<PositionComponent>();
-  if (abs(door_pos_.y() - pl_pos.position.y()) < 22) {  // pls don't comment this :)
+  if (abs(door_pos_.y() - pl_pos.position.y()) < 22) {
     contexts.level_context->Load<BsuLobbyLevel>();
   } else if (std::hypot(pl_pos.position.x() - mini_game_pos_.x(),
                         pl_pos.position.y() - mini_game_pos_.y()) < 100 && state_ == State::kNone) {

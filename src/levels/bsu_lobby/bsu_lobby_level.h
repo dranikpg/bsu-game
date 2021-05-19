@@ -32,7 +32,7 @@ class BsuLobbyLevel : public resource::Level {
   enum class State {
     kNone,
     kMiniGame,
-    kFinishedMiniGame,
+    kFinishedMiniGame
   };
 
   State state_;
