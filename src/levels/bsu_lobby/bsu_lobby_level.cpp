@@ -108,7 +108,7 @@ void BsuLobbyLevel::CreateGuard(ecs::World* world,
 QPointF BsuLobbyLevel::ProjectPlayerPos(ecs::World* world,
                                            ContextBag contexts) {
   QPointF point = player_->GetComponent<PositionComponent>().position;
-  point.ry() -= player_->GetComponent<BoundsComponent>().bounds.y() * 2;
+  point.ry() -= player_->GetComponent<BoundsComponent>().bounds.height() * 2;
   return ProjectToScreen(world, contexts, point);
 }
 
