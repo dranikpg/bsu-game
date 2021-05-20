@@ -18,3 +18,7 @@
 #splash-button:hover {
     border-color: aqua;
 }
+#npcdialog-text {
+    color: peachpuff;
+    font: 30px "ChronoType";
+}
