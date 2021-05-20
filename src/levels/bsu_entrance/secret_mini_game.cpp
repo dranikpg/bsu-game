@@ -12,86 +12,81 @@
 
 namespace game {
 
-SecretMiniGame::PudgeState SecretMiniGame::pudge_state = PudgeState::kWaiting;
-QPointF SecretMiniGame::hook_coordinates = QPointF(0, 0);
-QPointF SecretMiniGame::pudge = QPointF(0, 0);
+SecretMiniGame::GameState SecretMiniGame::player_state = GameState::kWaiting;
+QPointF SecretMiniGame::lab_coordinates = QPointF(0, 0);
+QPointF SecretMiniGame::player = QPointF(0, 0);
 QPointF SecretMiniGame::curr_vector = QPointF(0, 0);
 QPointF SecretMiniGame::Drawer::click_pos = QPointF(0, 0);
 bool SecretMiniGame::clicked = false;
 std::vector<std::pair<QPointF, bool>> SecretMiniGame::coordinates = {};
-int SecretMiniGame::lifes = 3;
+int SecretMiniGame::lives = 3;
+int SecretMiniGame::lab_speed = 7;
+int SecretMiniGame::target_speed = 6;
+int SecretMiniGame::waiting_time = 200;
 
-SecretMiniGame::SecretMiniGame(SecretMiniGame::Callback callback,
-                               QWidget* container,
-                               context::InputContext* input,
-                               ecs::World* world) :
-                                callback_(std::move(callback)),
-                                container_(container),
-                                input_(input),
-                                world_(world) {
+SecretMiniGame::SecretMiniGame(SecretMiniGame::Callback callback, QWidget* container,
+                               context::InputContext* input, ecs::World* world) :
+                               callback_(std::move(callback)), container_(container),
+                               input_(input), world_(world) {
   drawer_ = new Drawer(container, world_);
   drawer_->setParent(container);
   drawer_->resize(container->size());
   drawer_->show();
-  pudge = QPointF(container_->x() + container_->width() / 2. -
-                  QPixmap(":/chel_with_labs.png").width() / 8.,
-                  container_->y() + container_->height() -
-                  QPixmap(":/chel_with_labs.png").height());
+  player = QPointF(container_->x() + container_->width() / 2. -
+                    drawer_->player_pixmap_.width() / 8.,
+                   container_->y() + container_->height() -
+                  drawer_->player_pixmap_.height());
   for_updating_ = QPointF(container_->x() + container_->width() / 2.,
                           container_->y() + container_->height()
-                          - QPixmap(":/chel_with_labs.png").height());
-  hook_coordinates = for_updating_ - QPointF(QPixmap(":/laba.png").width() / 2.,
-                                             0);
-  pudge_state = PudgeState::kWaiting;
+                          - drawer_->player_pixmap_.height());
+  lab_coordinates = for_updating_ - QPointF(drawer_->lab_pixmap_.width() / 2., 0);
+  player_state = GameState::kWaiting;
 }
 
 void SecretMiniGame::Process() {
   input_->BlockInput();
-  if (pudge_state != PudgeState::kGoodEnding && pudge_state != PudgeState::kBadEnding) {
-    if (pudge_state == PudgeState::kWaiting && clicked) {
+  if (player_state != GameState::kGoodEnding && player_state != GameState::kBadEnding) {
+    if (player_state == GameState::kWaiting && clicked) {
+      double divisor = std::hypotf(SecretMiniGame::Drawer::click_pos.x() - for_updating_.x(),
+                                   SecretMiniGame::Drawer::click_pos.y() - for_updating_.y());
       curr_vector = QPointF(
-          (SecretMiniGame::Drawer::click_pos.x() - for_updating_.x()) /
-              std::hypotf(SecretMiniGame::Drawer::click_pos.x() - for_updating_.x(),
-                          SecretMiniGame::Drawer::click_pos.y() - for_updating_.y()),
-          (SecretMiniGame::Drawer::click_pos.y() - for_updating_.y()) /
-              std::hypotf(SecretMiniGame::Drawer::click_pos.x() - for_updating_.x(),
-                          SecretMiniGame::Drawer::click_pos.y() - for_updating_.y()));
-      pudge_state = PudgeState::kHooking;
-      hook_coordinates = for_updating_ - QPointF(QPixmap(":/laba.png").width() / 2.,
-                                                 0);
+          (SecretMiniGame::Drawer::click_pos.x() - for_updating_.x()) / divisor,
+          (SecretMiniGame::Drawer::click_pos.y() - for_updating_.y()) / divisor);
+      player_state = GameState::kThrowing;
+      lab_coordinates = for_updating_ - QPointF(drawer_->lab_pixmap_.width() / 2., 0);
       clicked = false;
-    } else if (pudge_state == PudgeState::kHooking) {
+    } else if (player_state == GameState::kThrowing) {
       for (auto& coordinate : coordinates) {
-        if (std::hypotf(hook_coordinates.x() -
-                            (coordinate.first.x() - QPixmap(":/target.png").width() / 18.),
-                        hook_coordinates.y() - coordinate.first.y()) < 100 && !coordinate.second) {
+        if (std::hypotf(lab_coordinates.x() -
+                        (coordinate.first.x() - drawer_->target_pixmap_.width() / 18.),
+                        lab_coordinates.y() - coordinate.first.y()) < 100 && !coordinate.second) {
           coordinate.second = true;
-          pudge_state = PudgeState::kReturningGood;
+          player_state = GameState::kReturningGood;
         }
       }
-      if (hook_coordinates.y() < container_->y() + container_->height() / 8. ||
-          hook_coordinates.x() < container_->x() ||
-          hook_coordinates.x() > container_->x() + container_->width()) {
+      if (lab_coordinates.y() < container_->y() + container_->height() / 8. ||
+          lab_coordinates.x() < container_->x() ||
+          lab_coordinates.x() > container_->x() + container_->width()) {
         if (coordinates[0].second) {
-          pudge_state = PudgeState::kReturningGood;
+          player_state = GameState::kReturningGood;
         } else {
-          pudge_state = PudgeState::kReturningBad;
+          player_state = GameState::kReturningBad;
         }
       } else {
-        hook_coordinates += 7 * curr_vector;
+        lab_coordinates += lab_speed * curr_vector;
       }
-    } else if (pudge_state == PudgeState::kReturningGood ||
-        pudge_state == PudgeState::kReturningBad) {
-      if (std::hypotf(pudge.x() - hook_coordinates.x(), pudge.y() - hook_coordinates.y()) < 10) {
-        if (pudge_state == PudgeState::kReturningGood) {
+    } else if (player_state == GameState::kReturningGood ||
+        player_state == GameState::kReturningBad) {
+      if (std::hypotf(player.x() - lab_coordinates.x(), player.y() - lab_coordinates.y()) < 10) {
+        if (player_state == GameState::kReturningGood) {
           coordinates.resize(0);
           hits_++;
         } else {
-          lifes--;
+          lives--;
         }
-        pudge_state = PudgeState::kWaiting;
+        player_state = GameState::kWaiting;
       } else {
-        hook_coordinates -= 7 * curr_vector;
+        lab_coordinates -= lab_speed * curr_vector;
       }
     }
 
@@ -102,19 +97,19 @@ void SecretMiniGame::Process() {
     } else {
       if (coordinates[0].first.x() > container_->x() + container_->width()) {
         coordinates.resize(0);
-      } else if (pudge_state != PudgeState::kReturningGood) {
-        coordinates[0].first += QPointF(6, 0);
+      } else if (player_state != GameState::kReturningGood) {
+        coordinates[0].first += QPointF(target_speed, 0);
       }
     }
   }
 
-  if (lifes == 0 && pudge_state != PudgeState::kBadEnding) {
-    pudge_state = PudgeState::kBadEnding;
-  } else if (hits_ == 5 && pudge_state != PudgeState::kGoodEnding) {
-    pudge_state = PudgeState::kGoodEnding;
-  } else if (pudge_state == PudgeState::kGoodEnding || pudge_state == PudgeState::kBadEnding) {
+  if (lives == 0 && player_state != GameState::kBadEnding) {
+    player_state = GameState::kBadEnding;
+  } else if (hits_ == 5 && player_state != GameState::kGoodEnding) {
+    player_state = GameState::kGoodEnding;
+  } else if (player_state == GameState::kGoodEnding || player_state == GameState::kBadEnding) {
     timer_++;
-    if (timer_ > 200) {
+    if (timer_ > waiting_time) {
       callback_();
       drawer_->close();
     }
@@ -123,7 +118,7 @@ void SecretMiniGame::Process() {
 
 SecretMiniGame::Drawer::Drawer(QWidget* container, ecs::World* world) : container_(container) {
   auto animations = utils::AseAnimationParser::Parse(QFile(":/chel_with_labs.json"));
-  pudge_ = &world->CreateEntity()
+  player_ = &world->CreateEntity()
       .AddComponent<AnimationComponent>(animations["coding_animation"])
       .AddComponent<SpriteComponent>(QRect(1, 1, 1, 1));
 
@@ -143,43 +138,43 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   painter.restore();
 
   painter.drawPixmap(container_->x(), container_->y(), container_->width(),
-                     container_->height(), background_);
+                     container_->height(), background_pixmap_);
 
   // drawing pudge
-  auto [animation] = pudge_->Unpack<AnimationComponent>();
+  auto [animation] = player_->Unpack<AnimationComponent>();
   QRect opa = animation.animation_resource->GetFrame(animation.frame_index);
-  painter.drawPixmap(pudge, pudge_pixmap_, opa);
+  painter.drawPixmap(player, player_pixmap_, opa);
 
-  if (pudge_state == PudgeState::kHooking) {
-    painter.drawPixmap(hook_coordinates.x(),
-                       hook_coordinates.y(),
-                       hook.width(),
-                       hook.height(),
-                       hook);
-  } else if (pudge_state == PudgeState::kReturningGood) {
-  painter.drawPixmap(hook_coordinates.x() - ok_.width() / 2. + hook.width() / 2.,
-                     hook_coordinates.y(),
-                     ok_.width(),
-                     ok_.height(),
-                     ok_);
-  } else if (pudge_state == PudgeState::kReturningBad) {
-    painter.drawPixmap(hook_coordinates.x() - wa_.width() / 2. + hook.width() / 2.,
-                       hook_coordinates.y(),
-                       wa_.width(),
-                       wa_.height(),
-                       wa_);
+  if (player_state == GameState::kThrowing) {
+    painter.drawPixmap(lab_coordinates.x(),
+                       lab_coordinates.y(),
+                       lab_pixmap_.width(),
+                       lab_pixmap_.height(),
+                       lab_pixmap_);
+  } else if (player_state == GameState::kReturningGood) {
+  painter.drawPixmap(lab_coordinates.x() - ok_pixmap_.width() / 2. + lab_pixmap_.width() / 2.,
+                     lab_coordinates.y(),
+                     ok_pixmap_.width(),
+                     ok_pixmap_.height(),
+                     ok_pixmap_);
+  } else if (player_state == GameState::kReturningBad) {
+      painter.drawPixmap(lab_coordinates.x() - wa_pixmap_.width() / 2. + lab_pixmap_.width() / 2.,
+                       lab_coordinates.y(),
+                       wa_pixmap_.width(),
+                       wa_pixmap_.height(),
+                       wa_pixmap_);
   }
-  if (lifes > 0) {
+  if (lives > 0) {
     painter.drawPixmap(container_->x(),
-                       container_->y() + container_->height() - hearts_[lifes - 1].height(),
-                       hearts_[lifes - 1].width(),
-                       hearts_[lifes - 1].height(),
-                       hearts_[lifes - 1]);
+                       container_->y() + container_->height() - hearts_pixmap_[lives - 1].height(),
+                       hearts_pixmap_[lives - 1].width(),
+                       hearts_pixmap_[lives - 1].height(),
+                       hearts_pixmap_[lives - 1]);
   }
 
   if (!coordinates.empty()
-      && pudge_state != PudgeState::kGoodEnding
-      && pudge_state != PudgeState::kBadEnding) {
+      && player_state != GameState::kGoodEnding
+      && player_state != GameState::kBadEnding) {
     auto [animation1] = target->Unpack<AnimationComponent>();
     if (coordinates[0].second && !stop_) {
       if (!is_changed) {
@@ -198,12 +193,12 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
       }
     }
     QRect curr = animation1.animation_resource->GetFrame(animation1.frame_index);
-    painter.drawPixmap(coordinates[0].first, QPixmap(":/target.png"), curr);
+    painter.drawPixmap(coordinates[0].first, target_pixmap_, curr);
   }
 }
 
 void SecretMiniGame::Drawer::mousePressEvent(QMouseEvent* event) {
-  if (pudge_state == PudgeState::kWaiting) {
+  if (player_state == GameState::kWaiting) {
     click_pos = event->windowPos();
     clicked = true;
   }

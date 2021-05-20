@@ -18,9 +18,9 @@ namespace game {
 
 class SecretMiniGame {
  public:
-  enum class PudgeState {
+  enum class GameState {
     kWaiting,
-    kHooking,
+    kThrowing,
     kReturningGood,
     kReturningBad,
     kGoodEnding,
@@ -40,18 +40,19 @@ class SecretMiniGame {
 
    private:
     QWidget* container_ = nullptr;
-    QPixmap pudge_pixmap_ = QPixmap(":/chel_with_labs.png");
-    QPixmap background_ = QPixmap(":/computer_class_fon1");;
-    QPixmap wa_ = QPixmap(":/WA.png");
-    QPixmap ok_ = QPixmap(":/OK.png");
-    QPixmap hook = QPixmap(":/laba.png");
-    std::vector<QPixmap> hearts_ = {QPixmap(":/hearts3.png"),
-                                    QPixmap(":/hearts2.png"),
-                                    QPixmap(":/hearts1.png")};
+    QPixmap player_pixmap_ = QPixmap(":/chel_with_labs.png");
+    QPixmap background_pixmap_ = QPixmap(":/computer_class_fon1");;
+    QPixmap wa_pixmap_ = QPixmap(":/WA.png");
+    QPixmap ok_pixmap_ = QPixmap(":/OK.png");
+    QPixmap lab_pixmap_ = QPixmap(":/laba.png");
+    QPixmap target_pixmap_ = QPixmap(":/target.png");
+    std::vector<QPixmap> hearts_pixmap_ = {QPixmap(":/hearts3.png"),
+                                           QPixmap(":/hearts2.png"),
+                                           QPixmap(":/hearts1.png")};
     std::unordered_map<std::string, std::shared_ptr<Animation>> anims_;
     int16_t count_ = 0;
     bool stop_ = false;
-    ecs::Entity* pudge_ = nullptr;
+    ecs::Entity* player_ = nullptr;
     ecs::Entity* target = nullptr;
   };
 
@@ -59,13 +60,16 @@ class SecretMiniGame {
   SecretMiniGame(Callback callback, QWidget* container, context::InputContext* input, ecs::World*);
   void Process();
 
-  static PudgeState pudge_state;
-  static QPointF hook_coordinates;
-  static QPointF pudge;
+  static GameState player_state;
+  static QPointF lab_coordinates;
+  static QPointF player;
   static bool clicked;
   static QPointF curr_vector;
   static std::vector<std::pair<QPointF, bool>> coordinates;
-  static int lifes;
+  static int lives;
+  static int lab_speed;
+  static int target_speed;
+  static int waiting_time;
 
  private:
   Callback callback_;
