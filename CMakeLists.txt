@@ -59,7 +59,8 @@ set(SOURCES
         src/context/splash_context.cpp
         src/components/splash_component.cpp
         src/systems/splash_system.cpp
-        src/widgets/typing_label.cpp)
+        src/widgets/typing_label.cpp
+        src/systems/camera_system.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

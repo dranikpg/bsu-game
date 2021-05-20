@@ -2,6 +2,6 @@
 
 namespace game {
 
-CameraComponent::CameraComponent(float scale) : scale(scale) {}
+CameraComponent::CameraComponent(float scale) : targetScale(scale) {}
 
 }  // namespace game
