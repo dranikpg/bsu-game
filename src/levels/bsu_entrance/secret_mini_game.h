@@ -53,7 +53,7 @@ class SecretMiniGame {
     int16_t count_ = 0;
     bool stop_ = false;
     ecs::Entity* player_ = nullptr;
-    ecs::Entity* target = nullptr;
+    ecs::Entity* target_ = nullptr;
   };
 
   using Callback = std::function<void()>;
