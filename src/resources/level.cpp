@@ -13,7 +13,7 @@
 namespace resource {
 
 ecs::Entity& resource::Level::CreateCollider(ecs::World* world,
-                                     const map::MapObject& map_object) {
+                                             const map::MapObject& map_object) {
   return world->CreateEntity().AddComponent<game::ColliderComponent>()
       .AddComponent<game::PositionComponent>(map_object.position.x(),
                                              map_object.position.y())
@@ -23,15 +23,17 @@ ecs::Entity& resource::Level::CreateCollider(ecs::World* world,
 
 void resource::Level::CreateMap(ecs::World* world, const QString& path) {
   QPixmap background(path);
-  world->CreateEntity().AddComponent<game::PositionComponent>(
-          background.width() / 2,
-          background.height() / 2)
-      .AddComponent<game::SpriteComponent>(background,
-                                           SpriteLayer::kBackground);
+  world->CreateEntity()
+      .AddComponent<game::PositionComponent>(background.width() / 2, background.height() / 2)
+      .AddComponent<game::SpriteComponent>(background, SpriteLayer::kBackground)
+      .AddComponent<game::BoundsComponent>(background.width(), background.height())
+      .AddComponent<game::MapComponent>();
 }
 
 ecs::Entity& resource::Level::CreatePlayer(ecs::World* world,
                                            const map::MapObject& object) {
+  CreateCamera(world);
+
   auto anims = utils::AseAnimationParser::Parse(QFile(":/player.json"));
 
   using constants::AnimationType;
@@ -53,8 +55,7 @@ ecs::Entity& resource::Level::CreatePlayer(ecs::World* world,
       .AddComponent<game::AnimationComponent>(anims["main"])
       .AddComponent<game::MovementAnimationSyncComponent>(sync_pack, 1024)
       .AddComponent<game::ImpulseComponent>()
-      .AddComponent<game::CameraComponent>(1);
-
+      .AddComponent<game::CameraFollowComponent>();
   return player;
 }
 
@@ -69,6 +70,12 @@ QPointF Level::ProjectToScreen(ecs::World* world,
   point /= camera.scale;
   QSize window_size = contexts.mini_game_context->GetContainer()->size();
   return point + QPointF(window_size.width() / 2, window_size.height() / 2);
+}
+
+void Level::CreateCamera(ecs::World* world) {
+  world->CreateEntity()
+      .AddComponent<game::PositionComponent>(0, 0)
+      .AddComponent<game::CameraComponent>(1.5f);
 }
 
 }  // namespace resource
