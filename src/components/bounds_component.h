@@ -14,7 +14,7 @@ struct BoundsComponent : ecs::Component {
   explicit BoundsComponent(const QSizeF& bounds);
   BoundsComponent(float x, float y);
 
-  QPointF bounds;
+  QSizeF bounds;
 };
 
 }  // namespace game
