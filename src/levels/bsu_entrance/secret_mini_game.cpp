@@ -20,14 +20,12 @@ QPointF SecretMiniGame::Drawer::click_pos = QPointF(0, 0);
 bool SecretMiniGame::clicked = false;
 std::vector<std::pair<QPointF, bool>> SecretMiniGame::coordinates = {};
 int SecretMiniGame::lives = 3;
-int SecretMiniGame::lab_speed = 7;
-int SecretMiniGame::target_speed = 6;
-int SecretMiniGame::waiting_time = 200;
 
 SecretMiniGame::SecretMiniGame(SecretMiniGame::Callback callback, QWidget* container,
                                context::InputContext* input, ecs::World* world) :
-                               callback_(std::move(callback)), container_(container),
-                               input_(input), world_(world) {
+                                callback_(std::move(callback)), container_(container),
+                                input_(input), world_(world),
+                                kLabSpeed_(7), kTargetSpeed_(6), kWaitingTime_(200) {
   drawer_ = new Drawer(container, world_);
   drawer_->setParent(container);
   drawer_->resize(container->size());
@@ -73,7 +71,7 @@ void SecretMiniGame::Process() {
           player_state = GameState::kReturningBad;
         }
       } else {
-        lab_coordinates += lab_speed * curr_vector;
+        lab_coordinates += kLabSpeed_ * curr_vector;
       }
     } else if (player_state == GameState::kReturningGood ||
         player_state == GameState::kReturningBad) {
@@ -86,7 +84,7 @@ void SecretMiniGame::Process() {
         }
         player_state = GameState::kWaiting;
       } else {
-        lab_coordinates -= lab_speed * curr_vector;
+        lab_coordinates -= kLabSpeed_ * curr_vector;
       }
     }
 
@@ -98,7 +96,7 @@ void SecretMiniGame::Process() {
       if (coordinates[0].first.x() > container_->x() + container_->width()) {
         coordinates.resize(0);
       } else if (player_state != GameState::kReturningGood) {
-        coordinates[0].first += QPointF(target_speed, 0);
+        coordinates[0].first += QPointF(kTargetSpeed_, 0);
       }
     }
   }
@@ -109,7 +107,7 @@ void SecretMiniGame::Process() {
     player_state = GameState::kGoodEnding;
   } else if (player_state == GameState::kGoodEnding || player_state == GameState::kBadEnding) {
     timer_++;
-    if (timer_ > waiting_time) {
+    if (timer_ > kWaitingTime_) {
       callback_();
       drawer_->close();
     }
@@ -123,7 +121,7 @@ SecretMiniGame::Drawer::Drawer(QWidget* container, ecs::World* world) : containe
       .AddComponent<SpriteComponent>(QRect(1, 1, 1, 1));
 
   anims_ = utils::AseAnimationParser::Parse(QFile(":/target.json"));
-  target = &world->CreateEntity().AddComponent<ImpulseComponent>()
+  target_ = &world->CreateEntity().AddComponent<ImpulseComponent>()
       .AddComponent<AnimationComponent>(anims_["running_right"])
       .AddComponent<SpriteComponent>(QRect(1, 1, 1, 1));
 }
@@ -140,10 +138,9 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   painter.drawPixmap(container_->x(), container_->y(), container_->width(),
                      container_->height(), background_pixmap_);
 
-  // drawing pudge
   auto [animation] = player_->Unpack<AnimationComponent>();
-  QRect opa = animation.animation_resource->GetFrame(animation.frame_index);
-  painter.drawPixmap(player, player_pixmap_, opa);
+  QRect anim_rect = animation.animation_resource->GetFrame(animation.frame_index);
+  painter.drawPixmap(player, player_pixmap_, anim_rect);
 
   if (player_state == GameState::kThrowing) {
     painter.drawPixmap(lab_coordinates.x(),
@@ -175,7 +172,7 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   if (!coordinates.empty()
       && player_state != GameState::kGoodEnding
       && player_state != GameState::kBadEnding) {
-    auto [animation1] = target->Unpack<AnimationComponent>();
+    auto [animation1] = target_->Unpack<AnimationComponent>();
     if (coordinates[0].second && !stop_) {
       if (!is_changed) {
         animation1.SetAnimationResource(anims_["blowing"]);

@@ -67,9 +67,6 @@ class SecretMiniGame {
   static QPointF curr_vector;
   static std::vector<std::pair<QPointF, bool>> coordinates;
   static int lives;
-  static int lab_speed;
-  static int target_speed;
-  static int waiting_time;
 
  private:
   Callback callback_;
@@ -80,6 +77,9 @@ class SecretMiniGame {
   QPointF for_updating_;
   int hits_ = 0;
   int timer_ = 0;
+  const int kLabSpeed_;
+  const int kTargetSpeed_;
+  const int kWaitingTime_;
 };
 
 }  // namespace game
