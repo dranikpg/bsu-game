@@ -22,8 +22,16 @@ namespace ui {
               Callback callback, QWidget* container);
 
     void Start();
+    void SetTypingStartCallback(Callback);
+    void SetTypingEndCallback(Callback);
 
    private:
+    void TypingEnd();
+    Callback typing_end_callback_;
+
+    void TypingStart();
+    Callback typing_start_callback_;
+
     void TypingDone();
     void LoadNext();
 

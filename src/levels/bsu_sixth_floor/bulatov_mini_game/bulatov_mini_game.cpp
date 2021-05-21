@@ -27,6 +27,7 @@ void BulatovMiniGame::Drawer::Process() {
   if (game_state_ == GameState::kStartup) {
     qDebug() << "GameState::kStartup";
     game_state_ = GameState::kQ1;
+    real_state_ = GameState::kQ1;
     LoadAnimations();
     animation_player = &world_->CreateEntity()
         .AddComponent<AnimationComponent>(animations_["no_1"])
@@ -64,6 +65,8 @@ void BulatovMiniGame::Drawer::Process() {
                                           dialog_finished_ = true;
                                           game_state_ = GameState::kQ1;},
                                           bulatov_dialog_container_);
+      bulatov_dialog_widget_->SetTypingStartCallback([this](){MakeSpeaking();});
+      bulatov_dialog_widget_->SetTypingEndCallback([this](){MakeNotSpeaking();});
       bulatov_dialog_widget_->Start();
     } else {
       qDebug() << "GameState::kQ1 dialog end";
@@ -132,6 +135,58 @@ void BulatovMiniGame::Drawer::paintEvent(QPaintEvent* event) {
 void BulatovMiniGame::Drawer::resizeEvent(QResizeEvent* event) {
   resize(container_->size());
   update();
+}
+
+void BulatovMiniGame::Drawer::MakeNotSpeaking() {
+  qDebug() << "make not speaking";
+  switch (real_state_) {
+    case GameState::kQ1: {
+      animation_player->GetComponent<AnimationComponent>().
+          SetAnimationResource(animations_["ozhidanie_1"]);
+      // wrong animation
+      break;
+    }
+    case GameState::kQ1Yes:
+    case GameState::kQ1No: {
+      animation_player->GetComponent<AnimationComponent>().
+          SetAnimationResource(animations_["ozhidanie_2"]);
+      break;
+    }
+    case GameState::kQ1YesQ2Yes:
+    case GameState::kQ1YesQ2No:
+    case GameState::kQ1NoQ2No:
+    case GameState::kQ1NoQ2Yes: {
+      animation_player->GetComponent<AnimationComponent>().
+          SetAnimationResource(animations_["ozhidanie_3"]);
+      break;
+    }
+  }
+}
+
+void BulatovMiniGame::Drawer::MakeSpeaking() {
+  qDebug() << "make speaking";
+  switch (real_state_) {
+    case GameState::kQ1: {
+      animation_player->GetComponent<AnimationComponent>().
+          SetAnimationResource(animations_["no_1"]);
+      // wrong animation
+      break;
+    }
+    case GameState::kQ1Yes:
+    case GameState::kQ1No: {
+      animation_player->GetComponent<AnimationComponent>().
+          SetAnimationResource(animations_["no_1"]);
+      break;
+    }
+    case GameState::kQ1YesQ2Yes:
+    case GameState::kQ1YesQ2No:
+    case GameState::kQ1NoQ2No:
+    case GameState::kQ1NoQ2Yes: {
+      animation_player->GetComponent<AnimationComponent>().
+          SetAnimationResource(animations_["no_1"]);
+      break;
+    }
+  }
 }
 
 }  // namespace game

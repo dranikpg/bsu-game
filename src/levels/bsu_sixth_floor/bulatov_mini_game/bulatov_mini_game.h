@@ -38,7 +38,8 @@ class BulatovMiniGame : public resource::MiniGame {
       kQ1YesQ2No,
       kProcessing,
       kEnd
-    } game_state_ = GameState::kStartup;
+    } game_state_ = GameState::kStartup,
+      real_state_ = GameState::kStartup;
     QWidget* container_;
     ecs::World* world_;
 
@@ -59,6 +60,9 @@ class BulatovMiniGame : public resource::MiniGame {
 
     void LoadAnimations();
     void RecalculateSizes();
+
+    void MakeSpeaking();
+    void MakeNotSpeaking();
   };
 
  public:

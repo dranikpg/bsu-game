@@ -43,9 +43,11 @@ NPCDialog::NPCDialog(std::vector<std::pair<QString, int>> parts,
 void NPCDialog::Start() {
   label_->setText(current_text_);
   show();
+  TypingStart();
 }
 
 void NPCDialog::TypingDone() {
+  TypingEnd();
   QTimer::singleShot(current_pause_, this, [this](){LoadNext();});
 }
 
@@ -54,6 +56,7 @@ void NPCDialog::LoadNext() {
     current_text_ = parts_[current_part_].first;
     current_pause_ = parts_[current_part_].second;
     label_->setText(current_text_);
+    TypingStart();
   } else {
     hide();
     if (callback_ != nullptr) {
@@ -79,6 +82,26 @@ void NPCDialog::CalculateSize() {
 void NPCDialog::resizeEvent(QResizeEvent* event) {
   CalculateSize();
   update();
+}
+
+void NPCDialog::TypingStart() {
+  if (typing_start_callback_ != nullptr) {
+    typing_start_callback_();
+  }
+}
+
+void NPCDialog::TypingEnd() {
+  if (typing_end_callback_ != nullptr) {
+    typing_end_callback_();
+  }
+}
+
+void NPCDialog::SetTypingStartCallback(Callback callback) {
+  typing_start_callback_ = std::move(callback);
+}
+
+void NPCDialog::SetTypingEndCallback(Callback callback) {
+  typing_end_callback_ = std::move(callback);
 }
 
 }  // namespace ui
