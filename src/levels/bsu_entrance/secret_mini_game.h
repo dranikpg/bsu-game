@@ -30,7 +30,7 @@ class SecretMiniGame {
   class Drawer : public QWidget {
    public:
     friend class SecretMiniGame;
-    Drawer(QWidget* container, ecs::World* world);
+    Drawer(QWidget* container, ecs::World* world, SecretMiniGame* game);
     void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent* event) override;
@@ -39,6 +39,7 @@ class SecretMiniGame {
     bool is_changed = false;
 
    private:
+    SecretMiniGame* mini_game;
     QWidget* container_ = nullptr;
     QPixmap player_pixmap_ = QPixmap(":/chel_with_labs.png");
     QPixmap background_pixmap_ = QPixmap(":/computer_class_fon1");;
@@ -60,14 +61,6 @@ class SecretMiniGame {
   SecretMiniGame(Callback callback, QWidget* container, context::InputContext* input, ecs::World*);
   void Process();
 
-  static GameState player_state;
-  static QPointF lab_coordinates;
-  static QPointF player;
-  static bool clicked;
-  static QPointF curr_vector;
-  static std::vector<std::pair<QPointF, bool>> coordinates;
-  static int lives;
-
  private:
   Callback callback_;
   Drawer* drawer_;
@@ -80,6 +73,13 @@ class SecretMiniGame {
   const int kLabSpeed_;
   const int kTargetSpeed_;
   const int kWaitingTime_;
+  GameState player_state = GameState::kWaiting;
+  QPointF lab_coordinates;
+  QPointF player;
+  bool clicked = false;
+  QPointF curr_vector;
+  std::vector<std::pair<QPointF, bool>> coordinates;
+  int lives = 3;
 };
 
 }  // namespace game

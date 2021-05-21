@@ -12,21 +12,14 @@
 
 namespace game {
 
-SecretMiniGame::GameState SecretMiniGame::player_state = GameState::kWaiting;
-QPointF SecretMiniGame::lab_coordinates = QPointF(0, 0);
-QPointF SecretMiniGame::player = QPointF(0, 0);
-QPointF SecretMiniGame::curr_vector = QPointF(0, 0);
 QPointF SecretMiniGame::Drawer::click_pos = QPointF(0, 0);
-bool SecretMiniGame::clicked = false;
-std::vector<std::pair<QPointF, bool>> SecretMiniGame::coordinates = {};
-int SecretMiniGame::lives = 3;
 
 SecretMiniGame::SecretMiniGame(SecretMiniGame::Callback callback, QWidget* container,
                                context::InputContext* input, ecs::World* world) :
                                 callback_(std::move(callback)), container_(container),
                                 input_(input), world_(world),
                                 kLabSpeed_(7), kTargetSpeed_(6), kWaitingTime_(200) {
-  drawer_ = new Drawer(container, world_);
+  drawer_ = new Drawer(container, world_, this);
   drawer_->setParent(container);
   drawer_->resize(container->size());
   drawer_->show();
@@ -114,7 +107,8 @@ void SecretMiniGame::Process() {
   }
 }
 
-SecretMiniGame::Drawer::Drawer(QWidget* container, ecs::World* world) : container_(container) {
+SecretMiniGame::Drawer::Drawer(QWidget* container, ecs::World* world, SecretMiniGame* game)
+                        : container_(container), mini_game(game) {
   auto animations = utils::AseAnimationParser::Parse(QFile(":/chel_with_labs.json"));
   player_ = &world->CreateEntity()
       .AddComponent<AnimationComponent>(animations["coding_animation"])
@@ -140,40 +134,41 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
 
   auto [animation] = player_->Unpack<AnimationComponent>();
   QRect anim_rect = animation.animation_resource->GetFrame(animation.frame_index);
-  painter.drawPixmap(player, player_pixmap_, anim_rect);
+  painter.drawPixmap(mini_game->player, player_pixmap_, anim_rect);
 
-  if (player_state == GameState::kThrowing) {
-    painter.drawPixmap(lab_coordinates.x(),
-                       lab_coordinates.y(),
+  if (mini_game->player_state == GameState::kThrowing) {
+    painter.drawPixmap(mini_game->lab_coordinates.x(),
+                       mini_game->lab_coordinates.y(),
                        lab_pixmap_.width(),
                        lab_pixmap_.height(),
                        lab_pixmap_);
-  } else if (player_state == GameState::kReturningGood) {
-  painter.drawPixmap(lab_coordinates.x() - ok_pixmap_.width() / 2. + lab_pixmap_.width() / 2.,
-                     lab_coordinates.y(),
+  } else if (mini_game->player_state == GameState::kReturningGood) {
+  painter.drawPixmap(mini_game->lab_coordinates.x() - ok_pixmap_.width() / 2. + lab_pixmap_.width() / 2.,
+                     mini_game->lab_coordinates.y(),
                      ok_pixmap_.width(),
                      ok_pixmap_.height(),
                      ok_pixmap_);
-  } else if (player_state == GameState::kReturningBad) {
-      painter.drawPixmap(lab_coordinates.x() - wa_pixmap_.width() / 2. + lab_pixmap_.width() / 2.,
-                       lab_coordinates.y(),
+  } else if (mini_game->player_state == GameState::kReturningBad) {
+      painter.drawPixmap(mini_game->lab_coordinates.x() - wa_pixmap_.width() / 2. + lab_pixmap_.width() / 2.,
+                       mini_game->lab_coordinates.y(),
                        wa_pixmap_.width(),
                        wa_pixmap_.height(),
                        wa_pixmap_);
   }
-  if (lives > 0) {
+  if (mini_game->lives > 0) {
     painter.drawPixmap(container_->x(),
-                       container_->y() + container_->height() - hearts_pixmap_[lives - 1].height(),
-                       hearts_pixmap_[lives - 1].width(),
-                       hearts_pixmap_[lives - 1].height(),
-                       hearts_pixmap_[lives - 1]);
+                       container_->y() + container_->height() -
+                       hearts_pixmap_[mini_game->lives - 1].height(),
+                       hearts_pixmap_[mini_game->lives - 1].width(),
+                       hearts_pixmap_[mini_game->lives - 1].height(),
+                       hearts_pixmap_[mini_game->lives - 1]);
   }
 
-  if (!coordinates.empty()
-      && player_state != GameState::kGoodEnding
-      && player_state != GameState::kBadEnding) {
+  if (!mini_game->coordinates.empty()
+      && mini_game->player_state != GameState::kGoodEnding
+      && mini_game->player_state != GameState::kBadEnding) {
     auto [animation1] = target_->Unpack<AnimationComponent>();
-    if (coordinates[0].second && !stop_) {
+    if (mini_game->coordinates[0].second && !stop_) {
       if (!is_changed) {
         animation1.SetAnimationResource(anims_["blowing"]);
         is_changed = true;
@@ -190,14 +185,14 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
       }
     }
     QRect curr = animation1.animation_resource->GetFrame(animation1.frame_index);
-    painter.drawPixmap(coordinates[0].first, target_pixmap_, curr);
+    painter.drawPixmap(mini_game->coordinates[0].first, target_pixmap_, curr);
   }
 }
 
 void SecretMiniGame::Drawer::mousePressEvent(QMouseEvent* event) {
-  if (player_state == GameState::kWaiting) {
+  if (mini_game->player_state == GameState::kWaiting) {
     click_pos = event->windowPos();
-    clicked = true;
+    mini_game->clicked = true;
   }
 }
 
