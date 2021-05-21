@@ -1,6 +1,5 @@
 #include "npc_dialog.h"
 
-#include <QDebug>
 #include <utility>
 #include <QHBoxLayout>
 
@@ -21,6 +20,7 @@ NPCDialog::NPCDialog(std::vector<std::pair<QString, int>> parts,
   label_ = new TypingLabel([this](){TypingDone();});
   label_->setObjectName("npcdialog-text");
   label_->setWordWrap(true);
+  label_->setTypingInterval(120);
 
   main_layout_ = new QHBoxLayout();
   main_layout_->addWidget(label_);
@@ -37,23 +37,19 @@ NPCDialog::NPCDialog(std::vector<std::pair<QString, int>> parts,
 
   hide();
 
-  connect(label_, SIGNAL(TypedSymbol(int)), this, SLOT(CalculateSize(int)));
-  qDebug() << "NPCDialog::NPCDialog";
+  connect(label_, SIGNAL(TypedSymbol()), this, SLOT(CalculateSize()));
 }
 
 void NPCDialog::Start() {
   label_->setText(current_text_);
   show();
-  qDebug() << "NNPCDialog::Show()";
 }
 
 void NPCDialog::TypingDone() {
-  qDebug() << "NPCDialog::TypingDone";
   QTimer::singleShot(current_pause_, this, [this](){LoadNext();});
 }
 
 void NPCDialog::LoadNext() {
-  qDebug() << "NPCDialog::LoadNext()";
   if (++current_part_ < parts_.size()) {
     current_text_ = parts_[current_part_].first;
     current_pause_ = parts_[current_part_].second;
@@ -66,34 +62,22 @@ void NPCDialog::LoadNext() {
   }
 }
 
-void NPCDialog::CalculateSize(int current_size) {
-  current_size_ = current_size;
+void NPCDialog::CalculateSize() {
   int cnt_wdth = container_->width();
   int cnt_height = container_->height();
-  int hint_height = 25;
-  int hint_width = current_size * 13;
-
-  if (hint_width % cnt_wdth == 0) {
-    hint_height = 25 * (hint_width / cnt_wdth);
-    hint_width = cnt_wdth;
-  } else {
-    hint_height = 25 * (hint_width / cnt_wdth + 1);
-    if (hint_width > cnt_wdth) {
-      hint_width = cnt_wdth;
-    }
-  }
+  auto newFontSizeRect = label_->fontMetrics().boundingRect(container_->rect(), (Qt::TextWordWrap) | label_->alignment(), label_->getCurrentText());
+  int hint_height =
+      newFontSizeRect.height();
+  int hint_width =
+      newFontSizeRect.width();
 
   setGeometry(cnt_wdth-hint_width,
               cnt_height-hint_height,
               hint_width, hint_height);
-  qDebug() << "setGeometry";
-  qDebug() << container_->width()-hint_width <<
-      container_->height()-hint_height <<
-      hint_width << hint_height;
 }
 
 void NPCDialog::resizeEvent(QResizeEvent* event) {
-  CalculateSize(current_size_);
+  CalculateSize();
   update();
 }
 

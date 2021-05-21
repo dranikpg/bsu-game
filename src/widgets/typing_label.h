@@ -10,15 +10,18 @@ class TypingLabel : public QLabel {
   Q_OBJECT
  public:
   using Callback = std::function<void()>;
-  TypingLabel(Callback callback = [](){});
+  explicit TypingLabel(Callback callback = [](){});
   void setText(const QString& text);
+  void setTypingInterval(int interval);
+  QString getCurrentText();
 
   signals:
-  void TypedSymbol(int current_size);
+  void TypedSymbol();
 
  private:
-  const int kTypingInterval = 50;
+  int typing_interval_ = 50;
   QString text_;
+  QString current_text_;
   QTimer* timer_;
 
   Callback callback_;

@@ -39,7 +39,7 @@ namespace ui {
     QHBoxLayout* main_layout_;
 
    private slots:
-    void CalculateSize(int current_size);
+    void CalculateSize();
   };
 }  // namespace ui
 
