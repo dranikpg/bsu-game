@@ -143,13 +143,15 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
                        lab_pixmap_.height(),
                        lab_pixmap_);
   } else if (mini_game->player_state == GameState::kReturningGood) {
-  painter.drawPixmap(mini_game->lab_coordinates.x() - ok_pixmap_.width() / 2. + lab_pixmap_.width() / 2.,
+  painter.drawPixmap(mini_game->lab_coordinates.x() - ok_pixmap_.width() / 2. +
+                        lab_pixmap_.width() / 2.,
                      mini_game->lab_coordinates.y(),
                      ok_pixmap_.width(),
                      ok_pixmap_.height(),
                      ok_pixmap_);
   } else if (mini_game->player_state == GameState::kReturningBad) {
-      painter.drawPixmap(mini_game->lab_coordinates.x() - wa_pixmap_.width() / 2. + lab_pixmap_.width() / 2.,
+      painter.drawPixmap(mini_game->lab_coordinates.x() - wa_pixmap_.width() / 2. +
+                          lab_pixmap_.width() / 2.,
                        mini_game->lab_coordinates.y(),
                        wa_pixmap_.width(),
                        wa_pixmap_.height(),
