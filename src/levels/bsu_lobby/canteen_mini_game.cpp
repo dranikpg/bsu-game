@@ -2,7 +2,6 @@
 #include <QResizeEvent>
 #include <QPainter>
 #include <utility>
-#include <QDebug>
 #include <random>
 
 int game::CanteenMiniGame::timer = 0;
