@@ -3,6 +3,8 @@
 #include <utility>
 #include <QHBoxLayout>
 
+#include <QDebug>
+
 namespace ui {
 
 NPCDialog::NPCDialog(std::vector<std::pair<QString, int>> parts,

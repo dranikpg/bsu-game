@@ -22,3 +22,7 @@
     color: peachpuff;
     font: 30px "ChronoType";
 }
+#choose-widget-button {
+    background-color: rgba(20, 20, 20, 220);
+    font: 30px "ChronoType";
+}

@@ -39,25 +39,8 @@ void BulatovMiniGame::Drawer::Process() {
     if (!dialog_finished_) {
       qDebug() << "GameState::kQ1 dialog";
       animation_player->GetComponent<AnimationComponent>().SetAnimationResource(animations_["no_1"]);
-      std::vector<std::pair<QString, int>> parts = {{"Заходит в бар улитка говорит: можно виски с колой? "
-                                                     "Мы не обслуживаем улиток извини"
-                                                     "И вышвырнул ее за дверь "
-                                                     "Проходят дни, недели, месяца "
-                                                     "Она приходит снова в этот бар "
-                                                     "Надевает свою модную рубаху "
-                                                     "И говорит бармену пошел нахуй ", 10000},
-                                                    {"Как-то раз пришел мужик в зоомагазин "
-                                                     "Есть у вас что-нибудь чтоб умело говорить? "
-                                                     "Есть говорящая сороконожка "
-                                                     "Приходит домой и спросил неловко "
-                                                     "Гулять идем? А та молчит… "
-                                                     "Гулять идем? Снова молчит. "
-                                                     "Мужик всю злость, суки наебали "
-                                                     "Ты не говоришь, тихо бля я обуваюсь ", 10000},
-                                                    {"vla vlavl lvlalvla alvalvav asd asd asd asd asd asd asd asd as dasd asd ad as ", 10000},
-                                                    {"vla vlavl lvlalvla alvalvav asd asd asd asd asd asd asd asd as dasd asd ad as ", 10000},
-                                                    {"vla vlavl lvlalvla alvalvav asd asd asd asd asd asd asd asd as dasd asd ad as ", 10000},
-                                                    {"vla vlavl lvlalvla alvalvav asd asd asd asd asd asd asd asd as dasd asd ad as ", 10000}};
+      std::vector<std::pair<QString, int>> parts = {{"Существует также близкая к интерполяции задача, которая заключается в аппроксимации какой-либо сложной функции другой, более простой функцией. Если некоторая функция слишком сложна для производительных вычислений, можно попытаться вычислить её значение в нескольких", 1000}, {"точках, а по ним построить, то есть интерполировать, более простую функцию.", 1000}, { "Разумеется, использование упрощенной функции не позволяет получить такие же точные результаты, какие давала бы первоначал"
+                                                     , 1000}};
       dialog_finished_ = false;
       game_state_ = GameState::kProcessing;
       bulatov_dialog_widget_ = new ui::NPCDialog(parts,
@@ -70,6 +53,15 @@ void BulatovMiniGame::Drawer::Process() {
       bulatov_dialog_widget_->Start();
     } else {
       qDebug() << "GameState::kQ1 dialog end";
+      choose_widget_ = new ui::ChooseWidget(choose_widget_container_);
+      choose_widget_->Start("do you you do you do you?",
+                            "var 1 1 1 1 1 1 1 1 1 ",
+                            "var 2 2 2 2 2 2 2 2 2 ",
+                            "var 3 3 3 3 3 3 3 3 3 ",
+                            "var 4 4 4 4 4 4 4 4 4 ",
+                            [this](){game_state_ = GameState::kQ1No;},
+                            &choose_widget_return_);
+      game_state_ = GameState::kProcessing;
     }
   } else if (game_state_ == GameState::kQ1No) {
     qDebug() << "GameState::kQ1No";
@@ -103,7 +95,7 @@ BulatovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
                                   world_(world) {
   bulatov_dialog_container_ = new QWidget(this);
   player_dialog_container_ = new QWidget(this);
-
+  choose_widget_container_ = new QWidget(this);
 }
 
 void BulatovMiniGame::Drawer::RecalculateSizes() {
@@ -115,6 +107,10 @@ void BulatovMiniGame::Drawer::RecalculateSizes() {
                                         static_cast<int>(0.84*container_->height()),
                                         static_cast<int>(0.67*container_->width()),
                                         static_cast<int>(0.09*container_->height()));
+  choose_widget_container_->setGeometry(0,
+                                        0,
+                                        container_->width(),
+                                        container_->height());
   auto& component = animation_player->GetComponent<AnimationComponent>();
   auto frame_index =
       component.frame_index;

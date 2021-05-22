@@ -61,7 +61,9 @@ set(SOURCES
         src/systems/splash_system.cpp
         src/widgets/typing_label.cpp
         src/levels/bsu_sixth_floor/bulatov_mini_game/bulatov_mini_game.cpp
-        src/widgets/npc_dialog.cpp)
+        src/widgets/npc_dialog.cpp
+        src/widgets/choose_widget/choose_widget.cpp
+        src/widgets/choose_widget/choose_var_widget.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

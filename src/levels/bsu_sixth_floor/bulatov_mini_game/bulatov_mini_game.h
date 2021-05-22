@@ -5,6 +5,7 @@
 #include "../../../resources/animation.h"
 #include "../../../context/input_context.h"
 #include "../../../widgets/npc_dialog.h"
+#include "../../../widgets/choose_widget/choose_widget.h"
 
 #include <unordered_map>
 
@@ -52,8 +53,9 @@ class BulatovMiniGame : public resource::MiniGame {
     ui::NPCDialog* bulatov_dialog_widget_;
     QWidget* bulatov_dialog_container_;
     QWidget* player_dialog_container_;
-    QRect bulatov_dc_rect;
-    QRect player_dc_rect;
+    QWidget* choose_widget_container_;
+    ui::ChooseWidget* choose_widget_ = nullptr;
+    int choose_widget_return_ = -1;
 
     bool dialog_finished_ = false;
     Callback callback_;
