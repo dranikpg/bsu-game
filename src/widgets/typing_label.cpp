@@ -19,7 +19,6 @@ TypingLabel::TypingLabel(Callback callback) : callback_(std::move(callback)) {
       }
     }
   });
-  timer_->start();
 }
 
 void TypingLabel::setText(const QString& text) {

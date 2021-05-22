@@ -20,9 +20,9 @@
 }
 #npcdialog-text {
     color: peachpuff;
-    font: 30px "ChronoType";
+    font: 15px "ChronoType";
 }
-#choose-widget-button {
-    background-color: rgba(20, 20, 20, 220);
+#choose-var-widget {
+    background-color: black;
     font: 30px "ChronoType";
 }

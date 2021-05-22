@@ -1,9 +1,11 @@
 #ifndef CHOOSE_WIDGET_H
 #define CHOOSE_WIDGET_H
 
+#include "../npc_dialog.h"
+#include "choose_var_widget.h"
+
 #include <QWidget>
 #include <QPushButton>
-#include "../npc_dialog.h"
 
 namespace ui {
   class ChooseWidget : public QWidget {
@@ -20,17 +22,23 @@ namespace ui {
                Callback callback,
                int* chosen_var_ret);
     void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
    private:
-    void ShowButtons();
+    void ShowVars();
+    void MakeConnections();
     void RecalculateSizes();
     void End();
 
     QWidget* container_;
     TypingLabel* question_label_;
-    QPushButton* var_1_but_;
-    QPushButton* var_2_but_;
-    QPushButton* var_3_but_;
-    QPushButton* var_4_but_;
+    ChooseVarWidget* var_1_;
+    QWidget* var_1_container_;
+    ChooseVarWidget* var_2_;
+    QWidget* var_2_container_;
+    ChooseVarWidget* var_3_;
+    QWidget* var_3_container_;
+    ChooseVarWidget* var_4_;
+    QWidget* var_4_container_;
 
    private slots:
     void Var1ButClicked(bool);
@@ -41,6 +49,7 @@ namespace ui {
    private:
     Callback callback_;
     int* chosen_var_ret_;
+    int current_alpha_ = 0;
   };
 
 }  // namespace ui

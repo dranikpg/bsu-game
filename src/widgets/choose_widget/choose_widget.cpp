@@ -9,6 +9,11 @@ namespace ui {
 ChooseWidget::ChooseWidget(QWidget* container) : QWidget(container),
                                                 container_(container) {
   resize(container_->size());
+  auto container_layout = new QHBoxLayout();
+  container_layout->addWidget(this);
+  container_layout->setSpacing(0);
+  container_layout->setContentsMargins(0,0,0,0);
+  container_->setLayout(container_layout);
 }
 
 void ChooseWidget::Start(const QString& question,
@@ -20,39 +25,47 @@ void ChooseWidget::Start(const QString& question,
                          int* chosen_var_ret) {
   chosen_var_ret_ = chosen_var_ret;
 
-  auto container_layout = new QHBoxLayout();
-  container_layout->addWidget(this);
-  container_layout->setSpacing(0);
-  container_layout->setContentsMargins(0,0,0,0);
-  container_->setLayout(container_layout);
-
   callback_ = std::move(callback);
-  question_label_ = new TypingLabel([this](){ShowButtons();});
-  var_1_but_ = new QPushButton(var1, this);
-  var_2_but_ = new QPushButton(var2, this);
-  var_3_but_ = new QPushButton(var3, this);
-  var_4_but_ = new QPushButton(var4, this);
-  var_1_but_->setWindowOpacity(0.3);
-  // var_1_but_->hide();
-  // var_2_but_->hide();
-  // var_3_but_->hide();
-  // var_4_but_->hide();
+
+  auto main_layout = new QHBoxLayout(this);
+  main_layout->setSpacing(0);
+  main_layout->setContentsMargins(5,5,5,5);
+  setLayout(main_layout);
+
+  var_1_container_ = new QWidget(this);
+  var_2_container_ = new QWidget(this);
+  var_3_container_ = new QWidget(this);
+  var_4_container_ = new QWidget(this);
+
+  var_1_ = new ChooseVarWidget(var_1_container_, [this](){var_2_->Start();}, var1);
+  var_2_ = new ChooseVarWidget(var_2_container_, [this](){var_3_->Start();}, var2);
+  var_3_ = new ChooseVarWidget(var_3_container_, [this](){var_4_->Start();}, var3);
+  var_4_ = new ChooseVarWidget(var_4_container_, [this](){MakeConnections();}, var4);
+
+  question_label_ = new TypingLabel([this](){ShowVars();});
   question_label_->setParent(this);
 
-  question_label_->setText(question);
-  qDebug() << this->parent();
   RecalculateSizes();
   show();
+
+  question_label_->setText(question);
 }
 
-void ChooseWidget::ShowButtons() {
-  qDebug() << "ChooseWidget::ShowButtons";
+void ChooseWidget::ShowVars() {
+  var_1_->Start();
+}
 
+void ChooseWidget::MakeConnections() {
+  connect(var_1_, SIGNAL(clicked(bool)), this, SLOT(Var1ButClicked(bool)));
+  connect(var_2_, SIGNAL(clicked(bool)), this, SLOT(Var2ButClicked(bool)));
+  connect(var_3_, SIGNAL(clicked(bool)), this, SLOT(Var3ButClicked(bool)));
+  connect(var_4_, SIGNAL(clicked(bool)), this, SLOT(Var4ButClicked(bool)));
+}
 
-  connect(var_1_but_, SIGNAL(clicked(bool)), this, SLOT(Var1ButClicked(bool)));
-  connect(var_2_but_, SIGNAL(clicked(bool)), this, SLOT(Var2ButClicked(bool)));
-  connect(var_3_but_, SIGNAL(clicked(bool)), this, SLOT(Var3ButClicked(bool)));
-  connect(var_4_but_, SIGNAL(clicked(bool)), this, SLOT(Var4ButClicked(bool)));
+void ChooseWidget::paintEvent(QPaintEvent* event) {
+  qDebug() << "paint event";
+  QPainter painter(this);
+  painter.fillRect(rect(), QBrush(QColor(255,255,0,current_alpha_)));
 }
 
 void ChooseWidget::resizeEvent(QResizeEvent* event) {
@@ -62,20 +75,19 @@ void ChooseWidget::resizeEvent(QResizeEvent* event) {
 }
 
 void ChooseWidget::RecalculateSizes() {
-  qDebug() << "ChooseWidget::RecalculateSizes";
-  var_1_but_->setGeometry(static_cast<int>(0.2*container_->width()),
+  var_1_container_->setGeometry(static_cast<int>(0.2*container_->width()),
                           static_cast<int>(0.5*container_->height()),
                           static_cast<int>(0.3*container_->width()),
                           static_cast<int>(0.2*container_->height()));
-  var_2_but_->setGeometry(static_cast<int>(0.6*container_->width()),
+  var_2_container_->setGeometry(static_cast<int>(0.6*container_->width()),
                           static_cast<int>(0.5*container_->height()),
                           static_cast<int>(0.3*container_->width()),
                           static_cast<int>(0.2*container_->height()));
-  var_3_but_->setGeometry(static_cast<int>(0.2*container_->width()),
+  var_3_container_->setGeometry(static_cast<int>(0.2*container_->width()),
                           static_cast<int>(0.8*container_->height()),
                           static_cast<int>(0.3*container_->width()),
                           static_cast<int>(0.2*container_->height()));
-  var_4_but_->setGeometry(static_cast<int>(0.6*container_->width()),
+  var_4_container_->setGeometry(static_cast<int>(0.6*container_->width()),
                           static_cast<int>(0.8*container_->height()),
                           static_cast<int>(0.3*container_->width()),
                           static_cast<int>(0.2*container_->height()));
@@ -86,7 +98,6 @@ void ChooseWidget::RecalculateSizes() {
 }
 
 void ChooseWidget::Var1ButClicked(bool) {
-  qDebug() << "ChooseWidget::Var1ButClicked";
   if (chosen_var_ret_ != nullptr) {
     *chosen_var_ret_ = 1;
   }
@@ -115,7 +126,6 @@ void ChooseWidget::Var4ButClicked(bool) {
 }
 
 void ChooseWidget::End() {
-  qDebug() << "ChooseWidget::End";
   hide();
   if (callback_) {
     callback_();

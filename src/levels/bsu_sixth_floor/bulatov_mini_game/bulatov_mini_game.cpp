@@ -39,8 +39,7 @@ void BulatovMiniGame::Drawer::Process() {
     if (!dialog_finished_) {
       qDebug() << "GameState::kQ1 dialog";
       animation_player->GetComponent<AnimationComponent>().SetAnimationResource(animations_["no_1"]);
-      std::vector<std::pair<QString, int>> parts = {{"Существует также близкая к интерполяции задача, которая заключается в аппроксимации какой-либо сложной функции другой, более простой функцией. Если некоторая функция слишком сложна для производительных вычислений, можно попытаться вычислить её значение в нескольких", 1000}, {"точках, а по ним построить, то есть интерполировать, более простую функцию.", 1000}, { "Разумеется, использование упрощенной функции не позволяет получить такие же точные результаты, какие давала бы первоначал"
-                                                     , 1000}};
+      std::vector<std::pair<QString, int>> parts = {{"f", 1000}};
       dialog_finished_ = false;
       game_state_ = GameState::kProcessing;
       bulatov_dialog_widget_ = new ui::NPCDialog(parts,
