@@ -12,6 +12,8 @@
 #include <set>
 #include <utility>
 #include <QPixmap>
+#include <QMediaPlaylist>
+#include <QMediaPlayer>
 
 namespace game {
 
@@ -26,6 +28,7 @@ class CanteenMiniGame : public resource::MiniGame {
 
  public:
   enum class State {
+    kNotStarted,
     kWaiting,
     kGame,
     kGameOver,
@@ -41,6 +44,9 @@ class CanteenMiniGame : public resource::MiniGame {
     double GetCoordinate(const PlayerColumn& state);
 
     std::shared_ptr<PlayerColumn> player_state_ = nullptr;
+    bool changed_playlist = false;
+    bool started = false;
+
    private:
     QWidget* container_ = nullptr;
     std::shared_ptr<std::map<PlayerColumn, std::vector<double>>> opa_;
@@ -55,6 +61,10 @@ class CanteenMiniGame : public resource::MiniGame {
     std::vector<QPixmap> hearts_ = {QPixmap(":/hearts3.png"),
                                    QPixmap(":/hearts2.png"),
                                    QPixmap(":/hearts1.png")};
+    QMediaPlayer* media_player_;
+    QMediaPlaylist* first_playlist_;
+    QMediaPlaylist* second_playlist_;
+    QMediaPlaylist* third_playlist_;
   };
 
  public:

@@ -5,6 +5,8 @@
 #include "../../map/map_loader.h"
 #include "../../context/level_context.h"
 #include "../../utils/parser/dialog_parser.h"
+#include "../../levels/bsu_entrance/bsu_entrance_level.h"
+#include "../../levels/labyrinth/labyrinth_level.h"
 
 #include <map>
 #include <memory>
@@ -35,9 +37,18 @@ void BsuLobbyLevel::Process(ecs::World* world, ContextBag contexts) {
     StartMiniGame(contexts);
   } else if (state_ == State::kMiniGame) {
     mini_game_->Process();
+    if (std::hypotf((canteen_pos_ - player_->GetComponent<PositionComponent>().position).x(),
+                    (canteen_pos_ - player_->GetComponent<PositionComponent>().position).y()) >
+                    100) {
+      state_ = State::kNone;
+    }
   } else if (state_ == State::kFinishedMiniGame) {
     contexts.mini_game_context->Stop();
-    contexts.level_context->Load<BsuLobbyLevel>();
+    state_ = State::kNone;
+  } else if (std::hypotf(334. - player_->GetComponent<PositionComponent>().position.x(),
+                         488. - player_->GetComponent<PositionComponent>().position.y()) < 100 &&
+                         contexts.input_context->GetFrameKeys().count(constants::Keys::kEnter)) {
+    contexts.level_context->Load<LabyrinthLevel>();
   }
 }
 

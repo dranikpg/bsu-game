@@ -3,11 +3,12 @@
 #include <QPainter>
 #include <utility>
 #include <random>
+#include <QDebug>
 
 int game::CanteenMiniGame::timer = 0;
 int game::CanteenMiniGame::curr_level = 1;
 int game::CanteenMiniGame::lifes = 3;
-game::CanteenMiniGame::State game::CanteenMiniGame::state = State::kWaiting;
+game::CanteenMiniGame::State game::CanteenMiniGame::state = State::kNotStarted;
 
 void game::CanteenMiniGame::Process() {
   timer++;
@@ -60,9 +61,13 @@ void game::CanteenMiniGame::Process() {
       timer = 0;
       state = State::kGameOver;
     }
-    if (timer > 200) {
-      callback_();
+    if (timer > 280) {
+      state = State::kNotStarted;
+      timer = 0;
+      curr_level = 1;
+      lifes = 3;
       canteen_->close();
+      callback_();
     }
   } else if (curr_level > 3) {
     if (state != State::kGameEnding) {
@@ -70,8 +75,12 @@ void game::CanteenMiniGame::Process() {
       state = State::kGameEnding;
     }
     if (timer > 200) {
-      callback_();
+      state = State::kNotStarted;
+      timer = 0;
+      curr_level = 1;
+      lifes = 3;
       canteen_->close();
+      callback_();
     }
   }
 }
@@ -156,6 +165,11 @@ void game::CanteenMiniGame::CollidingChiabattas(
 }
 
 void game::CanteenMiniGame::CanteenDrawer::paintEvent(QPaintEvent* event) {
+  if (!started) {
+    media_player_->setPlaylist(first_playlist_);
+    media_player_->play();
+    started = true;
+  }
   QPainter painter(this);
   painter.save();
   painter.restore();
@@ -167,10 +181,22 @@ void game::CanteenMiniGame::CanteenDrawer::paintEvent(QPaintEvent* event) {
         container_->y() + container_->height() / 2 - levels_[curr_level - 1].height() / 2,
         levels_[curr_level - 1]);
   } else if (state == State::kGameEnding) {
+    if (!changed_playlist) {
+      media_player_->stop();
+      changed_playlist = true;
+      media_player_->setPlaylist(second_playlist_);
+      media_player_->play();
+    }
     painter.drawPixmap(container_->x() + container_->width() / 2 - levels_[4].width() / 2,
                        container_->y() + container_->height() / 2 - levels_[4].height() / 2,
                        levels_[4]);
   } else if (state == State::kGameOver) {
+    if (!changed_playlist) {
+      media_player_->stop();
+      changed_playlist = true;
+      media_player_->setPlaylist(third_playlist_);
+      media_player_->play();
+    }
     painter.drawPixmap(container_->x() + container_->width() / 2 - levels_[3].width() / 2,
                        container_->y() + container_->height() / 2 - levels_[3].height() / 2,
                        levels_[3]);
@@ -199,4 +225,13 @@ void game::CanteenMiniGame::CanteenDrawer::resizeEvent(QResizeEvent* event) {
 game::CanteenMiniGame::CanteenDrawer::CanteenDrawer(QWidget* container,
                                                     std::shared_ptr<std::map<PlayerColumn,
                                                   std::vector<double>>> opa)
-                                                  : container_(container), opa_(std::move(opa)) {}
+                                                  : container_(container), opa_(std::move(opa)) {
+  media_player_ = new QMediaPlayer(this);
+  first_playlist_ = new QMediaPlaylist(this);
+  second_playlist_ = new QMediaPlaylist(this);
+  third_playlist_ = new QMediaPlaylist(this);
+  first_playlist_->addMedia(QUrl("qrc:/ulitka.mp3"));
+  first_playlist_->setPlaybackMode(QMediaPlaylist::Loop);
+  second_playlist_->addMedia(QUrl("qrc:/win.wav"));
+  third_playlist_->addMedia(QUrl("qrc:/fail.wav"));
+}

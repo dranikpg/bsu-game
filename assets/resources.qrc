@@ -30,5 +30,10 @@
         <file>laba.png</file>
         <file>WA.png</file>
         <file>OK.png</file>
+        <file>fail.wav</file>
+        <file>win.wav</file>
+        <file>ulitka.mp3</file>
+        <file>labyrinth.json</file>
+        <file>labyrinth.png</file>
     </qresource>
 </RCC>
