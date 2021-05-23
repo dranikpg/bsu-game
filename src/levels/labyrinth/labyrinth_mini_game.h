@@ -49,7 +49,7 @@ class LabyrinthMiniGame : public resource::MiniGame {
   Callback callback_;
   QWidget* container_ = nullptr;
   context::InputContext* input_ = nullptr;
-  QPointF player_pos_;
+  QPointF player_pos_ = QPointF(100, 100);
 };
 
 }  // namespace game
