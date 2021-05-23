@@ -8,17 +8,8 @@
 
 namespace ui {
 
-ChooseVarWidget::ChooseVarWidget(QWidget* container,
-                                 Callback constructed_callback,
-                                 Callback destroyed_callback,
-                                 QString  text)
-                                 : text_(std::move(text)),
-                                 constructed_callback_(std::move(constructed_callback)),
-                                 destroyed_callback_(std::move(destroyed_callback)) {
-  container_ = container;
-  setParent(container_);
+ChooseVarWidget::ChooseVarWidget(QWidget* container, const QString& text) : container_(container) {
   resize(container_->size());
-
   auto container_layout = new QHBoxLayout();
   container_layout->addWidget(this);
   container_layout->setSpacing(0);
@@ -27,94 +18,28 @@ ChooseVarWidget::ChooseVarWidget(QWidget* container,
 
   auto main_layout = new QHBoxLayout(this);
   main_layout->setSpacing(0);
-  main_layout->setContentsMargins(5,5,5,5);
-  setLayout(main_layout);
+  main_layout->setContentsMargins(0,0,0,0);
 
-  label_ = new ui::TypingLabel();
+  label_ = new QLabel(text, this);
   label_->setObjectName("splash-text");
   label_->setWordWrap(true);
+  setStyleSheet("background-color: red");
 
-  main_layout->addWidget(label_, Qt::AlignCenter);
+  main_layout->addWidget(label_);
+  setLayout(main_layout);
 
-  hide();
-}
+  RecalculateSizes();
 
-void ChooseVarWidget::Start() {
-  ShowRect();
   show();
 }
 
-void ChooseVarWidget::Hide() {
-  qDebug() << "ChooseVarWidget::Hide";
-  is_active_ = false;
-  HideText();
-}
-
-void ChooseVarWidget::ShowRect() {
-  timer_ = new QTimer(this);
-  timer_->setInterval(35);
-  QObject::connect(timer_, &QTimer::timeout, [this](){
-    if (current_alpha_ > 230) {
-      current_alpha_ = 255;
-      timer_->stop();
-      ShowText();
-    } else {
-      current_alpha_ += 13;
-      update();
-    }
-  });
-
-  timer_->start();
-}
-
-void ChooseVarWidget::HideRect() {
-  qDebug() << "ChooseVarWidget::HideRect";
-  timer_ = new QTimer(this);
-  timer_->setInterval(35);
-  QObject::connect(timer_, &QTimer::timeout, [this](){
-    if (current_alpha_ < 20) {
-      current_alpha_ = 0;
-      timer_->stop();
-      EndDestruction();
-    } else {
-      current_alpha_ -= 13;
-      update();
-    }
-  });
-
-  timer_->start();
-}
-
-void ChooseVarWidget::ShowText() {
-  label_->SetCallback([this](){EndConstruction();});
-  label_->setText(text_);
-}
-
-void ChooseVarWidget::HideText() {
-  qDebug() << "ChooseVarWidget::HideText";
-  label_->SetCallback([this](){HideRect();});
-  label_->TypeBack();
-}
-
-void ChooseVarWidget::EndConstruction() {
-  if (constructed_callback_ != nullptr) {
-    constructed_callback_();
-  }
-}
-
-void ChooseVarWidget::EndDestruction() {
-  if (destroyed_callback_ != nullptr) {
-    destroyed_callback_();
-  }
-}
-
 void ChooseVarWidget::paintEvent(QPaintEvent* event) {
-  QPainter painter(this);
-  painter.fillRect(rect(), QBrush(QColor(255,0,0,current_alpha_)));
+
 }
 
 void ChooseVarWidget::resizeEvent(QResizeEvent* event) {
   resize(container_->size());
+  RecalculateSizes();
   update();
 }
 
@@ -122,12 +47,13 @@ void ChooseVarWidget::mousePressEvent(QMouseEvent* event) {
   emit clicked(true);
 }
 
-bool ChooseVarWidget::IsActive() {
-  return is_active_;
-}
-
-void ChooseVarWidget::SetDestroyedCallback(Callback callback) {
-  destroyed_callback_ = std::move(callback);
+void ChooseVarWidget::RecalculateSizes() {
+  qDebug() << "ChooseVarWidget::RecalculateSizes";
+  label_->setGeometry(static_cast<int>(0.1*width()),
+                      static_cast<int>(0.1*height()),
+                      static_cast<int>(0.8*width()),
+                      static_cast<int>(0.8*height()));
+  qDebug() << label_->size() << size();
 }
 
 }  // namespace ui

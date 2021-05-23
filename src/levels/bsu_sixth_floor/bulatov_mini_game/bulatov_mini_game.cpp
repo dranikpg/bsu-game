@@ -52,14 +52,15 @@ void BulatovMiniGame::Drawer::Process() {
       bulatov_dialog_widget_->Start();
     } else {
       qDebug() << "GameState::kQ1 dialog end";
-      choose_widget_ = new ui::ChooseWidget(choose_widget_container_);
-      choose_widget_->Start("do you you do you do you?",
-                            "var 1 1 1 1 1 1 1 1 1 ",
-                            "var 2 2 2 2 2 2 2 2 2 ",
-                            "var 3 3 3 3 3 3 3 3 3 ",
-                            "var 4 4 4 4 4 4 4 4 4 ",
-                            [this](){game_state_ = GameState::kQ1No;},
-                            &choose_widget_return_);
+      choose_widget_ = new ui::ChooseWidget(choose_widget_container_,
+                                            "do you you do you do you?",
+                                            "var 1 1 1 1 1 1 1 1 1 ",
+                                            "var 2 2 2 2 2 2 2 2 2 ",
+                                            "var 3 3 3 3 3 3 3 3 3 ",
+                                            "var 4 4 4 4 4 4 4 4 4 ",
+                                            [this](int var){game_state_ = GameState::kQ1No;
+                                                            choose_widget_return_ = var;});
+      choose_widget_->Start(QWidget::grab(QRect(0,0,width(),height())));
       game_state_ = GameState::kProcessing;
     }
   } else if (game_state_ == GameState::kQ1No) {
