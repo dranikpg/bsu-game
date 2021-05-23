@@ -14,27 +14,40 @@ class ChooseVarWidget : public QWidget {
 
  public:
   using Callback = std::function<void()>;
-  explicit ChooseVarWidget(QWidget* container, Callback callback,
+  explicit ChooseVarWidget(QWidget* container,
+                           Callback constructed_callback,
+                           Callback destroyed_callback,
                            QString text);
   void resizeEvent(QResizeEvent* event) override;
   void paintEvent(QPaintEvent *event) override;
   void mousePressEvent(QMouseEvent *event) override;
 
   void Start();
+  void Hide();
+  bool IsActive();
+
+  void SetDestroyedCallback(Callback);
 
   signals:
   void clicked(bool);
 
  private:
-  void End();
+  void ShowRect();
+  void HideRect();
+  void ShowText();
+  void HideText();
+  void EndConstruction();
+  void EndDestruction();
 
-  Callback callback_;
+  Callback constructed_callback_;
+  Callback destroyed_callback_;
   QString text_;
   QWidget* container_;
   QTimer* timer_;
   ui::TypingLabel* label_;
 
   int current_alpha_ = 0;
+  bool is_active_;
 };
 
 }  // namespace ui

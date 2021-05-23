@@ -13,6 +13,8 @@ class TypingLabel : public QLabel {
   explicit TypingLabel(Callback callback = [](){});
   void setText(const QString& text);
   void setTypingInterval(int interval);
+  void TypeBack();
+  void SetCallback(Callback callback);
   QString getCurrentText();
 
   signals:

@@ -23,6 +23,7 @@ void ChooseWidget::Start(const QString& question,
                          const QString& var4,
                          Callback callback,
                          int* chosen_var_ret) {
+  question_text_ = question;
   chosen_var_ret_ = chosen_var_ret;
 
   callback_ = std::move(callback);
@@ -37,10 +38,14 @@ void ChooseWidget::Start(const QString& question,
   var_3_container_ = new QWidget(this);
   var_4_container_ = new QWidget(this);
 
-  var_1_ = new ChooseVarWidget(var_1_container_, [this](){var_2_->Start();}, var1);
-  var_2_ = new ChooseVarWidget(var_2_container_, [this](){var_3_->Start();}, var2);
-  var_3_ = new ChooseVarWidget(var_3_container_, [this](){var_4_->Start();}, var3);
-  var_4_ = new ChooseVarWidget(var_4_container_, [this](){MakeConnections();}, var4);
+  var_1_ = new ChooseVarWidget(var_1_container_, [this](){var_2_->Start();}, [this](){var_2_->Hide();}, var1);
+  var_2_ = new ChooseVarWidget(var_2_container_, [this](){var_3_->Start();}, [this](){var_3_->Hide();}, var2);
+  var_3_ = new ChooseVarWidget(var_3_container_, [this](){var_4_->Start();}, [this](){var_4_->Hide();}, var3);
+  var_4_ = new ChooseVarWidget(var_4_container_, [this](){MakeConnections();}, [this](){HideMask();}, var4);
+  vars_.push_back(var_1_);
+  vars_.push_back(var_2_);
+  vars_.push_back(var_3_);
+  vars_.push_back(var_4_);
 
   question_label_ = new TypingLabel([this](){ShowVars();});
   question_label_->setParent(this);
@@ -48,7 +53,56 @@ void ChooseWidget::Start(const QString& question,
   RecalculateSizes();
   show();
 
-  question_label_->setText(question);
+  ShowMask();
+}
+
+void ChooseWidget::ShowMask() {
+  timer_ = new QTimer(this);
+  timer_->setInterval(35);
+  QObject::connect(timer_, &QTimer::timeout, [this](){
+    if (current_alpha_ > 150) {
+      current_alpha_ = 170;
+      timer_->stop();
+      ShowQuestion();
+    } else {
+      current_alpha_ += 13;
+      update();
+    }
+  });
+
+  timer_->start();
+}
+
+void ChooseWidget::HideMask() {
+  timer_ = new QTimer(this);
+  timer_->setInterval(35);
+  QObject::connect(timer_, &QTimer::timeout, [this](){
+    if (current_alpha_ < 20) {
+      current_alpha_ = 0;
+      timer_->stop();
+      End();
+    } else {
+      current_alpha_ -= 13;
+      update();
+    }
+  });
+
+  timer_->start();
+}
+
+void ChooseWidget::ShowQuestion() {
+  question_label_->setText(question_text_);
+}
+
+void ChooseWidget::HideQuestion() {
+  qDebug() << "ChooseWidget::HideQuestion";
+  question_label_->SetCallback([this](){HideVars();});
+  question_label_->TypeBack();
+}
+
+void ChooseWidget::HideVars() {
+  qDebug() << "ChooseWidget::HideVars";
+  var_1_->Hide();
 }
 
 void ChooseWidget::ShowVars() {
@@ -63,9 +117,8 @@ void ChooseWidget::MakeConnections() {
 }
 
 void ChooseWidget::paintEvent(QPaintEvent* event) {
-  qDebug() << "paint event";
   QPainter painter(this);
-  painter.fillRect(rect(), QBrush(QColor(255,255,0,current_alpha_)));
+  painter.fillRect(rect(), QBrush(QColor(220,220,220,current_alpha_)));
 }
 
 void ChooseWidget::resizeEvent(QResizeEvent* event) {
@@ -97,32 +150,41 @@ void ChooseWidget::RecalculateSizes() {
                           static_cast<int>(0.2*container_->height()));
 }
 
+void ChooseWidget::Hide() {
+  qDebug() << "ChooseWidget::Hide";
+  disconnect(var_1_, SIGNAL(clicked(bool)), this, SLOT(Var1ButClicked(bool)));
+  disconnect(var_2_, SIGNAL(clicked(bool)), this, SLOT(Var2ButClicked(bool)));
+  disconnect(var_3_, SIGNAL(clicked(bool)), this, SLOT(Var3ButClicked(bool)));
+  disconnect(var_4_, SIGNAL(clicked(bool)), this, SLOT(Var4ButClicked(bool)));
+  HideQuestion();
+}
+
 void ChooseWidget::Var1ButClicked(bool) {
   if (chosen_var_ret_ != nullptr) {
-    *chosen_var_ret_ = 1;
+    *chosen_var_ret_ = 0;
   }
-  End();
+  Hide();
 }
 
 void ChooseWidget::Var2ButClicked(bool) {
   if (chosen_var_ret_ != nullptr) {
-    *chosen_var_ret_ = 2;
+    *chosen_var_ret_ = 1;
   }
-  End();
+  Hide();
 }
 
 void ChooseWidget::Var3ButClicked(bool) {
   if (chosen_var_ret_ != nullptr) {
-    *chosen_var_ret_ = 3;
+    *chosen_var_ret_ = 2;
   }
-  End();
+  Hide();
 }
 
 void ChooseWidget::Var4ButClicked(bool) {
   if (chosen_var_ret_ != nullptr) {
-    *chosen_var_ret_ = 4;
+    *chosen_var_ret_ = 3;
   }
-  End();
+  Hide();
 }
 
 void ChooseWidget::End() {

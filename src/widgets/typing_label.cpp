@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include <QDebug>
+
 namespace ui {
 
 TypingLabel::TypingLabel(Callback callback) : callback_(std::move(callback)) {
@@ -21,6 +23,25 @@ TypingLabel::TypingLabel(Callback callback) : callback_(std::move(callback)) {
   });
 }
 
+void TypingLabel::TypeBack() {
+  timer_ = new QTimer(this);
+  timer_->setInterval(typing_interval_);
+  QObject::connect(timer_, &QTimer::timeout, [this](){
+    if (text().length() > 0) {
+      current_text_ = text().left(text().length() - 1);
+      QLabel::setText(current_text_);
+    } else {
+      text_ = "";
+      timer_->stop();
+      if (callback_ != nullptr) {
+        callback_();
+      }
+    }
+  });
+
+  timer_->start();
+}
+
 void TypingLabel::setText(const QString& text) {
   text_ = text;
   current_text_ = "";
@@ -35,6 +56,10 @@ void TypingLabel::setTypingInterval(int interval) {
 
 QString TypingLabel::getCurrentText() {
   return current_text_;
+}
+
+void TypingLabel::SetCallback(Callback callback) {
+  callback_ = std::move(callback);
 }
 
 }  // namespace ui
