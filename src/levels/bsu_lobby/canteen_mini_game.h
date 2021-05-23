@@ -28,7 +28,6 @@ class CanteenMiniGame : public resource::MiniGame {
 
  public:
   enum class State {
-    kNotStarted,
     kWaiting,
     kGame,
     kGameOver,

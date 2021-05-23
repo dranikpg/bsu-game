@@ -26,17 +26,14 @@ game::LabyrinthMiniGame::LabyrinthMiniGame(game::LabyrinthMiniGame::Callback cal
 
 void game::LabyrinthMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   QPixmap test = QPixmap(":/canteen.png");
-
-  QRegion r1(QRect(mini_game_->player_pos_.x() - 100,
-                   mini_game_->player_pos_.y() - 100,200, 200),    // r1: elliptic region
-            QRegion::Ellipse);
-  QRegion r2(mini_game_->container_->rect());
-  QRegion r3 = r2.subtracted(r1);
+  //
+  // QRegion r1(QRect(mini_game_->player_pos_.x() - 100,
+  //                  mini_game_->player_pos_.y() - 100,200, 200),    // r1: elliptic region
+  //           QRegion::Ellipse);
+  // QRegion r2(mini_game_->container_->rect());
+  // QRegion r3 = r2.subtracted(r1);
   QPainter painter(this);
-  painter.setClipRegion(r3);
-  painter.drawPixmap(mini_game_->player_pos_.x() - test.width() / 2.,
-                    mini_game_->player_pos_.y() - test.height() / 2.,
-                     test);
+  // painter.setClipRegion(r3);
 }
 
 void game::LabyrinthMiniGame::Drawer::resizeEvent(QResizeEvent* event) {

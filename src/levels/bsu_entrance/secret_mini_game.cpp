@@ -170,7 +170,20 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
                        wa_pixmap_.width(),
                        wa_pixmap_.height(),
                        wa_pixmap_);
+  } else if (mini_game->player_->state == GameState::kBadEnding) {
+    painter.drawPixmap(mini_game->container_->x() + mini_game->container_->width() / 2. -
+                        bad_.width() / 2.,
+                       mini_game->container_->y() + mini_game->container_->height() / 2. -
+                       bad_.height() / 2.,
+                       bad_);
+  } else if (mini_game->player_->state == GameState::kGoodEnding) {
+    painter.drawPixmap(mini_game->container_->x() + mini_game->container_->width() / 2. -
+                       good_.width() / 2.,
+                       mini_game->container_->y() + mini_game->container_->height() / 2. -
+                       good_.width() / 2.,
+                       good_);
   }
+
   if (mini_game->player_->lives > 0) {
     painter.drawPixmap(mini_game->container_->x(),
                        mini_game->container_->y() + mini_game->container_->height() -
@@ -183,10 +196,8 @@ void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
     if (mini_game->player_->state == GameState::kBadEnding) {
       media_player_->stop();
       media_player_->setPlaylist(third_playlist_);
-      qDebug() << media_player_->duration();
       changed_playlist_ = true;
     } else if (mini_game->player_->state == GameState::kGoodEnding) {
-      qDebug() << media_player_->duration();
       media_player_->stop();
       media_player_->setPlaylist(second_playlist_);
       changed_playlist_ = true;

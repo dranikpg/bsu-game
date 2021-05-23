@@ -8,7 +8,7 @@
 int game::CanteenMiniGame::timer = 0;
 int game::CanteenMiniGame::curr_level = 1;
 int game::CanteenMiniGame::lifes = 3;
-game::CanteenMiniGame::State game::CanteenMiniGame::state = State::kNotStarted;
+game::CanteenMiniGame::State game::CanteenMiniGame::state = State::kWaiting;
 
 void game::CanteenMiniGame::Process() {
   timer++;
@@ -62,7 +62,7 @@ void game::CanteenMiniGame::Process() {
       state = State::kGameOver;
     }
     if (timer > 280) {
-      state = State::kNotStarted;
+      state = State::kWaiting;
       timer = 0;
       curr_level = 1;
       lifes = 3;
@@ -75,7 +75,7 @@ void game::CanteenMiniGame::Process() {
       state = State::kGameEnding;
     }
     if (timer > 200) {
-      state = State::kNotStarted;
+      state = State::kWaiting;
       timer = 0;
       curr_level = 1;
       lifes = 3;
@@ -141,7 +141,7 @@ void game::CanteenMiniGame::ProccesChiabattas(
         for_erasing->insert({column.first, chiabata});
         continue;
       }
-      chiabata += 70;
+      chiabata += 100;
       if (chiabata > canteen_->y() + canteen_->height() - chel_size_.height()) {
         for_erasing->insert({column.first, chiabata});
         lifes--;

@@ -48,6 +48,8 @@ class SecretMiniGame {
     QMediaPlaylist* second_playlist_;
     QMediaPlaylist* third_playlist_;
 
+    QPixmap bad_ = QPixmap(":/tablichki1.png");
+    QPixmap good_ = QPixmap(":/tablichki2.png");
     QPixmap player_pixmap_ = QPixmap(":/chel_with_labs.png");
     QPixmap background_pixmap_ = QPixmap(":/computer_class_fon1");;
     QPixmap wa_pixmap_ = QPixmap(":/WA.png");

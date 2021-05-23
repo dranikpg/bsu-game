@@ -32,6 +32,36 @@ void LabyrinthLevel::Process(ecs::World* world, ContextBag contexts) {
   if (state_ == State::kNone) {
     StartMiniGame(contexts);
   } else if (state_ == State::kMiniGame) {
+    auto[pl_pos] = player_->Unpack<PositionComponent>();
+    if (IsReady(pl_pos.position, pig_, contexts)) {
+      QPixmap icon(":/sitnikova.png");
+      world_->CreateEntity().AddComponent<game::SplashComponent>(
+          utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(2, 2)),
+          "The first number is 1",
+          []() {
+          });
+    } else if (IsReady(pl_pos.position, egor_, contexts)) {
+      QPixmap icon(":/egor.png");
+      world_->CreateEntity().AddComponent<game::SplashComponent>(
+          utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(2, 2)),
+          "The second number is 4",
+          []() {
+          });
+    } else if (IsReady(pl_pos.position, gora_, contexts)) {
+      QPixmap icon(":/gora.png");
+      world_->CreateEntity().AddComponent<game::SplashComponent>(
+          utils::PixmapRect(icon, QRect(0, 0, 128, 128), QPoint(2, 2)),
+          "The third number is 8",
+          []() {
+          });
+    } else if (IsReady(pl_pos.position, guard_pos_, contexts)) {
+      QPixmap icon(":/guard-sheet.png");
+      world_->CreateEntity().AddComponent<game::SplashComponent>(
+          utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(1, 1)),
+          "The fourth number is 8",
+          []() {
+          });
+    }
     mini_game_->Process(ProjectPlayerPos(world, contexts));
   }
 }
@@ -50,6 +80,24 @@ void LabyrinthLevel::CreateObject(map::MapLayer layer, const map::MapObject& obj
   } else if (object.name == "guard") {
     guard_pos_ = object.position;
     CreateGuard(world_, object);
+  } else if (object.name == "sitnikova") {
+    pig_ = object.position;
+    world_->CreateEntity().AddComponent<PositionComponent>(pig_)
+        .AddComponent<BoundsComponent>(object.size)
+        .AddComponent<ColliderComponent>()
+        .AddComponent<SpriteComponent>(QPixmap(":/sitnikova.png"), SpriteLayer::kForeground);
+  } else if (object.name == "egor") {
+    egor_ = object.position;
+    world_->CreateEntity().AddComponent<PositionComponent>(egor_)
+        .AddComponent<BoundsComponent>(object.size)
+        .AddComponent<ColliderComponent>()
+        .AddComponent<SpriteComponent>(QPixmap(":/egor.png"), SpriteLayer::kForeground);
+  } else if (object.name == "gora") {
+    gora_ = object.position;
+    world_->CreateEntity().AddComponent<PositionComponent>(gora_)
+        .AddComponent<BoundsComponent>(object.size)
+        .AddComponent<ColliderComponent>()
+        .AddComponent<SpriteComponent>(QPixmap(":/gora.png"), SpriteLayer::kForeground);
   }
 }
 
@@ -82,6 +130,11 @@ QPointF LabyrinthLevel::ProjectPlayerPos(ecs::World* world,
   QPointF point = player_->GetComponent<PositionComponent>().position;
   point.ry() -= player_->GetComponent<BoundsComponent>().bounds.height() * 2;
   return ProjectToScreen(world, contexts, point);
+}
+
+bool LabyrinthLevel::IsReady(QPointF first, QPointF second, ContextBag context_bag) const {
+  return (std::hypot(first.x() - second.x(), first.y() - second.y()) < 30 &&
+          context_bag.input_context->GetFrameKeys().count(constants::Keys::kEnter));
 }
 
 }  // namespace game

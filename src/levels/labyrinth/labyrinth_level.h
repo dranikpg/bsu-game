@@ -38,11 +38,15 @@ class LabyrinthLevel : public resource::Level {
     kFinishedMiniGame
   };
 
+  bool IsReady(QPointF, QPointF, ContextBag) const;
+
   State state_;
   ecs::World* world_;
   ecs::Entity* player_ = nullptr;
   ecs::Entity* guard_ = nullptr;
-  ecs::Entity* canteen_;
+  QPointF pig_;
+  QPointF egor_;
+  QPointF gora_;
   std::shared_ptr<LabyrinthMiniGame> mini_game_;
   std::shared_ptr<resource::Path> guard_path_;
   std::shared_ptr<GuardBehaviour> guard_behaviour_;

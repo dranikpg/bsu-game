@@ -65,7 +65,7 @@ PrototypeWidget::PrototypeWidget() {
 
   QPixmap icon(":/guard-sheet.png");
   world_.CreateEntity().AddComponent<game::SplashComponent>(
-      utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
+      utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(1, 1)),
       "Hello! I'm your master \nWelcome to the game!",
       []() {
       });

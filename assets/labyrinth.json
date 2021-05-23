@@ -38,6 +38,39 @@
                  "width":27.7695130417535,
                  "x":582.168005553903,
                  "y":1211.94089060795
+                }, 
+                {
+                 "height":33.720122979272,
+                 "id":144,
+                 "name":"egor",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":23.8024397500744,
+                 "x":1430.1299216503,
+                 "y":1279.2988197957
+                }, 
+                {
+                 "height":26.7777447188337,
+                 "id":145,
+                 "name":"sitnikova",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":24.7942080729943,
+                 "x":1113.7558266389,
+                 "y":105.979272042051
+                }, 
+                {
+                 "height":24.7942080729942,
+                 "id":146,
+                 "name":"gora",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":20.8271347813152,
+                 "x":580.184468908063,
+                 "y":500.843003074482
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1487,7 +1520,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":144,
+ "nextobjectid":147,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tiledversion":"1.5.0",

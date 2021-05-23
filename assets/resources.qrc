@@ -35,5 +35,10 @@
         <file>ulitka.mp3</file>
         <file>labyrinth.json</file>
         <file>labyrinth.png</file>
+        <file>tablichki1.png</file>
+        <file>tablichki2.png</file>
+        <file>sitnikova.png</file>
+        <file>gora.png</file>
+        <file>egor.png</file>
     </qresource>
 </RCC>
