@@ -34,17 +34,14 @@ class BulatovMiniGame : public resource::MiniGame {
     enum class GameState{
       kDialog,
       kMillionaire,
-      kAfterMillionaireDefault,
-      kStart
-    } game_state_ = GameState::kStart;
+      kFirst,
+      kFirstEnd,
+      kSecond
+    } game_state_ = GameState::kFirst;
 
     QWidget* container_;
     ecs::World* world_;
     Callback callback_;
-
-
-    // AnimationBag background_animations_;
-    // ecs::Entity* background_animation_player_;
 
     QWidget* chernov_dialog_container_;
     std::shared_ptr<ui::NPCDialog> chernov_dialog_;
@@ -53,7 +50,8 @@ class BulatovMiniGame : public resource::MiniGame {
 
     QWidget* millionaire_container_;
     std::shared_ptr<ui::ChooseWidget> millionaire_;
-    int chosen_var;
+    int chosen_var_;
+    std::array<QString, 5> millionaire_pack_;
 
     QPixmap background_;
     using AnimationBag = std::unordered_map<std::string,
@@ -65,6 +63,8 @@ class BulatovMiniGame : public resource::MiniGame {
     ecs::Entity* chernov_player_ = nullptr;
     void PauseChernovPlayer();
     void UnpauseChernovPlayer();
+    void MakeChernovSpeaking();
+    void MakeChernovNotSpeaking();
 
     void ComputeChernovBounds();
     QPixmap GetScreenShot();
