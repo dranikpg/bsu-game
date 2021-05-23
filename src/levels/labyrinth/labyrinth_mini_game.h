@@ -36,12 +36,14 @@ class LabyrinthMiniGame : public resource::MiniGame {
 
    private:
     LabyrinthMiniGame* mini_game_;
+    QRadialGradient radialGrad;
   };
   friend class Drawer;
 
  public:
   using Callback = std::function<void()>;
-  LabyrinthMiniGame(Callback callback, QWidget* container, context::InputContext* input);
+  LabyrinthMiniGame(Callback callback, QWidget* container, context::InputContext* input,
+                    std::shared_ptr<bool> is_switched);
   void Process(QPointF player_pos);
 
  private:
@@ -49,7 +51,8 @@ class LabyrinthMiniGame : public resource::MiniGame {
   Callback callback_;
   QWidget* container_ = nullptr;
   context::InputContext* input_ = nullptr;
-  QPointF player_pos_ = QPointF(100, 100);
+  QPointF player_pos_ = QPointF(0, 0);
+  std::shared_ptr<bool> is_sw_;
 };
 
 }  // namespace game

@@ -17,11 +17,11 @@ void game::LabyrinthMiniGame::Process(QPointF player_pos) {
 
 game::LabyrinthMiniGame::LabyrinthMiniGame(game::LabyrinthMiniGame::Callback callback,
                                            QWidget* container,
-                                           context::InputContext* input) :
+                                           context::InputContext* input,
+                                           std::shared_ptr<bool> is_switched) :
     callback_(std::move(callback)),
     input_(input),
-    container_(container) {
-  container_ = container;
+    container_(container), is_sw_(std::move(is_switched)) {
   drawer_ = new Drawer(this);
 
   auto* layout = new QVBoxLayout(container);
@@ -31,23 +31,25 @@ game::LabyrinthMiniGame::LabyrinthMiniGame(game::LabyrinthMiniGame::Callback cal
 }
 
 void game::LabyrinthMiniGame::Drawer::paintEvent(QPaintEvent* event) {
-  QPixmap test = QPixmap(":/canteen.png");
-  //
-  QRegion r1(QRect(mini_game_->player_pos_.x() - 100,
-                   mini_game_->player_pos_.y() - 100,200, 200),    // r1: elliptic region
-             QRegion::Ellipse);
-  QRegion r2(mini_game_->container_->rect());
-  QRegion r3 = r2.subtracted(r1);
   QPainter painter(this);
-  // painter.drawRect(mini_game_->player_pos_.x() - 5 , mini_game_->player_pos_.y() - 5, 10, 10);
-  // painter.setClipRegion(r3);
-  QRadialGradient radialGrad(mini_game_->player_pos_, mini_game_->container_->rect().height() / 2.);
-  radialGrad.setColorAt(0, QColor(0, 0, 0, 127));
-  radialGrad.setColorAt(0.5, Qt::black);
-  radialGrad.setColorAt(1, Qt::black);
-  QRect rect_radial(mini_game_->container_->rect());
-  QBrush brush(radialGrad);
-  painter.fillRect(rect_radial, brush);
+  if (abs(mini_game_->player_pos_.x()) > 3000 || abs(mini_game_->player_pos_.y()) > 3000) {
+    painter.fillRect(mini_game_->container_->rect(), Qt::black);
+    return;
+  }
+  if (mini_game_->player_pos_.x() != mini_game_->player_pos_.x()) {
+    painter.fillRect(mini_game_->container_->rect(), Qt::black);
+    return;
+  }
+
+  if (!*(mini_game_->is_sw_)) {
+    QRadialGradient radialGrad(mini_game_->player_pos_, mini_game_->container_->rect().height() / 2.);
+    radialGrad.setColorAt(0, QColor(0, 0, 0, 0));
+    radialGrad.setColorAt(0.5, Qt::black);
+    radialGrad.setColorAt(1, Qt::black);
+    QRect rect_radial(mini_game_->container_->rect());
+    QBrush brush(radialGrad);
+    painter.fillRect(rect_radial, brush);
+  }
 }
 
 void game::LabyrinthMiniGame::Drawer::resizeEvent(QResizeEvent* event) {

@@ -71,7 +71,18 @@
                  "width":20.8271347813152,
                  "x":580.184468908063,
                  "y":500.843003074482
-                }],
+                },
+               {
+                "height":28.76,
+                "id":1002,
+                "name":"generator",
+                "rotation":0,
+                "type":"",
+                "visible":true,
+                "width":26.78,
+                "x":665.48,
+                "y":885.55
+               }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,

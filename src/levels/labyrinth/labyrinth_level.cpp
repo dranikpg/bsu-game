@@ -5,14 +5,15 @@
 #include "../../map/map_loader.h"
 #include "../../context/level_context.h"
 #include "../../utils/parser/dialog_parser.h"
+#include "../../levels/bsu_lobby/bsu_lobby_level.h"
 #include "../../levels/bsu_entrance/bsu_entrance_level.h"
 
 #include <map>
 #include <memory>
-#include <utility>
 #include <cmath>
 #include <QDebug>
 #include <QPainter>
+#include <QLabel>
 
 namespace game {
 LabyrinthLevel::~LabyrinthLevel() = default;
@@ -26,6 +27,8 @@ void LabyrinthLevel::Dispose(ecs::World* world) {
 void LabyrinthLevel::Load(ecs::World* world) {
   world_ = world;
   map::MapLoader::Load(QFile(":/labyrinth.json"), this);
+
+  is_switched = std::make_shared<bool>(false);
 }
 
 void LabyrinthLevel::Process(ecs::World* world, ContextBag contexts) {
@@ -61,6 +64,20 @@ void LabyrinthLevel::Process(ecs::World* world, ContextBag contexts) {
           "The fourth number is 8",
           []() {
           });
+    } else if (IsReady(pl_pos.position, generator_, contexts)) {
+      QPixmap icon(":/generator.png");
+      world_->CreateEntity().AddComponent<game::SplashComponent>(
+          utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(2, 2)),
+          "##%@#$#beep~&@~~beep##%%$$",
+          [&]() {
+            *is_switched = true;
+          });
+    } else if (IsReady(pl_pos.position, entrance_, contexts)) {
+      contexts.mini_game_context->Stop();
+      contexts.level_context->Load<BsuLobbyLevel>();
+    } else if (IsReady(pl_pos.position, exit_, contexts)) {
+      contexts.mini_game_context->Stop();
+      contexts.level_context->Load<BsuEntranceLevel>();
     }
     mini_game_->Process(ProjectPlayerPos(world, contexts));
   }
@@ -72,6 +89,11 @@ void LabyrinthLevel::CreateMap(const QString& path) {
 
 void LabyrinthLevel::CreateObject(map::MapLayer layer, const map::MapObject& object) {
   if (layer == map::MapLayer::kCollision) {
+    if (object.name == "entrance") {
+      entrance_ = object.position;
+    } else if (object.name == "exit") {
+      exit_ = object.position;
+    }
     CreateCollider(world_, object);
     return;
   }
@@ -98,6 +120,12 @@ void LabyrinthLevel::CreateObject(map::MapLayer layer, const map::MapObject& obj
         .AddComponent<BoundsComponent>(object.size)
         .AddComponent<ColliderComponent>()
         .AddComponent<SpriteComponent>(QPixmap(":/gora.png"), SpriteLayer::kForeground);
+  } else if (object.name == "generator") {
+    generator_ = object.position;
+    world_->CreateEntity().AddComponent<PositionComponent>(generator_)
+        .AddComponent<BoundsComponent>(object.size)
+        .AddComponent<ColliderComponent>()
+        .AddComponent<SpriteComponent>(QPixmap(":/generator.png"), SpriteLayer::kForeground);
   }
 }
 
@@ -109,7 +137,7 @@ void LabyrinthLevel::StartMiniGame(ContextBag contexts) {
   contexts.mini_game_context->Start();
   mini_game_ = std::make_shared<LabyrinthMiniGame>(
       [this]() { state_ = State::kFinishedMiniGame; },
-      contexts.mini_game_context->GetContainer(), contexts.input_context);
+      contexts.mini_game_context->GetContainer(), contexts.input_context, is_switched);
   state_ = State::kMiniGame;
 }
 
@@ -132,8 +160,8 @@ QPointF LabyrinthLevel::ProjectPlayerPos(ecs::World* world,
 }
 
 bool LabyrinthLevel::IsReady(QPointF first, QPointF second, ContextBag context_bag) const {
-  return (std::hypot(first.x() - second.x(), first.y() - second.y()) < 30 &&
-          context_bag.input_context->GetFrameKeys().count(constants::Keys::kEnter));
+  return (std::hypot(first.x() - second.x(), first.y() - second.y()) < 40 &&
+      context_bag.input_context->GetFrameKeys().count(constants::Keys::kEnter));
 }
 
 }  // namespace game

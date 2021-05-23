@@ -40,5 +40,6 @@
         <file>sitnikova.png</file>
         <file>gora.png</file>
         <file>egor.png</file>
+        <file>generator.png</file>
     </qresource>
 </RCC>

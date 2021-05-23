@@ -16,6 +16,8 @@
 
 namespace game {
 
+class BsuLobbyLevel;
+
 class LabyrinthLevel : public resource::Level {
  public:
   ~LabyrinthLevel() override;
@@ -47,12 +49,16 @@ class LabyrinthLevel : public resource::Level {
   QPointF pig_;
   QPointF egor_;
   QPointF gora_;
+  QPointF generator_;
+  QPointF entrance_;
+  QPointF exit_;
   std::shared_ptr<LabyrinthMiniGame> mini_game_;
   std::shared_ptr<resource::Path> guard_path_;
   std::shared_ptr<GuardBehaviour> guard_behaviour_;
   QPointF guard_pos_;
   QPointF canteen_pos_;
   utils::PixmapRect canteen_icon_;
+  std::shared_ptr<bool> is_switched;
 };
 
 }  // namespace game
