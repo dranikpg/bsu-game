@@ -22,7 +22,7 @@
     color: peachpuff;
     font: 15px "ChronoType";
 }
-#choose-var-widget {
-    background-color: black;
-    font: 30px "ChronoType";
+#choose-var-widget-text {
+    color: white;
+    font: 24px "ChronoType";
 }

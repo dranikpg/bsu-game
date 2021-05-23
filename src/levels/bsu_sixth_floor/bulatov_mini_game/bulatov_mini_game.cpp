@@ -59,8 +59,9 @@ void BulatovMiniGame::Drawer::Process() {
                                             "var 3 3 3 3 3 3 3 3 3 ",
                                             "var 4 4 4 4 4 4 4 4 4 ",
                                             [this](int var){game_state_ = GameState::kQ1No;
-                                                            choose_widget_return_ = var;});
-      choose_widget_->Start(QWidget::grab(QRect(0,0,width(),height())));
+                                                            choose_widget_return_ = var;
+                                                            update();});
+      choose_widget_->Start(background_.copy(current_frame_bounds_));
       game_state_ = GameState::kProcessing;
     }
   } else if (game_state_ == GameState::kQ1No) {

@@ -2,8 +2,6 @@
 
 #include <utility>
 
-#include <QDebug>
-
 namespace ui {
 
 TypingLabel::TypingLabel(Callback callback) : callback_(std::move(callback)) {

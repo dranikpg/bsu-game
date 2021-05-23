@@ -42,13 +42,17 @@ namespace ui {
     void MakeConnections();
     void RecalculateSizes();
     void Hide();
+    void Disconnect();
     void End();
 
    private:
     Callback callback_;
     int chosen_var_ = -1;
     QLabel* mask_;
+    QWidget* dark_mask_;
+    QLabel* icon_;
     QPixmap start_frame_ = {};
+    QPixmap icon_pixmap;
   };
 
 }  // namespace ui
