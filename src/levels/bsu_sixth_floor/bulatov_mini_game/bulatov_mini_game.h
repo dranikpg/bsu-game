@@ -47,7 +47,13 @@ class BulatovMiniGame : public resource::MiniGame {
     // ecs::Entity* background_animation_player_;
 
     QWidget* chernov_dialog_container_;
+    std::shared_ptr<ui::NPCDialog> chernov_dialog_;
     QWidget* player_dialog_container_;
+    std::shared_ptr<ui::NPCDialog> player_dialog_;
+
+    QWidget* millionaire_container_;
+    std::shared_ptr<ui::ChooseWidget> millionaire_;
+    int chosen_var;
 
     QPixmap background_;
     using AnimationBag = std::unordered_map<std::string,
@@ -57,8 +63,11 @@ class BulatovMiniGame : public resource::MiniGame {
     QRect chernov_screen_bounds_ = {0,0,0,0};
     QRect chernov_pixmap_bounds_ = {0,0,0,0};
     ecs::Entity* chernov_player_ = nullptr;
+    void PauseChernovPlayer();
+    void UnpauseChernovPlayer();
 
     void ComputeChernovBounds();
+    QPixmap GetScreenShot();
 
     void RecalculateSizes();
   };

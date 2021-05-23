@@ -26,10 +26,27 @@ BulatovMiniGame::BulatovMiniGame(Callback callback, QWidget* container,
 void BulatovMiniGame::Drawer::Process() {
   switch (game_state_) {
     case GameState::kStart: {
-      chernov_player_ = &world_->CreateEntity()
-          .AddComponent<SpriteComponent>(QRect(0,0,0,0))
-          .AddComponent<AnimationComponent>(chernov_animation_["speak"]);
       game_state_ = GameState::kDialog;
+      chernov_dialog_ = std::make_shared<ui::NPCDialog>(
+          std::vector<std::pair<QString, int>>{{"a",3},
+                                               {"a",3},
+                                               {"a",3}},
+                                          [this](){
+        game_state_ = GameState::kMillionaire;
+        millionaire_->Start(GetScreenShot());
+      }, chernov_dialog_container_);
+      millionaire_ = std::make_shared<ui::ChooseWidget>(
+          millionaire_container_,
+          "Бахнем пивку?",
+          "Да",
+          "да да",
+          "da da da",
+          "yes",
+          [this](int val){
+            game_state_ = GameState::kAfterMillionaireDefault;
+            chosen_var = val;}
+      );
+      chernov_dialog_->Start();
     }
   }
 }
@@ -59,15 +76,20 @@ BulatovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
 
   player_dialog_container_ = new QWidget(this);
   chernov_dialog_container_ = new QWidget(this);
+  millionaire_container_ = new QWidget(this);
+
+  chernov_player_ = &world_->CreateEntity()
+      .AddComponent<SpriteComponent>(QRect(0,0,0,0))
+      .AddComponent<AnimationComponent>(chernov_animation_["speak"]);
 
   RecalculateSizes();
 }
 
 void BulatovMiniGame::Drawer::RecalculateSizes() {
-  chernov_screen_bounds_ = QRect{static_cast<int>(0.734*container_->width()),
-                          static_cast<int>(0.498*container_->height()),
-                          static_cast<int>(0.129*container_->width()),
-                          static_cast<int>(0.214*container_->height())};
+  chernov_screen_bounds_ = QRect{static_cast<int>(0.76*container_->width()),
+                                 static_cast<int>(0.447*container_->height()),
+                                 static_cast<int>(0.12*container_->width()),
+                                 static_cast<int>(0.21*container_->height())};
   chernov_dialog_container_->setGeometry(static_cast<int>(0.484*container_->width()),
                                    static_cast<int>(0.324*container_->height()),
                                    static_cast<int>(0.275*container_->width()),
@@ -76,6 +98,7 @@ void BulatovMiniGame::Drawer::RecalculateSizes() {
                                    static_cast<int>(0.59*container_->height()),
                                    static_cast<int>(0.247*container_->width()),
                                    static_cast<int>(0.166*container_->height()));
+  millionaire_container_->setGeometry(0, 0, width(), height());
 }
 
 void BulatovMiniGame::Drawer::paintEvent(QPaintEvent* event) {
@@ -92,12 +115,39 @@ void BulatovMiniGame::Drawer::ComputeChernovBounds() {
     auto frame_index = component.frame_index;
     chernov_pixmap_bounds_ = component.animation_resource->GetFrame(frame_index);
   }
+  chernov_screen_bounds_ = QRect{static_cast<int>(0.76*container_->width()),
+                                 static_cast<int>(0.447*container_->height()),
+                                 static_cast<int>(0.12*container_->width()),
+                                 static_cast<int>(0.21*container_->height())};
 }
 
 void BulatovMiniGame::Drawer::resizeEvent(QResizeEvent* event) {
   resize(container_->size());
   RecalculateSizes();
   update();
+}
+
+QPixmap BulatovMiniGame::Drawer::GetScreenShot() {
+  QPixmap pixmap(720,512);
+  QPainter painter(&pixmap);
+
+  painter.drawPixmap(QRect{0,0,pixmap.width(),pixmap.height()}, background_,
+                     QRect{0,0,background_.width(),background_.height()});
+  QRect chernov_bounds = QRect{static_cast<int>(0.76*pixmap.width()),
+                               static_cast<int>(0.447*pixmap.height()),
+                               static_cast<int>(0.12*pixmap.width()),
+                               static_cast<int>(0.21*pixmap.height())};
+  painter.drawPixmap(chernov_bounds, chernov_, chernov_pixmap_bounds_);
+
+  return pixmap;
+}
+
+void BulatovMiniGame::Drawer::PauseChernovPlayer() {
+  chernov_player_->GetComponent<AnimationComponent>().paused = true;
+}
+
+void BulatovMiniGame::Drawer::UnpauseChernovPlayer() {
+  chernov_player_->GetComponent<AnimationComponent>().paused = false;
 }
 
 

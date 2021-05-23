@@ -76,7 +76,7 @@ ChooseWidget::ChooseWidget(QWidget* container,
 }
 
 void ChooseWidget::Start(QPixmap start_frame) {
-  start_frame_ = std::move(start_frame);
+  start_frame_ = start_frame;
   RecalculateSizes();
   show();
 
