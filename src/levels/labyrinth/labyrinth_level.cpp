@@ -128,7 +128,6 @@ void LabyrinthLevel::CreateGuard(ecs::World* world,
 QPointF LabyrinthLevel::ProjectPlayerPos(ecs::World* world,
                                         ContextBag contexts) {
   QPointF point = player_->GetComponent<PositionComponent>().position;
-  point.ry() -= player_->GetComponent<BoundsComponent>().bounds.height() * 2;
   return ProjectToScreen(world, contexts, point);
 }
 

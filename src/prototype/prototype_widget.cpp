@@ -34,7 +34,7 @@
 PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;
   systems.emplace_back(
-      std::make_unique<game::LevelSystem>(&level_context_, &mini_game_context_, &input_context_));
+      std::make_unique<game::LevelSystem>(&level_context_, &mini_game_context_, &input_context_, &window_context_));
   systems.emplace_back(std::make_unique<game::SplashSystem>(&splash_context_, &input_context_));
   systems.emplace_back(
       std::make_unique<game::RenderingSystem>(&painter_context_, &window_context_));

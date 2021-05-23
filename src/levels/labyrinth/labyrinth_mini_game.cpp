@@ -33,6 +33,7 @@ void game::LabyrinthMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   // QRegion r2(mini_game_->container_->rect());
   // QRegion r3 = r2.subtracted(r1);
   QPainter painter(this);
+  painter.drawRect(mini_game_->player_pos_.x() - 5 , mini_game_->player_pos_.y() - 5, 10, 10);
   // painter.setClipRegion(r3);
 }
 
