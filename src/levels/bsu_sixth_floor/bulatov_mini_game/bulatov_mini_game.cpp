@@ -28,14 +28,14 @@ void BulatovMiniGame::Drawer::Process() {
     case GameState::kFirst: {
       game_state_ = GameState::kDialog;
       chernov_dialog_ = std::make_shared<ui::NPCDialog>(
-          std::vector<std::pair<QString, int>>{{"Load up on guns, bring your friends\n"
-                                                "It's fun to lose and to pretend\n"
-                                                "She's over-bored and self-assured\n"
-                                                "Oh no, I know a dirty word",1000},
-                                               {"Hello, hello, hello, how low\n"
-                                                "Hello, hello, hello, how low\n"
-                                                "Hello, hello, hello, how low\n"
-                                                "Hello, hello, hello",1000}},
+          std::vector<std::pair<QString, int>>{{"Комбат-батяня, батяня-комбат\n"
+                                                "Ты сердце не прятал за спины ребят\n"
+                                                "Летят самолеты, и танки горят\n"
+                                                "Так бьет, йо, комбат, йо, комбат",1000},
+                                               {"Комбат-батяня, батяня-комбат\n"
+                                                "За нами Россия, Москва и Арбат\n"
+                                                "Огонь, батарея, огонь, батальон\n"
+                                                "Комбат, йо, командует он", 0}},
                                           [this](){
         game_state_ = GameState::kMillionaire;
         PauseChernovPlayer();
@@ -45,11 +45,11 @@ void BulatovMiniGame::Drawer::Process() {
       chernov_dialog_->SetTypingStartCallback([this](){MakeChernovSpeaking();});
       chernov_dialog_->SetTypingEndCallback([this](){MakeChernovNotSpeaking();});
 
-      millionaire_pack_ = {"Какие существа, по легенде, часто носят с собой мешочки с золотом?",
-               "кицунэ",
-               "троли",
-               "гоблины",
-               "лепреконы"};
+      millionaire_pack_ = {"Кто?",
+               "Комбат?",
+               "Батяня?",
+               "Батяня?",
+               "Комбат?"};
       millionaire_ = std::make_shared<ui::ChooseWidget>(
           millionaire_container_,
           millionaire_pack_[0],
@@ -69,9 +69,20 @@ void BulatovMiniGame::Drawer::Process() {
     case GameState::kFirstEnd: {
       game_state_ = GameState::kDialog;
       player_dialog_ = std::make_shared<ui::NPCDialog>(
-          std::vector<std::pair<QString, int>>{{millionaire_pack_[chosen_var_+1],1000}},
+          std::vector<std::pair<QString, int>>{{millionaire_pack_[chosen_var_+1],500}},
           [this](){
-            game_state_ = GameState::kSecond;
+            QString message;
+            if ((chosen_var_ == 0) || (chosen_var_ == 3)) {
+              message = "Батяня!";
+            } else {
+              message = "Комбат!";
+            }
+            chernov_dialog_ = std::make_shared<ui::NPCDialog>(
+                std::vector<std::pair<QString, int>>{{message,500}},
+                [this](){
+                  game_state_ = GameState::kSecond;
+                }, chernov_dialog_container_);
+            chernov_dialog_->Start();
           }, player_dialog_container_);
       player_dialog_->Start();
       break;

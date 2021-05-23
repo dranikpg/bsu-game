@@ -294,6 +294,7 @@ void ChooseWidget::Var4ButClicked(bool) {
 
 void ChooseWidget::End() {
   hide();
+  delete layout();
   if (callback_) {
     callback_(chosen_var_);
   }

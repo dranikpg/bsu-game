@@ -61,6 +61,7 @@ void NPCDialog::LoadNext() {
     TypingStart();
   } else {
     hide();
+    delete layout();
     if (callback_ != nullptr) {
       callback_();
     }
