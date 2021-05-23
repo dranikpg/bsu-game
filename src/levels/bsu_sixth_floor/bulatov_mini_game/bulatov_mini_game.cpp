@@ -5,7 +5,7 @@
 #include "../../../utils/parser/dialog_parser.h"
 
 #include <QPainter>
-#include <QSpacerItem>
+#include <QHBoxLayout>
 
 #include <QDebug>
 
@@ -24,166 +24,81 @@ BulatovMiniGame::BulatovMiniGame(Callback callback, QWidget* container,
 }
 
 void BulatovMiniGame::Drawer::Process() {
-  if (game_state_ == GameState::kStartup) {
-    qDebug() << "GameState::kStartup";
-    game_state_ = GameState::kQ1;
-    real_state_ = GameState::kQ1;
-    LoadAnimations();
-    animation_player = &world_->CreateEntity()
-        .AddComponent<AnimationComponent>(animations_["no_1"])
-        .AddComponent<SpriteComponent>(QRect(0,0,0,0));
-
-
-  } else if (game_state_ == GameState::kProcessing) {
-  } else if (game_state_ == GameState::kQ1) {
-    if (!dialog_finished_) {
-      qDebug() << "GameState::kQ1 dialog";
-      animation_player->GetComponent<AnimationComponent>().SetAnimationResource(animations_["no_1"]);
-      std::vector<std::pair<QString, int>> parts = {{"f", 1000}};
-      dialog_finished_ = false;
-      game_state_ = GameState::kProcessing;
-      bulatov_dialog_widget_ = new ui::NPCDialog(parts,
-                                          [this](){
-                                          dialog_finished_ = true;
-                                          game_state_ = GameState::kQ1;},
-                                          bulatov_dialog_container_);
-      bulatov_dialog_widget_->SetTypingStartCallback([this](){MakeSpeaking();});
-      bulatov_dialog_widget_->SetTypingEndCallback([this](){MakeNotSpeaking();});
-      bulatov_dialog_widget_->Start();
-    } else {
-      qDebug() << "GameState::kQ1 dialog end";
-      choose_widget_ = new ui::ChooseWidget(choose_widget_container_,
-                                            "do you you do you do you?",
-                                            "var 1 1 1 1 1 1 1 1 1 ",
-                                            "var 2 2 2 2 2 2 2 2 2 ",
-                                            "var 3 3 3 3 3 3 3 3 3 ",
-                                            "var 4 4 4 4 4 4 4 4 4 ",
-                                            [this](int var){game_state_ = GameState::kQ1No;
-                                                            choose_widget_return_ = var;
-                                                            update();});
-      choose_widget_->Start(background_.copy(current_frame_bounds_));
-      game_state_ = GameState::kProcessing;
+  switch (game_state_) {
+    case GameState::kStart: {
+      chernov_player_ = &world_->CreateEntity()
+          .AddComponent<SpriteComponent>(QRect(0,0,0,0))
+          .AddComponent<AnimationComponent>(chernov_animation_["speak"]);
+      game_state_ = GameState::kDialog;
     }
-  } else if (game_state_ == GameState::kQ1No) {
-    qDebug() << "GameState::kQ1No";
-  } else if (game_state_ == GameState::kQ1Yes) {
-    qDebug() << "GameState::kQ1Yes";
-  } else if (game_state_ == GameState::kQ1NoQ2No) {
-    qDebug() << "GameState::kQ1NoQ2No";
-  } else if (game_state_ == GameState::kQ1NoQ2Yes) {
-    qDebug() << "GameState::kQ1NoQ2Yes";
-  } else if (game_state_ == GameState::kQ1YesQ2No) {
-    qDebug() << "GameState::kQ1YesQ2No";
-  } else if (game_state_ == GameState::kQ1YesQ2Yes) {
-    qDebug() << "GameState::kQ1YesQ2Yes";
-  } else if (game_state_ == GameState::kEnd) {
-    qDebug() << "GameState::kEnd";
-    callback_();
-    close(); //??
   }
 }
 
-void BulatovMiniGame::Drawer::LoadAnimations() {
-  animations_ = utils::AseAnimationParser::Parse(
-      QFile(":/bulatov_chellenge.json"));
-  background_ = QPixmap(":/bulatov_chellenge.png");
-}
 
 BulatovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
                                 ecs::World* world)
                                 : callback_(std::move(callback)),
                                   container_(container),
                                   world_(world) {
-  bulatov_dialog_container_ = new QWidget(this);
+  resize(container_->size());
+  auto container_layout = new QHBoxLayout();
+  container_layout->addWidget(this);
+  container_layout->setSpacing(0);
+  container_layout->setContentsMargins(0,0,0,0);
+  container_->setLayout(container_layout);
+
+  auto main_layout = new QHBoxLayout(this);
+  main_layout->setSpacing(0);
+  main_layout->setContentsMargins(0,0,0,0);
+  setLayout(main_layout);
+
+  background_ = QPixmap(":/chernov_challenge_background.png");
+  chernov_animation_ = utils::AseAnimationParser::Parse(
+      QFile(":/chernov.json"));
+  chernov_ = QPixmap(":/chernov.png");
+
   player_dialog_container_ = new QWidget(this);
-  choose_widget_container_ = new QWidget(this);
+  chernov_dialog_container_ = new QWidget(this);
+
+  RecalculateSizes();
 }
 
 void BulatovMiniGame::Drawer::RecalculateSizes() {
-  bulatov_dialog_container_->setGeometry(static_cast<int>(0.48*container_->width()),
-                                         static_cast<int>(0.33*container_->height()),
-                                         static_cast<int>(0.27*container_->width()),
-                                         static_cast<int>(0.20*container_->height()));
-  player_dialog_container_->setGeometry(static_cast<int>(0.29*container_->width()),
-                                        static_cast<int>(0.84*container_->height()),
-                                        static_cast<int>(0.67*container_->width()),
-                                        static_cast<int>(0.09*container_->height()));
-  choose_widget_container_->setGeometry(0,
-                                        0,
-                                        container_->width(),
-                                        container_->height());
-  auto& component = animation_player->GetComponent<AnimationComponent>();
-  auto frame_index =
-      component.frame_index;
-  current_frame_bounds_ =
-      component.animation_resource->GetFrame(frame_index);
+  chernov_screen_bounds_ = QRect{static_cast<int>(0.734*container_->width()),
+                          static_cast<int>(0.498*container_->height()),
+                          static_cast<int>(0.129*container_->width()),
+                          static_cast<int>(0.214*container_->height())};
+  chernov_dialog_container_->setGeometry(static_cast<int>(0.484*container_->width()),
+                                   static_cast<int>(0.324*container_->height()),
+                                   static_cast<int>(0.275*container_->width()),
+                                   static_cast<int>(0.175*container_->height()));
+  player_dialog_container_->setGeometry(static_cast<int>(0.301*container_->width()),
+                                   static_cast<int>(0.59*container_->height()),
+                                   static_cast<int>(0.247*container_->width()),
+                                   static_cast<int>(0.166*container_->height()));
 }
 
 void BulatovMiniGame::Drawer::paintEvent(QPaintEvent* event) {
-  if (game_state_ == GameState::kStartup) {
-    return;
-  }
-  RecalculateSizes();
   QPainter painter(this);
-  QRect target = {0, 0, container_->width(), container_->height()};
-  painter.drawPixmap(target, background_, current_frame_bounds_);
+  painter.drawPixmap(QRect{0,0,width(),height()}, background_,
+                     QRect{0,0,background_.width(),background_.height()});
+  ComputeChernovBounds();
+  painter.drawPixmap(chernov_screen_bounds_, chernov_, chernov_pixmap_bounds_);
+}
+
+void BulatovMiniGame::Drawer::ComputeChernovBounds() {
+  if (chernov_player_ != nullptr) {
+    auto& component = chernov_player_->GetComponent<AnimationComponent>();
+    auto frame_index = component.frame_index;
+    chernov_pixmap_bounds_ = component.animation_resource->GetFrame(frame_index);
+  }
 }
 
 void BulatovMiniGame::Drawer::resizeEvent(QResizeEvent* event) {
   resize(container_->size());
+  RecalculateSizes();
   update();
 }
 
-void BulatovMiniGame::Drawer::MakeNotSpeaking() {
-  qDebug() << "make not speaking";
-  switch (real_state_) {
-    case GameState::kQ1: {
-      animation_player->GetComponent<AnimationComponent>().
-          SetAnimationResource(animations_["ozhidanie_1"]);
-      // wrong animation
-      break;
-    }
-    case GameState::kQ1Yes:
-    case GameState::kQ1No: {
-      animation_player->GetComponent<AnimationComponent>().
-          SetAnimationResource(animations_["ozhidanie_2"]);
-      break;
-    }
-    case GameState::kQ1YesQ2Yes:
-    case GameState::kQ1YesQ2No:
-    case GameState::kQ1NoQ2No:
-    case GameState::kQ1NoQ2Yes: {
-      animation_player->GetComponent<AnimationComponent>().
-          SetAnimationResource(animations_["ozhidanie_3"]);
-      break;
-    }
-  }
-}
-
-void BulatovMiniGame::Drawer::MakeSpeaking() {
-  qDebug() << "make speaking";
-  switch (real_state_) {
-    case GameState::kQ1: {
-      animation_player->GetComponent<AnimationComponent>().
-          SetAnimationResource(animations_["no_1"]);
-      // wrong animation
-      break;
-    }
-    case GameState::kQ1Yes:
-    case GameState::kQ1No: {
-      animation_player->GetComponent<AnimationComponent>().
-          SetAnimationResource(animations_["no_1"]);
-      break;
-    }
-    case GameState::kQ1YesQ2Yes:
-    case GameState::kQ1YesQ2No:
-    case GameState::kQ1NoQ2No:
-    case GameState::kQ1NoQ2Yes: {
-      animation_player->GetComponent<AnimationComponent>().
-          SetAnimationResource(animations_["no_1"]);
-      break;
-    }
-  }
-}
 
 }  // namespace game

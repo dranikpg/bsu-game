@@ -18,6 +18,8 @@
 
 namespace game {
 
+// rename to chernov
+
 class BulatovMiniGame : public resource::MiniGame {
  public:
   class Drawer : public QWidget {
@@ -28,43 +30,37 @@ class BulatovMiniGame : public resource::MiniGame {
     void paintEvent(QPaintEvent *event) override;
     void Process();
    private:
-    enum class GameState {
-      kStartup,
-      kQ1,
-      kQ1No,
-      kQ1Yes,
-      kQ1NoQ2No,
-      kQ1NoQ2Yes,
-      kQ1YesQ2Yes,
-      kQ1YesQ2No,
-      kProcessing,
-      kEnd
-    } game_state_ = GameState::kStartup,
-      real_state_ = GameState::kStartup;
+
+    enum class GameState{
+      kDialog,
+      kMillionaire,
+      kAfterMillionaireDefault,
+      kStart
+    } game_state_ = GameState::kStart;
+
     QWidget* container_;
     ecs::World* world_;
-
-    using AnimationBag = std::unordered_map<std::string,
-                                            std::shared_ptr<resource::Animation>>;
-    AnimationBag animations_;
-    ecs::Entity* animation_player;
-    QRect current_frame_bounds_;
-    QPixmap background_;
-    ui::NPCDialog* bulatov_dialog_widget_;
-    QWidget* bulatov_dialog_container_;
-    QWidget* player_dialog_container_;
-    QWidget* choose_widget_container_;
-    ui::ChooseWidget* choose_widget_ = nullptr;
-    int choose_widget_return_ = -1;
-
-    bool dialog_finished_ = false;
     Callback callback_;
 
-    void LoadAnimations();
-    void RecalculateSizes();
 
-    void MakeSpeaking();
-    void MakeNotSpeaking();
+    // AnimationBag background_animations_;
+    // ecs::Entity* background_animation_player_;
+
+    QWidget* chernov_dialog_container_;
+    QWidget* player_dialog_container_;
+
+    QPixmap background_;
+    using AnimationBag = std::unordered_map<std::string,
+                                            std::shared_ptr<resource::Animation>>;
+    AnimationBag chernov_animation_;
+    QPixmap chernov_;
+    QRect chernov_screen_bounds_ = {0,0,0,0};
+    QRect chernov_pixmap_bounds_ = {0,0,0,0};
+    ecs::Entity* chernov_player_ = nullptr;
+
+    void ComputeChernovBounds();
+
+    void RecalculateSizes();
   };
 
  public:

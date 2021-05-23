@@ -22,12 +22,13 @@
         <file>bufet_levels5.png</file>
         <file>style.css</file>
         <file>chrono_type.ttf</file>
-        <file>bulatov_chellenge.json</file>
-        <file>bulatov_chellenge.png</file>
         <file>millionaire_icon.png</file>
         <file>choose_variant_for_bulatov_Q.png</file>
         <file>choose_variant_for_bulatov_A.png</file>
         <file>animation_button_millionaire.png</file>
         <file>animation_button_millionaire.json</file>
+        <file>chernov.json</file>
+        <file>chernov.png</file>
+        <file>chernov_challenge_background.png</file>
     </qresource>
 </RCC>
