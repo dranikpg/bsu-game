@@ -1,7 +1,7 @@
 #include "npc_dialog.h"
 
 #include <utility>
-#include <cmath>
+#include <algorithm>
 
 #include <QHBoxLayout>
 #include <QPainter>
@@ -23,7 +23,6 @@ NPCDialog::NPCDialog(std::vector<std::pair<QString, int>> parts,
                      current_part_(0),
                      current_text_(parts_[current_part_].first),
                      current_pause_(parts_[current_part_].second) {
-
   label_ = new TypingLabel([this](){TypingDone();});
   label_->setObjectName("npcdialog-text");
   label_->setWordWrap(true);
@@ -32,14 +31,14 @@ NPCDialog::NPCDialog(std::vector<std::pair<QString, int>> parts,
   main_layout_ = new QHBoxLayout();
   main_layout_->addWidget(label_);
   main_layout_->setSpacing(0);
-  main_layout_->setContentsMargins(5,5,5,5);
+  main_layout_->setContentsMargins(5, 5, 5, 5);
 
   setLayout(main_layout_);
 
   auto container_layout = new QHBoxLayout();
   container_layout->addWidget(this);
   container_layout->setSpacing(0);
-  container_layout->setContentsMargins(0,0,0,0);
+  container_layout->setContentsMargins(0, 0, 0, 0);
   if (container_->layout() != nullptr) {
     delete container_->layout();
   }
@@ -81,7 +80,7 @@ void NPCDialog::CalculateSize() {
   int cnt_wdth = container_->width();
   int cnt_height = container_->height();
   auto newFontSizeRect = label_->fontMetrics().boundingRect(
-      QRect{0,0,(container_->width() - 10), (container_->height() - 10)},
+      QRect{0, 0, (container_->width() - 10), (container_->height() - 10)},
       (Qt::TextWordWrap) | label_->alignment(),
       label_->getCurrentText());
   int hint_height =

@@ -13,7 +13,7 @@ ChooseVarWidget::ChooseVarWidget(QWidget* container, const QString& text, Choose
   auto container_layout = new QHBoxLayout();
   container_layout->addWidget(this);
   container_layout->setSpacing(0);
-  container_layout->setContentsMargins(0,0,0,0);
+  container_layout->setContentsMargins(0, 0, 0, 0);
   container_->setLayout(container_layout);
 
   auto main_layout = new QHBoxLayout(this);
@@ -25,20 +25,20 @@ ChooseVarWidget::ChooseVarWidget(QWidget* container, const QString& text, Choose
   label_->setObjectName("choose-var-widget-text");
 
   if (type_ == ChooseVarWidgetType::kAnswer) {
-    background_ = QPixmap(":/choose_variant_for_bulatov_A.png");
+    background_ = QPixmap(":/choose_variant_for_chernov_A.png");
     animations_ = (utils::AseAnimationParser::Parse(
         QFile(":/animation_button_millionaire.json")))["animation"];
     connect(label_, SIGNAL(clicked(bool)), this, SIGNAL(clicked(bool)));
     connect(this, SIGNAL(clicked(bool)), this, SLOT(PlayAnimation(bool)));
   } else if (type_ == ChooseVarWidgetType::kQuestion) {
-    background_ = QPixmap(":/choose_variant_for_bulatov_Q.png");
+    background_ = QPixmap(":/choose_variant_for_chernov_Q.png");
   }
 
   current_ = background_;
 
   main_layout->addWidget(label_);
   main_layout->setSpacing(0);
-  main_layout->setContentsMargins(0,0,0,0);
+  main_layout->setContentsMargins(0, 0, 0, 0);
   setLayout(main_layout);
 
   RecalculateSizes();
@@ -48,8 +48,8 @@ ChooseVarWidget::ChooseVarWidget(QWidget* container, const QString& text, Choose
 
 void ChooseVarWidget::paintEvent(QPaintEvent* event) {
   QPainter painter(this);
-  QRect target = {0,0,width(),height()};
-  QRect source = {0,0,current_.width(), current_.height()};
+  QRect target = {0, 0, width(), height()};
+  QRect source = {0, 0, current_.width(), current_.height()};
   painter.drawPixmap(target, current_, source);
 }
 

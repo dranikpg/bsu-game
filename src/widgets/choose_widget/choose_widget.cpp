@@ -1,12 +1,15 @@
 #include "choose_widget.h"
 
+#include <utility>
+
 #include <QHBoxLayout>
 #include <QGraphicsOpacityEffect>
 #include <QGraphicsColorizeEffect>
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 #include <QParallelAnimationGroup>
-#include <utility>
+
+#include <QDebug>
 
 namespace ui {
 
@@ -19,20 +22,22 @@ ChooseWidget::ChooseWidget(QWidget* container,
                            Callback callback) :
                            QWidget(container),
                            container_(container),
-                           callback_(std::move(callback))
-                           {
+                           callback_(std::move(callback)) {
   icon_pixmap = QPixmap(":/millionaire_icon.png");
 
   resize(container_->size());
   auto container_layout = new QHBoxLayout();
   container_layout->addWidget(this);
   container_layout->setSpacing(0);
-  container_layout->setContentsMargins(0,0,0,0);
+  container_layout->setContentsMargins(0, 0, 0, 0);
+  if (container_->layout() != nullptr) {
+    delete container_->layout();
+  }
   container_->setLayout(container_layout);
 
   auto main_layout = new QHBoxLayout(this);
   main_layout->setSpacing(0);
-  main_layout->setContentsMargins(0,0,0,0);
+  main_layout->setContentsMargins(0, 0, 0, 0);
   setLayout(main_layout);
 
   mask_ = new QLabel(this);
@@ -76,6 +81,7 @@ ChooseWidget::ChooseWidget(QWidget* container,
 }
 
 void ChooseWidget::Start(QPixmap start_frame) {
+  qDebug() << "ChooseWidget::Start";
   start_frame_ = start_frame;
   RecalculateSizes();
   show();
@@ -89,7 +95,7 @@ void ChooseWidget::ShowMask() {
   auto group = new QParallelAnimationGroup;
 
   auto eff1 = new QGraphicsColorizeEffect(this);
-  eff1->setColor(QColor::fromRgb(0,0,0));
+  eff1->setColor(QColor::fromRgb(0, 0, 0));
   eff1->setStrength(0);
   mask_->setGraphicsEffect(eff1);
   mask_->show();
@@ -210,7 +216,7 @@ void ChooseWidget::RecalculateSizes() {
   icon_->setPixmap(icon_pixmap.scaled(icon_->width(), icon_->height()));
 
   mask_->setGeometry(0, 0, width(), height());
-  dark_mask_->setGeometry(0,0,width(),height());
+  dark_mask_->setGeometry(0, 0, width(), height());
   mask_->setPixmap(start_frame_.scaled(mask_->width(), mask_->height()));
 }
 
@@ -294,7 +300,6 @@ void ChooseWidget::Var4ButClicked(bool) {
 
 void ChooseWidget::End() {
   hide();
-  delete layout();
   if (callback_) {
     callback_(chosen_var_);
   }

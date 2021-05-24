@@ -1,5 +1,5 @@
-#ifndef CHOOSE_VAR_WIDGET_H
-#define CHOOSE_VAR_WIDGET_H
+#ifndef SRC_WIDGETS_CHOOSE_WIDGET_CHOOSE_VAR_WIDGET_H_
+#define SRC_WIDGETS_CHOOSE_WIDGET_CHOOSE_VAR_WIDGET_H_
 
 #include <unordered_map>
 #include <memory>
@@ -30,7 +30,7 @@ class ChooseVarWidget : public QWidget {
   void resizeEvent(QResizeEvent* event) override;
   void paintEvent(QPaintEvent *event) override;
 
-  signals:
+ signals:
   void clicked(bool);
   void finishedAnimation(bool);
 
@@ -54,4 +54,5 @@ class ChooseVarWidget : public QWidget {
 
 }  // namespace ui
 
-#endif //CHOOSE_VAR_WIDGET_H
+#endif  // SRC_WIDGETS_CHOOSE_WIDGET_CHOOSE_VAR_WIDGET_H_
+

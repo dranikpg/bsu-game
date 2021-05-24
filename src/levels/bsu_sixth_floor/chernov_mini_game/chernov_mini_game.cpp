@@ -1,4 +1,4 @@
-#include "bulatov_mini_game.h"
+#include "chernov_mini_game.h"
 
 #include "../../../utils/parser/ase_animation_parser.h"
 #include "../../../components/components.h"
@@ -11,11 +11,11 @@
 
 namespace game {
 
-void BulatovMiniGame::Process() {
+void ChernovMiniGame::Process() {
   drawer_->Process();
 }
 
-BulatovMiniGame::BulatovMiniGame(Callback callback, QWidget* container,
+ChernovMiniGame::ChernovMiniGame(Callback callback, QWidget* container,
                                  ecs::World* world) {
   drawer_ = new Drawer(callback, container, world);
   drawer_->setParent(container);
@@ -23,7 +23,7 @@ BulatovMiniGame::BulatovMiniGame(Callback callback, QWidget* container,
   drawer_->show();
 }
 
-void BulatovMiniGame::Drawer::Process() {
+void ChernovMiniGame::Drawer::Process() {
   switch (game_state_) {
     case GameState::kFirst: {
       game_state_ = GameState::kDialog;
@@ -92,7 +92,7 @@ void BulatovMiniGame::Drawer::Process() {
 }
 
 
-BulatovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
+ChernovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
                                 ecs::World* world)
                                 : callback_(std::move(callback)),
                                   container_(container),
@@ -125,7 +125,7 @@ BulatovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
   RecalculateSizes();
 }
 
-void BulatovMiniGame::Drawer::RecalculateSizes() {
+void ChernovMiniGame::Drawer::RecalculateSizes() {
   chernov_screen_bounds_ = QRect{static_cast<int>(0.76*container_->width()),
                                  static_cast<int>(0.447*container_->height()),
                                  static_cast<int>(0.12*container_->width()),
@@ -141,7 +141,7 @@ void BulatovMiniGame::Drawer::RecalculateSizes() {
   millionaire_container_->setGeometry(0, 0, width(), height());
 }
 
-void BulatovMiniGame::Drawer::paintEvent(QPaintEvent* event) {
+void ChernovMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   QPainter painter(this);
   painter.drawPixmap(QRect{0,0,width(),height()}, background_,
                      QRect{0,0,background_.width(),background_.height()});
@@ -149,7 +149,7 @@ void BulatovMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   painter.drawPixmap(chernov_screen_bounds_, chernov_, chernov_pixmap_bounds_);
 }
 
-void BulatovMiniGame::Drawer::ComputeChernovBounds() {
+void ChernovMiniGame::Drawer::ComputeChernovBounds() {
   if (chernov_player_ != nullptr) {
     auto& component = chernov_player_->GetComponent<AnimationComponent>();
     auto frame_index = component.frame_index;
@@ -161,13 +161,13 @@ void BulatovMiniGame::Drawer::ComputeChernovBounds() {
                                  static_cast<int>(0.21*container_->height())};
 }
 
-void BulatovMiniGame::Drawer::resizeEvent(QResizeEvent* event) {
+void ChernovMiniGame::Drawer::resizeEvent(QResizeEvent* event) {
   resize(container_->size());
   RecalculateSizes();
   update();
 }
 
-QPixmap BulatovMiniGame::Drawer::GetScreenShot() {
+QPixmap ChernovMiniGame::Drawer::GetScreenShot() {
   QPixmap pixmap(720,512);
   QPainter painter(&pixmap);
 
@@ -182,24 +182,24 @@ QPixmap BulatovMiniGame::Drawer::GetScreenShot() {
   return pixmap;
 }
 
-void BulatovMiniGame::Drawer::PauseChernovPlayer() {
-  qDebug() << "BulatovMiniGame::Drawer::PauseChernovPlayer";
+void ChernovMiniGame::Drawer::PauseChernovPlayer() {
+  qDebug() << "ChernovMiniGame::Drawer::PauseChernovPlayer";
   chernov_player_->GetComponent<AnimationComponent>().paused = true;
 }
 
-void BulatovMiniGame::Drawer::UnpauseChernovPlayer() {
-  qDebug() << "BulatovMiniGame::Drawer::UnpauseChernovPlayer";
+void ChernovMiniGame::Drawer::UnpauseChernovPlayer() {
+  qDebug() << "ChernovMiniGame::Drawer::UnpauseChernovPlayer";
   chernov_player_->GetComponent<AnimationComponent>().paused = false;
 }
 
-void BulatovMiniGame::Drawer::MakeChernovNotSpeaking() {
-  qDebug() << "BulatovMiniGame::Drawer::MakeChernovNotSpeaking";
+void ChernovMiniGame::Drawer::MakeChernovNotSpeaking() {
+  qDebug() << "ChernovMiniGame::Drawer::MakeChernovNotSpeaking";
   chernov_player_->GetComponent<AnimationComponent>().
       SetAnimationResource(chernov_animation_["statik"]);
 }
 
-void BulatovMiniGame::Drawer::MakeChernovSpeaking() {
-  qDebug() << "BulatovMiniGame::Drawer::MakeChernovSpeaking";
+void ChernovMiniGame::Drawer::MakeChernovSpeaking() {
+  qDebug() << "ChernovMiniGame::Drawer::MakeChernovSpeaking";
   chernov_player_->GetComponent<AnimationComponent>().
       SetAnimationResource(chernov_animation_["speak"]);
 }

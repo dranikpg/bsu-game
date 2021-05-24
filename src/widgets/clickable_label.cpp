@@ -3,6 +3,6 @@
 namespace ui {
 
 ClickableLable::ClickableLable(QWidget* parent)
-: QLabel(parent){}
+: QLabel(parent) {}
 
 }  // namespace ui

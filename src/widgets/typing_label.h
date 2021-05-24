@@ -17,7 +17,7 @@ class TypingLabel : public QLabel {
   void SetCallback(Callback callback);
   QString getCurrentText();
 
-  signals:
+ signals:
   void TypedSymbol();
 
  private:

@@ -79,7 +79,7 @@ void BsuLobbyLevel::StartMiniGame(ContextBag contexts) {
   // mini_game_ = std::make_shared<BulatovMiniGame>(
   //     [this]() { state_ = State::kFinishedDialog; },
   //     contexts.mini_game_context->GetContainer(), contexts.input_context);
-  mini_game_ = std::make_shared<BulatovMiniGame>(
+  mini_game_ = std::make_shared<ChernovMiniGame>(
       [this]() { state_ = State::kFinishedDialog; },
       contexts.mini_game_context->GetContainer(), world_);
   state_ = State::kMiniGame;

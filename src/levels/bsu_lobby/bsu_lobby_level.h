@@ -11,7 +11,7 @@
 #include "../../levels/bsu_lobby/canteen_mini_game.h"
 
 //debug
-#include "../bsu_sixth_floor/bulatov_mini_game/bulatov_mini_game.h"
+#include "../bsu_sixth_floor/chernov_mini_game/chernov_mini_game.h"
 
 #include "../../resources/path.h"
 
@@ -48,7 +48,7 @@ class BsuLobbyLevel : public resource::Level {
   ecs::Entity* block_ = nullptr;
   ecs::Entity* canteen_;
   //debug
-  std::shared_ptr<BulatovMiniGame> mini_game_;
+  std::shared_ptr<ChernovMiniGame> mini_game_;
   std::shared_ptr<resource::Path> guard_path_;
   std::shared_ptr<GuardBehaviour> guard_behaviour_;
   QPointF guard_pos_;
