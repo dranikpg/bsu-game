@@ -35,6 +35,7 @@ void SplashContext::Init(QWidget* container) {
   main_layout_->addWidget(button_, 1, 1, 1, 1, Qt::AlignCenter);
   main_layout_->setColumnStretch(0, 1);
   main_layout_->setColumnStretch(1, 2);
+  icon_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void SplashContext::Show(utils::PixmapRect icon, QString text, std::function<void()> callback) {

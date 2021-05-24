@@ -49,5 +49,13 @@
         <file>gora.png</file>
         <file>egor.png</file>
         <file>generator.png</file>
+
+        <file>upper_floor.png</file>
+        <file>upper_floor.json</file>
+
+        <file>splashes/start.txt</file>
+        <file>splashes/start.png</file>
+        <file>splashes/entrance.txt</file>
+        <file>splashes/entrance.png</file>
     </qresource>
 </RCC>

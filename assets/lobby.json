@@ -1124,6 +1124,12 @@
          "name":"entity",
          "objects":[
                 {
+                 "id": 101,
+                 "name": "transition",
+                 "x": 362.67,
+                 "y": 174.00
+                },
+                {
                  "height":9.25,
                  "id":100,
                  "name":"player",

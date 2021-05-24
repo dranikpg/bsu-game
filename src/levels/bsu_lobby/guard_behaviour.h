@@ -23,6 +23,7 @@ class GuardBehaviour : public resource::Behaviour {
 
   void Process(ecs::Entity* entity) override;
   bool IsDialogFinished() const;
+  void AllowPass();
 
  private:
   void ShowDialog(ecs::Entity* entity);
@@ -33,7 +34,7 @@ class GuardBehaviour : public resource::Behaviour {
     kNone,
     kGuarding,
     kWandering,
-    kDialogFinished
+    kAllowingPass
   };
 
   ecs::Entity* player_ = nullptr;

@@ -6,7 +6,7 @@
 #include "../../context/level_context.h"
 #include "../../utils/parser/dialog_parser.h"
 #include "../../levels/bsu_lobby/bsu_lobby_level.h"
-#include "../../levels/bsu_entrance/bsu_entrance_level.h"
+#include "../../levels/upper_floor/upper_floor_level.h"
 
 #include <map>
 #include <memory>
@@ -39,45 +39,47 @@ void LabyrinthLevel::Process(ecs::World* world, ContextBag contexts) {
     if (IsReady(pl_pos.position, pig_, contexts)) {
       QPixmap icon(":/sitnikova.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
-          utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(2, 2)),
+          utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
           "The first number is 1",
           []() {
           });
     } else if (IsReady(pl_pos.position, egor_, contexts)) {
       QPixmap icon(":/egor.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
-          utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(2, 2)),
+          utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
           "The second number is 4",
           []() {
           });
     } else if (IsReady(pl_pos.position, gora_, contexts)) {
       QPixmap icon(":/gora.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
-          utils::PixmapRect(icon, QRect(0, 0, 128, 128), QPoint(2, 2)),
+          utils::PixmapRect(icon, QRect(0, 0, 128, 128)),
           "The third number is 8",
           []() {
           });
     } else if (IsReady(pl_pos.position, guard_pos_, contexts)) {
       QPixmap icon(":/guard-sheet.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
-          utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(1, 1)),
+          utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
           "The fourth number is 8",
           []() {
           });
     } else if (IsReady(pl_pos.position, generator_, contexts)) {
       QPixmap icon(":/generator.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
-          utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(2, 2)),
+          utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
           "##%@#$#beep~&@~~beep##%%$$",
           [&]() {
             *is_switched = !(*is_switched);
           });
-    } else if (IsReady(pl_pos.position, entrance_, contexts)) {
+    }
+    /* else if (IsReady(pl_pos.position, entrance_, contexts)) {
       contexts.mini_game_context->Stop();
       contexts.level_context->Load<BsuLobbyLevel>();
-    } else if (IsReady(pl_pos.position, exit_, contexts)) {
+    } */
+    else if (IsReady(pl_pos.position, exit_, contexts)) {
       contexts.mini_game_context->Stop();
-      contexts.level_context->Load<BsuEntranceLevel>();
+      contexts.level_context->Load<UpperFloorLevel>();
     }
     mini_game_->Process(ProjectPlayerPos(world, contexts));
   }

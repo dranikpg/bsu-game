@@ -32,7 +32,8 @@ class BsuLobbyLevel : public resource::Level {
   enum class State {
     kNone,
     kMiniGame,
-    kFinishedMiniGame
+    kFinishedMiniGame,
+    kUnlocked
   };
 
   State state_;
@@ -46,6 +47,7 @@ class BsuLobbyLevel : public resource::Level {
   std::shared_ptr<GuardBehaviour> guard_behaviour_;
   QPointF guard_pos_;
   QPointF canteen_pos_;
+  QPointF transition_pos_;
   utils::PixmapRect canteen_icon_;
 };
 

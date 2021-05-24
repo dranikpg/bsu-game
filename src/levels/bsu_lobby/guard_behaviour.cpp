@@ -22,7 +22,7 @@ GuardBehaviour::GuardBehaviour(ecs::Entity* player,
       main_position_(main_position) {
 
   QPixmap guard_sheet(":/guard-sheet.png");
-  guard_icon_ = utils::PixmapRect(guard_sheet, QRect(0, 0, 64, 64), QPoint(1, 1));
+  guard_icon_ = utils::PixmapRect(guard_sheet, QRect(0, 0, 64, 64));
 
   dialog_ = utils::DialogParser::Parse(QFile(":/guard_dialog.json"));
 }
@@ -34,7 +34,7 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
   float player_dist = std::hypotf(player_vector.x(), player_vector.y());
   auto& path = entity->GetComponent<PathFollowComponent>();
 
-  if (player_dist < kRunRadius) {
+  if (player_dist < kRunRadius && state_ != GuardState::kAllowingPass) {
     QPointF guard_position = entity->GetComponent<PositionComponent>().position;
     state_ = GuardState::kGuarding;
     path = PathFollowComponent(
@@ -50,7 +50,7 @@ void GuardBehaviour::Process(ecs::Entity* entity) {
         kGuardWanderSpeed);
   }
 
-  if (state_ != GuardState::kDialogFinished && player_dist < kSpeakRadius) {
+  if (player_dist < kSpeakRadius && state_ != GuardState::kAllowingPass) {
     ShowDialog(entity);
   } else {
     if (entity->HasComponent<DialogComponent>()) {
@@ -63,14 +63,9 @@ void GuardBehaviour::ShowDialog(ecs::Entity* entity) {
   auto ds = std::make_shared<resource::Dialog>(dialog_);
   if (!entity->HasComponent<DialogComponent>()) {
     entity->AddComponent<DialogComponent>(ds,
-                                          [this](const std::optional<QString>&) {
-                                            state_ = GuardState::kDialogFinished;
-                                          },
+                                          [this](const std::optional<QString>&) {},
                                           guard_icon_);
   }
-}
-bool GuardBehaviour::IsDialogFinished() const {
-  return state_ == GuardState::kDialogFinished;
 }
 
 float GuardBehaviour::CalculateSpeed(float player_dist, QPointF guard_position) {
@@ -78,6 +73,10 @@ float GuardBehaviour::CalculateSpeed(float player_dist, QPointF guard_position) 
   float guard_dist = std::hypotf(guard_vector.x(), guard_vector.y());
   float player_time = player_dist / 5.0f;
   return guard_dist / player_time * 1.1f;
+}
+
+void GuardBehaviour::AllowPass() {
+  state_ = GuardState::kAllowingPass;
 }
 
 }  // namespace game

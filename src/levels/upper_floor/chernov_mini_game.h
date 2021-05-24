@@ -1,11 +1,11 @@
 #ifndef SRC_LEVELS_BSU_SIXTH_FLOOR_CHERNOV_MINI_GAME_CHERNOV_MINI_GAME_H_
 #define SRC_LEVELS_BSU_SIXTH_FLOOR_CHERNOV_MINI_GAME_CHERNOV_MINI_GAME_H_
 
-#include "../../../resources/mini_game.h"
-#include "../../../resources/animation.h"
-#include "../../../context/input_context.h"
-#include "../../../widgets/npc_dialog.h"
-#include "../../../widgets/choose_widget/choose_widget.h"
+#include "../../resources/mini_game.h"
+#include "../../resources/animation.h"
+#include "../../context/input_context.h"
+#include "../../widgets/npc_dialog.h"
+#include "../../widgets/choose_widget/choose_widget.h"
 
 #include <unordered_map>
 #include <string>

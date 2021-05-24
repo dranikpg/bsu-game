@@ -3,9 +3,9 @@
 #include <vector>
 #include <utility>
 
-#include "../../../utils/parser/ase_animation_parser.h"
-#include "../../../components/components.h"
-#include "../../../utils/parser/dialog_parser.h"
+#include "../../utils/parser/ase_animation_parser.h"
+#include "../../components/components.h"
+#include "../../utils/parser/dialog_parser.h"
 
 #include <QPainter>
 #include <QHBoxLayout>

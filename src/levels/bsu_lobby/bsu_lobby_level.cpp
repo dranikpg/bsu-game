@@ -31,24 +31,23 @@ void BsuLobbyLevel::Load(ecs::World* world) {
 }
 
 void BsuLobbyLevel::Process(ecs::World* world, ContextBag contexts) {
-  if (std::hypotf((canteen_pos_ - player_->GetComponent<PositionComponent>().position).x(),
-                  (canteen_pos_ - player_->GetComponent<PositionComponent>().position).y()) < 100 &&
-                  state_ == State::kNone &&
+  auto& pos = player_->GetComponent<PositionComponent>().position;
+  if (std::hypotf((canteen_pos_ - pos).x(),(canteen_pos_ - pos).y()) < 100 &&
+                    ( state_ == State::kNone || state_ == State::kUnlocked) &&
                   contexts.input_context->GetFrameKeys().count(constants::Keys::kEnter)) {
     StartMiniGame(contexts);
   } else if (state_ == State::kMiniGame) {
     mini_game_->Process();
-    if (std::hypotf((canteen_pos_ - player_->GetComponent<PositionComponent>().position).x(),
-                    (canteen_pos_ - player_->GetComponent<PositionComponent>().position).y()) >
-                    100) {
+    if (std::hypotf((canteen_pos_ - pos).x(),(canteen_pos_ - pos).y()) > 100) {
       state_ = State::kNone;
     }
   } else if (state_ == State::kFinishedMiniGame) {
     contexts.mini_game_context->Stop();
-    state_ = State::kNone;
-  } else if (std::hypotf(334. - player_->GetComponent<PositionComponent>().position.x(),
-                         488. - player_->GetComponent<PositionComponent>().position.y()) < 100 &&
-                         contexts.input_context->GetFrameKeys().count(constants::Keys::kEnter)) {
+    guard_behaviour_->AllowPass();
+    world->EraseEntity(block_);
+    state_ = State::kUnlocked;
+  } else if (state_ == State::kUnlocked
+      && std::hypotf(transition_pos_.x() - pos.x(), transition_pos_.y() - pos.y()) < 100) {
     contexts.level_context->Load<LabyrinthLevel>();
   }
 }
@@ -73,6 +72,8 @@ void BsuLobbyLevel::CreateObject(map::MapLayer layer, const map::MapObject& obje
     CreateGuard(world_, object);
   } else if (object.name == "canteen") {
     canteen_pos_ = object.position;
+  } else if (object.name == "transition") {
+    transition_pos_ = object.position;
   }
 }
 

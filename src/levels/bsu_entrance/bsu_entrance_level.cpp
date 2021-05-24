@@ -7,6 +7,8 @@
 #include "../../levels/bsu_lobby/bsu_lobby_level.h"
 #include "../../constants/keys.h"
 
+#include "../../utils/splash.h"
+
 #include <cmath>
 #include <QDebug>
 
@@ -28,17 +30,16 @@ void BsuEntranceLevel::Load(ecs::World* world) {
 void BsuEntranceLevel::Process(ecs::World* world, ContextBag contexts) {
   auto [pl_pos] = player_->Unpack<PositionComponent>();
   if (abs(door_pos_.y() - pl_pos.position.y()) < 22 &&
-      contexts.input_context->GetFrameKeys().count(constants::Keys::kEnter) > 0) {
-    contexts.level_context->Load<BsuLobbyLevel>();
-  } else if (std::hypot(pl_pos.position.x() - mini_game_pos_.x(),
-                        pl_pos.position.y() - mini_game_pos_.y()) < 100 &&
-            state_ == State::kNone &&
-            contexts.input_context->GetFrameKeys().count(constants::Keys::kEnter) > 0) {
-    StartMiniGame(contexts);
-  } else if (state_ == State::kMiniGame) {
-    mini_game_->Process();
-  } else if (state_ == State::kMiniGameFinished) {
-    state_ = State::kNone;
+      contexts.input_context->GetFrameKeys().count(constants::Keys::kEnter) > 0 && !skipped_) {
+    skipped_ = true;
+    auto splash = utils::Splash::Load("entrance");
+    world->CreateEntity()
+      .AddComponent<SplashComponent>(
+          splash.first,
+          splash.second,
+          [contexts]() {
+            contexts.level_context->Load<BsuLobbyLevel>();
+          });
   }
 }
 
@@ -50,8 +51,6 @@ void BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapObject& o
   if (layer == map::MapLayer::kCollision) {
     if (object.name == "door") {
       door_pos_ = object.position;
-    } else if (object.name == "secret") {
-      mini_game_pos_ = object.position;
     }
     CreateCollider(world_, object);
     return;
@@ -62,15 +61,6 @@ void BsuEntranceLevel::CreateObject(map::MapLayer layer, const map::MapObject& o
 }
 
 void BsuEntranceLevel::CreatePath(resource::Path path, const QString& name) {
-}
-
-void BsuEntranceLevel::StartMiniGame(ContextBag contexts) {
-  contexts.mini_game_context->Start();
-  mini_game_ = std::make_shared<SecretMiniGame>(
-      [this]() { state_ = State::kMiniGameFinished; },
-      contexts.mini_game_context->GetContainer(),
-      contexts.input_context, world_);
-  state_ = State::kMiniGame;
 }
 
 }  // namespace game

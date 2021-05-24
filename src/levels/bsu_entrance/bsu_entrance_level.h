@@ -9,7 +9,7 @@
 #include "../../resources/level.h"
 #include "../../resources/behaviour.h"
 #include "../../resources/path.h"
-#include "../../levels/bsu_entrance/secret_mini_game.h"
+#include "../upper_floor/secret_mini_game.h"
 
 namespace game {
 
@@ -22,21 +22,15 @@ class BsuEntranceLevel : public resource::Level {
   void CreateMap(const QString& path) override;
   void CreateObject(map::MapLayer layer, const map::MapObject& object) override;
   void CreatePath(resource::Path path, const QString& name) override;
-  void StartMiniGame(ContextBag contexts);
 
  private:
   enum class State {
-    kNone,
-    kMiniGame,
-    kMiniGameFinished
   };
 
   ecs::World* world_;
   ecs::Entity* player_ = nullptr;
   QPointF door_pos_;
-  QPointF mini_game_pos_;
-  std::shared_ptr<SecretMiniGame> mini_game_ = nullptr;
-  State state_ = State::kNone;
+  bool skipped_ = false;
 };
 
 }  // namespace game
