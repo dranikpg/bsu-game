@@ -14,7 +14,6 @@
 #include <QPixmap>
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
-#include <QPointF>
 
 namespace game {
 

@@ -72,7 +72,6 @@ class SecretMiniGame {
   void Process();
 
  private:
-
   struct Player {
     explicit Player(ecs::World* world);
 

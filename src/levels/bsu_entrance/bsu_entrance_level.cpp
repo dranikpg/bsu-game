@@ -32,8 +32,8 @@ void BsuEntranceLevel::Process(ecs::World* world, ContextBag contexts) {
     contexts.level_context->Load<BsuLobbyLevel>();
   } else if (std::hypot(pl_pos.position.x() - mini_game_pos_.x(),
                         pl_pos.position.y() - mini_game_pos_.y()) < 100 &&
-                        state_ == State::kNone &&
-                        contexts.input_context->GetFrameKeys().count(constants::Keys::kEnter) > 0) {
+            state_ == State::kNone &&
+            contexts.input_context->GetFrameKeys().count(constants::Keys::kEnter) > 0) {
     StartMiniGame(contexts);
   } else if (state_ == State::kMiniGame) {
     mini_game_->Process();

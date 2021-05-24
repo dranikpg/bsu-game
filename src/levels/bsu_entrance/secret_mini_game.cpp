@@ -89,7 +89,8 @@ void SecretMiniGame::Process() {
     // updating target
     if (!target_->is_running) {
       target_->side = (std::rand() % 2 == 0) ? 1 : -1;
-      int screen_side = (target_->side < 0) ? container_->x() + container_->width() : container_->x();
+      int screen_side = (target_->side < 0) ? container_->x() + container_->width()
+          : container_->x();
       target_->coordinate = QPointF(screen_side, container_->y() + container_->height() / 8.);
       target_->is_hit = false;
       target_->speed = 6;
@@ -121,11 +122,12 @@ void SecretMiniGame::Process() {
   }
 }
 
-SecretMiniGame::Drawer::Drawer(SecretMiniGame* game) : mini_game(game),
-                                                       media_player_(new QMediaPlayer(this)),
-                                                       first_playlist_(new QMediaPlaylist(this)),
-                                                       second_playlist_(new QMediaPlaylist(this)),
-                                                       third_playlist_(new QMediaPlaylist(this)){
+SecretMiniGame::Drawer::Drawer(SecretMiniGame* game) :
+                           mini_game(game),
+                           media_player_(new QMediaPlayer(this)),
+                           first_playlist_(new QMediaPlaylist(this)),
+                           second_playlist_(new QMediaPlaylist(this)),
+                           third_playlist_(new QMediaPlaylist(this)) {
   first_playlist_->addMedia(QUrl("qrc:/ulitka.mp3"));
   first_playlist_->setPlaybackMode(QMediaPlaylist::Loop);
   second_playlist_->addMedia(QUrl("qrc:/win.wav"));

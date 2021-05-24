@@ -129,9 +129,7 @@ void LabyrinthLevel::CreateObject(map::MapLayer layer, const map::MapObject& obj
   }
 }
 
-void LabyrinthLevel::CreatePath(resource::Path path, const QString& name) {
-
-}
+void LabyrinthLevel::CreatePath(resource::Path path, const QString& name) {}
 
 void LabyrinthLevel::StartMiniGame(ContextBag contexts) {
   contexts.mini_game_context->Start();
@@ -165,5 +163,3 @@ bool LabyrinthLevel::IsReady(QPointF first, QPointF second, ContextBag context_b
 }
 
 }  // namespace game
-
-

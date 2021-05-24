@@ -63,4 +63,4 @@ class LabyrinthLevel : public resource::Level {
 
 }  // namespace game
 
-#endif  // SRC_LEVELS_LABIRYNTH_LABYRINTH_LEVEL_H_
+#endif  // SRC_LEVELS_LABYRINTH_LABYRINTH_LEVEL_H_

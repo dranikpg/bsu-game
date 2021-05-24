@@ -27,9 +27,8 @@ game::LabyrinthMiniGame::LabyrinthMiniGame(game::LabyrinthMiniGame::Callback cal
     delete container->layout();
   }
   auto* layout = new QVBoxLayout(container);
-  layout->setContentsMargins(0,0,0,0);
+  layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(drawer_);
-
 }
 
 void game::LabyrinthMiniGame::Drawer::paintEvent(QPaintEvent* event) {
