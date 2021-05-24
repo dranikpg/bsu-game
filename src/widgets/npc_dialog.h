@@ -16,16 +16,24 @@ namespace ui {
   class NPCDialog : public QWidget {
     Q_OBJECT
    public:
+    enum class DialogType {
+      kLeftBottom,
+      kRightBottom
+    };
+
     void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
     using Callback = std::function<void()>;
     NPCDialog(std::vector<std::pair<QString, int>> parts,
-              Callback callback, QWidget* container);
+              Callback callback, QWidget* container, DialogType type);
 
     void Start();
     void SetTypingStartCallback(Callback);
     void SetTypingEndCallback(Callback);
 
    private:
+    DialogType type_;
+
     void TypingEnd();
     Callback typing_end_callback_;
 
@@ -39,7 +47,6 @@ namespace ui {
     std::vector<std::pair<QString, int>> parts_;
     int current_part_;
     int current_pause_;
-    int current_size_;
     QString current_text_;
 
     QWidget* container_;

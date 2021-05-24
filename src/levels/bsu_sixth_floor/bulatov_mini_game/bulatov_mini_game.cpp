@@ -28,19 +28,16 @@ void BulatovMiniGame::Drawer::Process() {
     case GameState::kFirst: {
       game_state_ = GameState::kDialog;
       chernov_dialog_ = std::make_shared<ui::NPCDialog>(
-          std::vector<std::pair<QString, int>>{{"Комбат-батяня, батяня-комбат\n"
-                                                "Ты сердце не прятал за спины ребят\n"
-                                                "Летят самолеты, и танки горят\n"
-                                                "Так бьет, йо, комбат, йо, комбат",1000},
-                                               {"Комбат-батяня, батяня-комбат\n"
-                                                "За нами Россия, Москва и Арбат\n"
-                                                "Огонь, батарея, огонь, батальон\n"
-                                                "Комбат, йо, командует он", 0}},
+          std::vector<std::pair<QString, int>>{{"Комбатa adads asd adsad asd "
+                                                "asd asd asd asd ads sa as "
+                                                "asd asd ads as sadasdasd a d"
+                                                "asdasd ads as asd ads adsasds"
+                                                "a sddsa ds .. asd.ads ",0}},
                                           [this](){
         game_state_ = GameState::kMillionaire;
         PauseChernovPlayer();
         millionaire_->Start(GetScreenShot());
-      }, chernov_dialog_container_);
+      }, chernov_dialog_container_, ui::NPCDialog::DialogType::kRightBottom);
 
       chernov_dialog_->SetTypingStartCallback([this](){MakeChernovSpeaking();});
       chernov_dialog_->SetTypingEndCallback([this](){MakeChernovNotSpeaking();});
@@ -69,7 +66,11 @@ void BulatovMiniGame::Drawer::Process() {
     case GameState::kFirstEnd: {
       game_state_ = GameState::kDialog;
       player_dialog_ = std::make_shared<ui::NPCDialog>(
-          std::vector<std::pair<QString, int>>{{millionaire_pack_[chosen_var_+1],500}},
+          std::vector<std::pair<QString, int>>{{"Комбатa adads asd adsad asd "
+                                                "asd asd asd asd ads sa as "
+                                                "asd asd ads as sadasdasd a d"
+                                                "asdasd ads as asd ads adsasds"
+                                                "a sddsa ds .. asd.ads ",500}},
           [this](){
             QString message;
             if ((chosen_var_ == 0) || (chosen_var_ == 3)) {
@@ -81,9 +82,9 @@ void BulatovMiniGame::Drawer::Process() {
                 std::vector<std::pair<QString, int>>{{message,500}},
                 [this](){
                   game_state_ = GameState::kSecond;
-                }, chernov_dialog_container_);
+                }, chernov_dialog_container_, ui::NPCDialog::DialogType::kRightBottom);
             chernov_dialog_->Start();
-          }, player_dialog_container_);
+          }, player_dialog_container_, ui::NPCDialog::DialogType::kLeftBottom);
       player_dialog_->Start();
       break;
     }
@@ -182,19 +183,23 @@ QPixmap BulatovMiniGame::Drawer::GetScreenShot() {
 }
 
 void BulatovMiniGame::Drawer::PauseChernovPlayer() {
+  qDebug() << "BulatovMiniGame::Drawer::PauseChernovPlayer";
   chernov_player_->GetComponent<AnimationComponent>().paused = true;
 }
 
 void BulatovMiniGame::Drawer::UnpauseChernovPlayer() {
+  qDebug() << "BulatovMiniGame::Drawer::UnpauseChernovPlayer";
   chernov_player_->GetComponent<AnimationComponent>().paused = false;
 }
 
 void BulatovMiniGame::Drawer::MakeChernovNotSpeaking() {
+  qDebug() << "BulatovMiniGame::Drawer::MakeChernovNotSpeaking";
   chernov_player_->GetComponent<AnimationComponent>().
       SetAnimationResource(chernov_animation_["statik"]);
 }
 
 void BulatovMiniGame::Drawer::MakeChernovSpeaking() {
+  qDebug() << "BulatovMiniGame::Drawer::MakeChernovSpeaking";
   chernov_player_->GetComponent<AnimationComponent>().
       SetAnimationResource(chernov_animation_["speak"]);
 }
