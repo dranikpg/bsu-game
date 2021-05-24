@@ -31,7 +31,7 @@ void BsuLobbyLevel::Load(ecs::World* world) {
 void BsuLobbyLevel::Process(ecs::World* world, ContextBag contexts) {
   if (std::hypotf((canteen_pos_ - player_->GetComponent<PositionComponent>().position).x(),
                   (canteen_pos_ - player_->GetComponent<PositionComponent>().position).y()) < 100 &&
-                  state_ == State::kNone) {
+      state_ == State::kNone) {
     StartMiniGame(contexts);
   } else if (state_ == State::kMiniGame) {
     mini_game_->Process();
@@ -79,7 +79,7 @@ void BsuLobbyLevel::StartMiniGame(ContextBag contexts) {
 }
 
 void BsuLobbyLevel::CreateGuard(ecs::World* world,
-                                   const map::MapObject& object) {
+                                const map::MapObject& object) {
   auto anims = utils::AseAnimationParser::Parse(QFile(":/guard.json"));
   std::multimap<constants::AnimationType,
                 std::shared_ptr<resource::Animation>> sync_pack;
@@ -103,9 +103,10 @@ void BsuLobbyLevel::CreateGuard(ecs::World* world,
 }
 
 QPointF BsuLobbyLevel::ProjectPlayerPos(ecs::World* world,
-                                           ContextBag contexts) {
+                                        ContextBag contexts) {
   QPointF point = player_->GetComponent<PositionComponent>().position;
   point.ry() -= player_->GetComponent<BoundsComponent>().bounds.height() * 2;
   return ProjectToScreen(world, contexts, point);
 }
+
 }  // namespace game

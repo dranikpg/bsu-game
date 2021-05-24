@@ -19,6 +19,7 @@ struct AnimationComponent : public ecs::Component {
   uint16_t total_frames;
   uint16_t repetitions;
   bool animation_is_ending;
+  bool paused;
 };
 
 }  // namespace game

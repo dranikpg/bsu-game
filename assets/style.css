@@ -18,3 +18,11 @@
 #splash-button:hover {
     border-color: aqua;
 }
+#npcdialog-text {
+    color: black;
+    font: 20px "ChronoType";
+}
+#choose-var-widget-text {
+    color: white;
+    font: 25px "ChronoType";
+}
