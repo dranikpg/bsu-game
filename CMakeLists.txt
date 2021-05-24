@@ -62,7 +62,8 @@ set(SOURCES
         src/widgets/typing_label.cpp
         src/levels/bsu_entrance/secret_mini_game.cpp
         src/systems/camera_system.cpp
-        src/levels/labyrinth/labyrinth_level.cpp src/levels/labyrinth/labyrinth_mini_game.cpp src/levels/labyrinth/labyrinth_mini_game.h)
+        src/levels/labyrinth/labyrinth_level.cpp
+        src/levels/labyrinth/labyrinth_mini_game.cpp)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
