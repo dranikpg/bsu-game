@@ -18,6 +18,7 @@ void AnimationComponent::SetAnimationResource(
   total_frames = animation_resource->GetFrameCount();
   repetitions = 0;
   animation_is_ending = false;
+  paused = false;
 }
 
 }  // namespace game

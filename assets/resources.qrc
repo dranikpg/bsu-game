@@ -22,6 +22,14 @@
         <file>bufet_levels5.png</file>
         <file>style.css</file>
         <file>chrono_type.ttf</file>
+        <file>millionaire_icon.png</file>
+        <file>choose_variant_for_chernov_Q.png</file>
+        <file>choose_variant_for_chernov_A.png</file>
+        <file>animation_button_millionaire.png</file>
+        <file>animation_button_millionaire.json</file>
+        <file>chernov.json</file>
+        <file>chernov.png</file>
+        <file>chernov_challenge_background.png</file>
         <file>computer_class_fon1.png</file>
         <file>chel_with_labs.json</file>
         <file>chel_with_labs.png</file>
@@ -30,5 +38,16 @@
         <file>laba.png</file>
         <file>WA.png</file>
         <file>OK.png</file>
+        <file>fail.wav</file>
+        <file>win.wav</file>
+        <file>ulitka.mp3</file>
+        <file>labyrinth.json</file>
+        <file>labyrinth.png</file>
+        <file>tablichki1.png</file>
+        <file>tablichki2.png</file>
+        <file>sitnikova.png</file>
+        <file>gora.png</file>
+        <file>egor.png</file>
+        <file>generator.png</file>
     </qresource>
 </RCC>

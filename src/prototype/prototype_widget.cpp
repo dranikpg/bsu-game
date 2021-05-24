@@ -34,7 +34,10 @@
 PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;
   systems.emplace_back(
-      std::make_unique<game::LevelSystem>(&level_context_, &mini_game_context_, &input_context_));
+      std::make_unique<game::LevelSystem>(&level_context_,
+                                          &mini_game_context_,
+                                          &input_context_,
+                                          &window_context_));
   systems.emplace_back(std::make_unique<game::SplashSystem>(&splash_context_, &input_context_));
   systems.emplace_back(
       std::make_unique<game::RenderingSystem>(&painter_context_, &window_context_));
@@ -65,7 +68,7 @@ PrototypeWidget::PrototypeWidget() {
 
   QPixmap icon(":/guard-sheet.png");
   world_.CreateEntity().AddComponent<game::SplashComponent>(
-      utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
+      utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(1, 1)),
       "Hello! I'm your master \nWelcome to the game!",
       []() {
       });

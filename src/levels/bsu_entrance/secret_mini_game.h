@@ -7,6 +7,10 @@
 #include <string>
 #include <utility>
 #include <QMouseEvent>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+
+
 
 #include "../../resources/mini_game.h"
 #include "../../context/input_context.h"
@@ -30,17 +34,24 @@ class SecretMiniGame {
   class Drawer : public QWidget {
    public:
     friend class SecretMiniGame;
-    Drawer(QWidget* container, ecs::World* world, SecretMiniGame* game);
+    explicit Drawer(SecretMiniGame* game);
     void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent* event) override;
 
-    static QPointF click_pos;
-    bool is_changed = false;
+    QPointF click_pos;
+    bool is_changed_click = false;
 
    private:
     SecretMiniGame* mini_game;
-    QWidget* container_ = nullptr;
+
+    QMediaPlayer* media_player_;
+    QMediaPlaylist* first_playlist_;
+    QMediaPlaylist* second_playlist_;
+    QMediaPlaylist* third_playlist_;
+
+    QPixmap bad_ = QPixmap(":/tablichki1.png");
+    QPixmap good_ = QPixmap(":/tablichki2.png");
     QPixmap player_pixmap_ = QPixmap(":/chel_with_labs.png");
     QPixmap background_pixmap_ = QPixmap(":/computer_class_fon1");;
     QPixmap wa_pixmap_ = QPixmap(":/WA.png");
@@ -50,11 +61,12 @@ class SecretMiniGame {
     std::vector<QPixmap> hearts_pixmap_ = {QPixmap(":/hearts3.png"),
                                            QPixmap(":/hearts2.png"),
                                            QPixmap(":/hearts1.png")};
-    std::unordered_map<std::string, std::shared_ptr<Animation>> anims_;
-    int16_t count_ = 0;
+
+    int count_ = 0;
     bool stop_ = false;
-    ecs::Entity* player_ = nullptr;
-    ecs::Entity* target_ = nullptr;
+    bool changed_side_ = false;
+    bool changed_playlist_ = false;
+    bool started_ = false;
   };
 
   using Callback = std::function<void()>;
@@ -62,24 +74,51 @@ class SecretMiniGame {
   void Process();
 
  private:
+  struct Player {
+    explicit Player(ecs::World* world);
+
+    ecs::Entity* player = nullptr;
+    GameState state = GameState::kWaiting;
+    QPointF coordinate;
+    int lives = 3;
+    int hits = 0;
+  };
+
+  struct Target {
+    explicit Target(ecs::World* world);
+
+    ecs::Entity* target = nullptr;
+    QPointF coordinate;
+    int speed;
+    int side = 1;
+    bool is_hit = false;
+    bool is_running = false;
+    std::unordered_map<std::string, std::shared_ptr<Animation>> anims_;
+  };
+
+  struct Lab {
+    Lab();
+
+    const int kSpeed;
+    QPointF coordinate;
+    QPointF curr_vector;
+  };
+
+
+  Player* player_ = nullptr;
+  Target* target_ = nullptr;
+  Lab* lab_ = nullptr;
+
   Callback callback_;
-  Drawer* drawer_;
-  QWidget* container_ = nullptr;
   context::InputContext* input_ = nullptr;
-  ecs::World* world_;
-  QPointF for_updating_;
-  int hits_ = 0;
+  Drawer* drawer_ = nullptr;
+  QWidget* container_ = nullptr;
+
   int timer_ = 0;
-  const int kLabSpeed_;
-  const int kTargetSpeed_;
-  const int kWaitingTime_;
-  GameState player_state = GameState::kWaiting;
-  QPointF lab_coordinates;
-  QPointF player;
-  bool clicked = false;
-  QPointF curr_vector;
-  std::vector<std::pair<QPointF, bool>> coordinates;
-  int lives = 3;
+  int kWaitingTime_;
+
+  QPointF for_updating_;
+  bool clicked_ = false;
 };
 
 }  // namespace game

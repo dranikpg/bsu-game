@@ -32,6 +32,7 @@ void RenderingSystem::Run(World* world) {
     painter.translate(-camera_pos.position);
     painter.translate(window_context_->GetSize().width() / scale / 2,
                       window_context_->GetSize().height() / scale / 2);
+    window_context_->SetRenderTransform(painter.transform());
   }
 
   std::vector<ecs::Entity*> current_layer;
