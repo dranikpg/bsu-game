@@ -30,7 +30,7 @@
 #include "../utils/splash.h"
 #include "../map/map_loader.h"
 
-#include "../levels/upper_floor/upper_floor_level.h"
+#include "../levels/bsu_entrance/bsu_entrance_level.h"
 
 PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;
@@ -65,7 +65,7 @@ PrototypeWidget::PrototypeWidget() {
   splash_context_.Init(&splash_box_);
 
   // Load first level
-  level_context_.Load<game::UpperFloorLevel>();
+  level_context_.Load<game::BsuEntranceLevel>();
 
   auto splash1 = utils::Splash::Load("start");
   world_.CreateEntity().AddComponent<game::SplashComponent>(
