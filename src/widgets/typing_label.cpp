@@ -1,21 +1,63 @@
 #include "typing_label.h"
 
+#include <utility>
+
 namespace ui {
 
-TypingLabel::TypingLabel() {
-  auto* timer = new QTimer(this);
-  timer->setInterval(kTypingInterval);
-  QObject::connect(timer, &QTimer::timeout, [this](){
+TypingLabel::TypingLabel(Callback callback) : callback_(std::move(callback)) {
+  timer_ = new QTimer(this);
+  timer_->setInterval(typing_interval_);
+  QObject::connect(timer_, &QTimer::timeout, [this](){
     if (text().length() < text_.length()) {
-      QLabel::setText(text_.left(text().length() + 1));
+      current_text_ = text_.left(text().length() + 1);
+      QLabel::setText(current_text_);
+      emit TypedSymbol();
+    } else {
+      timer_->stop();
+      if (callback_ != nullptr) {
+        callback_();
+      }
     }
   });
-  timer->start();
+}
+
+void TypingLabel::TypeBack() {
+  timer_ = new QTimer(this);
+  timer_->setInterval(typing_interval_);
+  QObject::connect(timer_, &QTimer::timeout, [this](){
+    if (text().length() > 0) {
+      current_text_ = text().left(text().length() - 1);
+      QLabel::setText(current_text_);
+    } else {
+      text_ = "";
+      timer_->stop();
+      if (callback_ != nullptr) {
+        callback_();
+      }
+    }
+  });
+
+  timer_->start();
 }
 
 void TypingLabel::setText(const QString& text) {
   text_ = text;
-  QLabel::setText("");
+  current_text_ = "";
+  QLabel::setText(current_text_);
+  timer_->start();
+}
+
+void TypingLabel::setTypingInterval(int interval) {
+  typing_interval_ = interval;
+  timer_->setInterval(typing_interval_);
+}
+
+QString TypingLabel::getCurrentText() {
+  return current_text_;
+}
+
+void TypingLabel::SetCallback(Callback callback) {
+  callback_ = std::move(callback);
 }
 
 }  // namespace ui

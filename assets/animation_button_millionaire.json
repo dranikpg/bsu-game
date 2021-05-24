@@ -1,0 +1,61 @@
+{ "frames": [
+   {
+    "frame": { "x": 0, "y": 0, "w": 269, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 269, "h": 54 },
+    "sourceSize": { "w": 269, "h": 54 },
+    "duration": 100
+   },
+   {
+    "frame": { "x": 269, "y": 0, "w": 269, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 269, "h": 54 },
+    "sourceSize": { "w": 269, "h": 54 },
+    "duration": 100
+   },
+   {
+    "frame": { "x": 538, "y": 0, "w": 269, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 269, "h": 54 },
+    "sourceSize": { "w": 269, "h": 54 },
+    "duration": 100
+   },
+   {
+    "frame": { "x": 807, "y": 0, "w": 269, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 269, "h": 54 },
+    "sourceSize": { "w": 269, "h": 54 },
+    "duration": 100
+   },
+   {
+    "frame": { "x": 1076, "y": 0, "w": 269, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 269, "h": 54 },
+    "sourceSize": { "w": 269, "h": 54 },
+    "duration": 100
+   }
+ ],
+ "pixmap": ":/animation_button_millionaire.png",
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.23-x64",
+  "image": "animation_button_millionaire.png",
+  "format": "RGBA8888",
+  "size": { "w": 1345, "h": 54 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "animation", "from": 0, "to": 4, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 2", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

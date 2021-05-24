@@ -91,7 +91,7 @@ void BsuLobbyLevel::StartMiniGame(ContextBag contexts) {
 }
 
 void BsuLobbyLevel::CreateGuard(ecs::World* world,
-                                   const map::MapObject& object) {
+                                const map::MapObject& object) {
   auto anims = utils::AseAnimationParser::Parse(QFile(":/guard.json"));
   std::multimap<constants::AnimationType,
                 std::shared_ptr<resource::Animation>> sync_pack;
@@ -115,9 +115,10 @@ void BsuLobbyLevel::CreateGuard(ecs::World* world,
 }
 
 QPointF BsuLobbyLevel::ProjectPlayerPos(ecs::World* world,
-                                           ContextBag contexts) {
+                                        ContextBag contexts) {
   QPointF point = player_->GetComponent<PositionComponent>().position;
   point.ry() -= player_->GetComponent<BoundsComponent>().bounds.height() * 2;
   return ProjectToScreen(world, contexts, point);
 }
+
 }  // namespace game
