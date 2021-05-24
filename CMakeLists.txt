@@ -65,6 +65,7 @@ set(SOURCES
         src/levels/labyrinth/labyrinth_level.cpp
         src/levels/labyrinth/labyrinth_mini_game.cpp)
 
+
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
 qt5_add_resources(SOURCES assets/resources.qrc)

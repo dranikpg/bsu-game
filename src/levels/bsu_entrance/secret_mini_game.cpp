@@ -4,7 +4,6 @@
 #include <QPainter>
 #include <QPixmap>
 #include <cmath>
-#include <QDebug>
 
 #include "../../components/animation_component.h"
 #include "../../components/position_component.h"
@@ -139,6 +138,7 @@ void SecretMiniGame::Drawer::resizeEvent(QResizeEvent* event) {
 }
 
 void SecretMiniGame::Drawer::paintEvent(QPaintEvent* event) {
+
   if (!started_) {
     media_player_->setPlaylist(first_playlist_);
     media_player_->play();

@@ -10,6 +10,8 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 
+
+
 #include "../../resources/mini_game.h"
 #include "../../context/input_context.h"
 #include "../../ecs/entity.h"
@@ -72,6 +74,7 @@ class SecretMiniGame {
   void Process();
 
  private:
+
   struct Player {
     explicit Player(ecs::World* world);
 
