@@ -27,7 +27,8 @@ class UpperFloorLevel : public resource::Level {
   enum class State {
     None,
     MinigameMath,
-    MinigameLab
+    MinigameLab,
+    Halted
   };
   State state_ = State::None;
   QPointF math_marker_;

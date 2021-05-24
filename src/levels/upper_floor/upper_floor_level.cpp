@@ -3,8 +3,11 @@
 #include "../../components/components.h"
 #include "../../map/map_loader.h"
 #include "../../map/map_layer.h"
+#include "../../utils/splash.h"
 
 #include <cmath>
+
+#include <QDebug>
 
 namespace game {
 
@@ -28,10 +31,12 @@ void UpperFloorLevel::CreatePath(resource::Path path, const QString& name) {
 }
 void UpperFloorLevel::Process(ecs::World* world, resource::Level::ContextBag bag) {
   auto& pos = player_->GetComponent<PositionComponent>().position;
-  if (state_ != State::MinigameMath && std::hypotf(math_marker_.x() - pos.x(), math_marker_.y() - pos.y()) < 50) {
+  if (state_ != State::MinigameMath
+      && std::hypotf(math_marker_.x() - pos.x(), math_marker_.y() - pos.y()) < 50) {
     StartMinigameMath(bag);
-  } else if (state_ != State::MinigameLab && std::hypotf(lab_marker_.x() - pos.x(), lab_marker_.y() - pos.y()) < 50) {
-    StartMinigameMath(bag);
+  } else if (state_ != State::MinigameLab
+      && std::hypotf(lab_marker_.x() - pos.x(), lab_marker_.y() - pos.y()) < 50) {
+    StartMinigameLab(bag);
   } else if (state_ == State::MinigameMath) {
     minigame_math_->Process();
   } else if (state_ == State::MinigameLab) {
@@ -49,13 +54,33 @@ void UpperFloorLevel::Dispose(ecs::World* world) {
 }
 
 void UpperFloorLevel::StartMinigameMath(resource::Level::ContextBag contexts) {
-  minigame_math_ = std::make_shared<ChernovMiniGame>([this](){}, contexts.mini_game_context->GetContainer(), world_);
-  state_ = State::MinigameMath;
+  auto splash = utils::Splash::Load("math_minigame");
+  world_->CreateEntity()
+      .AddComponent<SplashComponent>(
+          splash.first,
+          splash.second,
+          [this, contexts]() {
+            minigame_math_ = std::make_shared<ChernovMiniGame>(
+                [this]() {}, contexts.mini_game_context->GetContainer(), world_);
+            state_ = State::MinigameMath;
+          }
+      );
+  state_ = State::Halted;
 }
 
 void UpperFloorLevel::StartMinigameLab(resource::Level::ContextBag contexts) {
-  minigame_lab_ = std::make_shared<SecretMiniGame>([this](){}, contexts.mini_game_context->GetContainer(), contexts.input_context, world_);
-  state_ = State::MinigameLab;
+  auto splash = utils::Splash::Load("lab_minigame");
+  world_->CreateEntity()
+      .AddComponent<SplashComponent>(
+          splash.first,
+          splash.second,
+          [this, contexts]() {
+            minigame_lab_ = std::make_shared<SecretMiniGame>(
+                [this]() {}, contexts.mini_game_context->GetContainer(), contexts.input_context, world_);
+            state_ = State::MinigameLab;
+          }
+      );
+  state_ = State::Halted;
 }
 
 }  // namespace game
