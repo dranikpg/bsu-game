@@ -23,7 +23,9 @@ game::LabyrinthMiniGame::LabyrinthMiniGame(game::LabyrinthMiniGame::Callback cal
     input_(input),
     container_(container), is_sw_(std::move(is_switched)) {
   drawer_ = new Drawer(this);
-
+  if (container->layout() != nullptr) {
+    delete container->layout();
+  }
   auto* layout = new QVBoxLayout(container);
   layout->setContentsMargins(0,0,0,0);
   layout->addWidget(drawer_);
@@ -42,13 +44,11 @@ void game::LabyrinthMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   }
 
   if (!*(mini_game_->is_sw_)) {
-    QRadialGradient radialGrad(mini_game_->player_pos_, mini_game_->container_->rect().height() / 2.);
-    radialGrad.setColorAt(0, QColor(0, 0, 0, 0));
-    radialGrad.setColorAt(0.5, Qt::black);
-    radialGrad.setColorAt(1, Qt::black);
-    QRect rect_radial(mini_game_->container_->rect());
-    QBrush brush(radialGrad);
-    painter.fillRect(rect_radial, brush);
+    rect_radial = QRect(mini_game_->container_->rect());
+    radialGrad.setFocalPoint(mini_game_->player_pos_);
+    radialGrad.setRadius(mini_game_->container_->rect().height() / 2.);
+    radialGrad.setCenter(mini_game_->player_pos_);
+    painter.fillRect(rect_radial, radialGrad);
   }
 }
 
@@ -59,4 +59,10 @@ void game::LabyrinthMiniGame::Drawer::resizeEvent(QResizeEvent* event) {
 
 game::LabyrinthMiniGame::Drawer::Drawer(game::LabyrinthMiniGame* mini_game)
     : mini_game_(mini_game) {
+  rect_radial = mini_game_->container_->rect();
+  radialGrad = QRadialGradient(mini_game_->player_pos_,
+                             mini_game_->container_->rect().height() / 2.);
+  radialGrad.setColorAt(0, QColor(0, 0, 0, 0));
+  // radialGrad.setColorAt(0.5, Qt::black);
+  radialGrad.setColorAt(1, Qt::black);
 }

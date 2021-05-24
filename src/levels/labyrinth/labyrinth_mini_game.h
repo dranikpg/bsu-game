@@ -36,6 +36,7 @@ class LabyrinthMiniGame : public resource::MiniGame {
 
    private:
     LabyrinthMiniGame* mini_game_;
+    QRect rect_radial;
     QRadialGradient radialGrad;
   };
   friend class Drawer;

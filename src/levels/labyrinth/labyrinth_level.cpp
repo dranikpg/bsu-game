@@ -70,7 +70,7 @@ void LabyrinthLevel::Process(ecs::World* world, ContextBag contexts) {
           utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(2, 2)),
           "##%@#$#beep~&@~~beep##%%$$",
           [&]() {
-            *is_switched = true;
+            *is_switched = !(*is_switched);
           });
     } else if (IsReady(pl_pos.position, entrance_, contexts)) {
       contexts.mini_game_context->Stop();
