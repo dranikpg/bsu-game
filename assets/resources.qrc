@@ -38,5 +38,16 @@
         <file>laba.png</file>
         <file>WA.png</file>
         <file>OK.png</file>
+        <file>fail.wav</file>
+        <file>win.wav</file>
+        <file>ulitka.mp3</file>
+        <file>labyrinth.json</file>
+        <file>labyrinth.png</file>
+        <file>tablichki1.png</file>
+        <file>tablichki2.png</file>
+        <file>sitnikova.png</file>
+        <file>gora.png</file>
+        <file>egor.png</file>
+        <file>generator.png</file>
     </qresource>
 </RCC>

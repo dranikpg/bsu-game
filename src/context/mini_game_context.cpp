@@ -21,5 +21,11 @@ void MiniGameContext::Init(QWidget* container) {
 QWidget* MiniGameContext::GetContainer() const {
   return container_;
 }
+const QTransform& MiniGameContext::GetRenderTransform() const {
+  return render_transform_;
+}
+void MiniGameContext::SetRenderTransform(const QTransform& render_transform) {
+  render_transform_ = render_transform;
+}
 
 }  // namespace context

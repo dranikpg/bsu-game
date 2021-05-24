@@ -7,8 +7,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(QT_VERSION 5)
-set(REQUIRED_LIBS Core Gui Widgets)
-set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
+set(REQUIRED_LIBS Core Gui Widgets Multimedia)
+set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Multimedia)
 
 set(SOURCES
         src/main.cpp
@@ -66,7 +66,10 @@ set(SOURCES
         src/widgets/choose_widget/choose_var_widget.cpp
         src/widgets/clickable_label.cpp
         src/levels/bsu_entrance/secret_mini_game.cpp
-        src/systems/camera_system.cpp)
+        src/systems/camera_system.cpp
+        src/levels/labyrinth/labyrinth_level.cpp
+        src/levels/labyrinth/labyrinth_mini_game.cpp)
+
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 

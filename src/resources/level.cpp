@@ -62,14 +62,7 @@ ecs::Entity& resource::Level::CreatePlayer(ecs::World* world,
 QPointF Level::ProjectToScreen(ecs::World* world,
                                Level::ContextBag contexts,
                                QPointF point) {
-  ecs::Entity* camera_entity = world->ScanEntities<game::CameraComponent,
-                                                   game::PositionComponent>().Peek();
-  auto[camera, camera_pos] = camera_entity->Unpack<game::CameraComponent,
-                                                   game::PositionComponent>();
-  point -= camera_pos.position;
-  point /= camera.scale;
-  QSize window_size = contexts.mini_game_context->GetContainer()->size();
-  return point + QPointF(window_size.width() / 2, window_size.height() / 2);
+  return contexts.mini_game_context->GetRenderTransform().map(point);
 }
 
 void Level::CreateCamera(ecs::World* world) {

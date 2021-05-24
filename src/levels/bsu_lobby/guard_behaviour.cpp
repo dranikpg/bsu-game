@@ -22,7 +22,7 @@ GuardBehaviour::GuardBehaviour(ecs::Entity* player,
       main_position_(main_position) {
 
   QPixmap guard_sheet(":/guard-sheet.png");
-  guard_icon_ = utils::PixmapRect(guard_sheet, QRect(0, 0, 64, 64));
+  guard_icon_ = utils::PixmapRect(guard_sheet, QRect(0, 0, 64, 64), QPoint(1, 1));
 
   dialog_ = utils::DialogParser::Parse(QFile(":/guard_dialog.json"));
 }
