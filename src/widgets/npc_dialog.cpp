@@ -7,8 +7,6 @@
 #include <QPainter>
 #include <QPainterPath>
 
-#include <QDebug>
-
 namespace ui {
 
 NPCDialog::NPCDialog(std::vector<std::pair<QString, int>> parts,
@@ -50,14 +48,12 @@ NPCDialog::NPCDialog(std::vector<std::pair<QString, int>> parts,
 }
 
 void NPCDialog::Start() {
-  qDebug() << "NPCDialog::Start";
   label_->setText(current_text_);
   show();
   TypingStart();
 }
 
 void NPCDialog::TypingDone() {
-  qDebug() << "NPCDialog::TypingDone";
   TypingEnd();
   QTimer::singleShot(current_pause_, this, [this](){LoadNext();});
 }

@@ -9,8 +9,6 @@
 using constants::PathFollowState;
 using constants::PathFollowType;
 
-// TODO(shaun) support paths with only one point
-
 namespace game {
 
 void PathFollowSystem::Run(ecs::World* world) {

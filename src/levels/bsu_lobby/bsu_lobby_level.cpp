@@ -33,7 +33,7 @@ void BsuLobbyLevel::Load(ecs::World* world) {
 void BsuLobbyLevel::Process(ecs::World* world, ContextBag contexts) {
   if (std::hypotf((canteen_pos_ - player_->GetComponent<PositionComponent>().position).x(),
                   (canteen_pos_ - player_->GetComponent<PositionComponent>().position).y()) < 100 &&
-                  state_ == State::kNone) {
+      state_ == State::kNone) {
     StartMiniGame(contexts);
   } else if (state_ == State::kMiniGame) {
     mini_game_->Process();
@@ -75,18 +75,14 @@ void BsuLobbyLevel::CreatePath(resource::Path path, const QString& name) {
 
 void BsuLobbyLevel::StartMiniGame(ContextBag contexts) {
   contexts.mini_game_context->Start();
-  //debug
-  // mini_game_ = std::make_shared<BulatovMiniGame>(
-  //     [this]() { state_ = State::kFinishedDialog; },
-  //     contexts.mini_game_context->GetContainer(), contexts.input_context);
-  mini_game_ = std::make_shared<ChernovMiniGame>(
+  mini_game_ = std::make_shared<CanteenMiniGame>(
       [this]() { state_ = State::kFinishedDialog; },
-      contexts.mini_game_context->GetContainer(), world_);
+      contexts.mini_game_context->GetContainer(), contexts.input_context);
   state_ = State::kMiniGame;
 }
 
 void BsuLobbyLevel::CreateGuard(ecs::World* world,
-                                   const map::MapObject& object) {
+                                const map::MapObject& object) {
   auto anims = utils::AseAnimationParser::Parse(QFile(":/guard.json"));
   std::multimap<constants::AnimationType,
                 std::shared_ptr<resource::Animation>> sync_pack;
@@ -110,7 +106,7 @@ void BsuLobbyLevel::CreateGuard(ecs::World* world,
 }
 
 QPointF BsuLobbyLevel::ProjectPlayerPos(ecs::World* world,
-                                           ContextBag contexts) {
+                                        ContextBag contexts) {
   QPointF point = player_->GetComponent<PositionComponent>().position;
   point.ry() -= player_->GetComponent<BoundsComponent>().bounds.y() * 2;
   return ProjectToScreen(world, contexts, point);
@@ -121,11 +117,12 @@ void BsuLobbyLevel::CreateCanteen(ecs::World* world, const map::MapObject& objec
       QFile(":/guard_dialog.json")));
   QPixmap guard_sheet(":/guard-sheet.png");
   canteen_icon_ = utils::PixmapRect(guard_sheet, QRect(0, 0, 64, 64));
-  canteen_ = &world->CreateEntity().AddComponent<DialogComponent>(ds,
-                                        [this](const std::optional<QString>&) {
-                                          state_ = State::kFinishedDialog;
-                                        },
-                                        canteen_icon_);
+  canteen_ = &world->CreateEntity()
+      .AddComponent<DialogComponent>(ds,
+                                     [this](const std::optional<QString>&) {
+                                      state_ = State::kFinishedDialog;
+                                      },
+                                      canteen_icon_);
 }
 
 }  // namespace game

@@ -1,13 +1,14 @@
 #include "chernov_mini_game.h"
 
+#include <vector>
+#include <utility>
+
 #include "../../../utils/parser/ase_animation_parser.h"
 #include "../../../components/components.h"
 #include "../../../utils/parser/dialog_parser.h"
 
 #include <QPainter>
 #include <QHBoxLayout>
-
-#include <QDebug>
 
 namespace game {
 
@@ -32,7 +33,7 @@ void ChernovMiniGame::Drawer::Process() {
                                                 "asd asd asd asd ads sa as "
                                                 "asd asd ads as sadasdasd a d"
                                                 "asdasd ads as asd ads adsasds"
-                                                "a sddsa ds .. asd.ads ",0}},
+                                                "a sddsa ds .. asd.ads ", 0}},
                                           [this](){
         game_state_ = GameState::kMillionaire;
         PauseChernovPlayer();
@@ -57,8 +58,7 @@ void ChernovMiniGame::Drawer::Process() {
           [this](int val){
             game_state_ = GameState::kFirstEnd;
             UnpauseChernovPlayer();
-            chosen_var_ = val;}
-      );
+            chosen_var_ = val;});
 
       chernov_dialog_->Start();
       break;
@@ -70,7 +70,7 @@ void ChernovMiniGame::Drawer::Process() {
                                                 "asd asd asd asd ads sa as "
                                                 "asd asd ads as sadasdasd a d"
                                                 "asdasd ads as asd ads adsasds"
-                                                "a sddsa ds .. asd.ads ",500}},
+                                                "a sddsa ds .. asd.ads ", 500}},
           [this](){
             QString message;
             if ((chosen_var_ == 0) || (chosen_var_ == 3)) {
@@ -79,7 +79,7 @@ void ChernovMiniGame::Drawer::Process() {
               message = "Комбат!";
             }
             chernov_dialog_ = std::make_shared<ui::NPCDialog>(
-                std::vector<std::pair<QString, int>>{{message,500}},
+                std::vector<std::pair<QString, int>>{{message, 500}},
                 [this](){
                   game_state_ = GameState::kSecond;
                 }, chernov_dialog_container_, ui::NPCDialog::DialogType::kRightBottom);
@@ -101,12 +101,12 @@ ChernovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
   auto container_layout = new QHBoxLayout();
   container_layout->addWidget(this);
   container_layout->setSpacing(0);
-  container_layout->setContentsMargins(0,0,0,0);
+  container_layout->setContentsMargins(0, 0, 0, 0);
   container_->setLayout(container_layout);
 
   auto main_layout = new QHBoxLayout(this);
   main_layout->setSpacing(0);
-  main_layout->setContentsMargins(0,0,0,0);
+  main_layout->setContentsMargins(0, 0, 0, 0);
   setLayout(main_layout);
 
   background_ = QPixmap(":/chernov_challenge_background.png");
@@ -119,7 +119,7 @@ ChernovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
   millionaire_container_ = new QWidget(this);
 
   chernov_player_ = &world_->CreateEntity()
-      .AddComponent<SpriteComponent>(QRect(0,0,0,0))
+      .AddComponent<SpriteComponent>(QRect(0, 0, 0, 0))
       .AddComponent<AnimationComponent>(chernov_animation_["speak"]);
 
   RecalculateSizes();
@@ -143,8 +143,8 @@ void ChernovMiniGame::Drawer::RecalculateSizes() {
 
 void ChernovMiniGame::Drawer::paintEvent(QPaintEvent* event) {
   QPainter painter(this);
-  painter.drawPixmap(QRect{0,0,width(),height()}, background_,
-                     QRect{0,0,background_.width(),background_.height()});
+  painter.drawPixmap(QRect{0, 0, width(), height()}, background_,
+                     QRect{0, 0, background_.width(), background_.height()});
   ComputeChernovBounds();
   painter.drawPixmap(chernov_screen_bounds_, chernov_, chernov_pixmap_bounds_);
 }
@@ -168,11 +168,11 @@ void ChernovMiniGame::Drawer::resizeEvent(QResizeEvent* event) {
 }
 
 QPixmap ChernovMiniGame::Drawer::GetScreenShot() {
-  QPixmap pixmap(720,512);
+  QPixmap pixmap(720, 512);
   QPainter painter(&pixmap);
 
-  painter.drawPixmap(QRect{0,0,pixmap.width(),pixmap.height()}, background_,
-                     QRect{0,0,background_.width(),background_.height()});
+  painter.drawPixmap(QRect{0, 0, pixmap.width(), pixmap.height()}, background_,
+                     QRect{0, 0, background_.width(), background_.height()});
   QRect chernov_bounds = QRect{static_cast<int>(0.76*pixmap.width()),
                                static_cast<int>(0.447*pixmap.height()),
                                static_cast<int>(0.12*pixmap.width()),
@@ -183,23 +183,19 @@ QPixmap ChernovMiniGame::Drawer::GetScreenShot() {
 }
 
 void ChernovMiniGame::Drawer::PauseChernovPlayer() {
-  qDebug() << "ChernovMiniGame::Drawer::PauseChernovPlayer";
   chernov_player_->GetComponent<AnimationComponent>().paused = true;
 }
 
 void ChernovMiniGame::Drawer::UnpauseChernovPlayer() {
-  qDebug() << "ChernovMiniGame::Drawer::UnpauseChernovPlayer";
   chernov_player_->GetComponent<AnimationComponent>().paused = false;
 }
 
 void ChernovMiniGame::Drawer::MakeChernovNotSpeaking() {
-  qDebug() << "ChernovMiniGame::Drawer::MakeChernovNotSpeaking";
   chernov_player_->GetComponent<AnimationComponent>().
       SetAnimationResource(chernov_animation_["statik"]);
 }
 
 void ChernovMiniGame::Drawer::MakeChernovSpeaking() {
-  qDebug() << "ChernovMiniGame::Drawer::MakeChernovSpeaking";
   chernov_player_->GetComponent<AnimationComponent>().
       SetAnimationResource(chernov_animation_["speak"]);
 }

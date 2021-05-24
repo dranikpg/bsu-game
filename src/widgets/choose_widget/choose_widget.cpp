@@ -9,8 +9,6 @@
 #include <QSequentialAnimationGroup>
 #include <QParallelAnimationGroup>
 
-#include <QDebug>
-
 namespace ui {
 
 ChooseWidget::ChooseWidget(QWidget* container,
@@ -81,7 +79,6 @@ ChooseWidget::ChooseWidget(QWidget* container,
 }
 
 void ChooseWidget::Start(QPixmap start_frame) {
-  qDebug() << "ChooseWidget::Start";
   start_frame_ = start_frame;
   RecalculateSizes();
   show();
