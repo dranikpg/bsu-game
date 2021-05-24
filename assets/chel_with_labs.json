@@ -1,0 +1,51 @@
+{ "frames": [
+   {
+    "filename": "chel_with_labs 0.png",
+    "frame": { "x": 0, "y": 0, "w": 150, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 150, "h": 150 },
+    "sourceSize": { "w": 150, "h": 150 },
+    "duration": 10
+   },
+   {
+    "filename": "chel_with_labs 1.png",
+    "frame": { "x": 150, "y": 0, "w": 150, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 150, "h": 150 },
+    "sourceSize": { "w": 150, "h": 150 },
+    "duration": 10
+   },
+   {
+    "filename": "chel_with_labs 2.png",
+    "frame": { "x": 300, "y": 0, "w": 150, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 150, "h": 150 },
+    "sourceSize": { "w": 150, "h": 150 },
+    "duration": 10
+   },
+   {
+    "filename": "chel_with_labs 3.png",
+    "frame": { "x": 450, "y": 0, "w": 150, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 150, "h": 150 },
+    "sourceSize": { "w": 150, "h": 150 },
+    "duration": 10
+   }
+ ],
+ "pixmap" : ":/chel_with_labs.png",
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.23-x64",
+  "format": "RGBA8888",
+  "size": { "w": 600, "h": 150 },
+  "image": "chel_with_labs.png",
+  "scale": "1",
+  "frameTags": [
+   { "name": "coding_animation", "from": 0, "to": 3, "direction": "forward" }
+  ]
+ }
+}

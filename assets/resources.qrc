@@ -30,5 +30,13 @@
         <file>chernov.json</file>
         <file>chernov.png</file>
         <file>chernov_challenge_background.png</file>
+        <file>computer_class_fon1.png</file>
+        <file>chel_with_labs.json</file>
+        <file>chel_with_labs.png</file>
+        <file>target.json</file>
+        <file>target.png</file>
+        <file>laba.png</file>
+        <file>WA.png</file>
+        <file>OK.png</file>
     </qresource>
 </RCC>

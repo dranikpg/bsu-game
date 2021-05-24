@@ -20,6 +20,7 @@
 #include "../systems/dialog_system.h"
 #include "../systems/path_follow_system.h"
 #include "../systems/splash_system.h"
+#include "../systems/camera_system.h"
 
 #include "../components/components.h"
 
@@ -44,6 +45,7 @@ PrototypeWidget::PrototypeWidget() {
   systems.emplace_back(std::make_unique<game::BehaviourSystem>());
   systems.emplace_back(std::make_unique<game::DialogSystem>(&input_context_, &dialog_context_));
   systems.emplace_back(std::make_unique<game::PathFollowSystem>());
+  systems.emplace_back(std::make_unique<game::CameraSystem>(&window_context_));
 
   world_.Init(std::move(systems));
 
@@ -100,4 +102,3 @@ void PrototypeWidget::resizeEvent(QResizeEvent* event) {
   mini_game_box_.resize(width(), height());
   splash_box_.resize(width(), height());
 }
-

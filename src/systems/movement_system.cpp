@@ -15,7 +15,7 @@ void MovementSystem::Run(World* world) {
     if (entity.HasComponent<ColliderComponent, BoundsComponent>()) {
       auto[entity_pos, entity_bounds] = entity.Unpack<PositionComponent, BoundsComponent>();
       QPointF destination(0, 0);
-      QRectF entity_rect(0, 0, entity_bounds.bounds.x(), entity_bounds.bounds.y());
+      QRectF entity_rect(0, 0, entity_bounds.bounds.width(), entity_bounds.bounds.height());
       entity_rect.moveCenter(entity_pos.position);
       if (!IsCollidingXY(world, &entity, entity_rect, impulse.shift)) {
         destination = impulse.shift;
@@ -43,7 +43,7 @@ bool MovementSystem::Intersects(World* world, Entity* entity,
     }
 
     auto[pos_point, bounds] = another_entity.Unpack<PositionComponent, BoundsComponent>();
-    QRectF colliding_rect(0, 0, bounds.bounds.x(), bounds.bounds.y());
+    QRectF colliding_rect(0, 0, bounds.bounds.width(), bounds.bounds.height());
     colliding_rect.moveCenter(pos_point.position);
 
     if (target.intersects(colliding_rect)) {

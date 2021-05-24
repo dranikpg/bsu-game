@@ -800,7 +800,18 @@
                  "width":60.3333,
                  "x":279,
                  "y":166
-                }, 
+                },
+                {
+                 "height":1,
+                 "id":1017,
+                 "name":"secret",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":730,
+                 "y":235
+                },
                 {
                  "height":8,
                  "id":127,

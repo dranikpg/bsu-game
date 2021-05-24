@@ -11,8 +11,6 @@
 #include <utility>
 #include <cmath>
 
-#include <QDebug>
-
 namespace game {
 BsuLobbyLevel::~BsuLobbyLevel() = default;
 
@@ -63,7 +61,6 @@ void BsuLobbyLevel::CreateObject(map::MapLayer layer, const map::MapObject& obje
     CreateGuard(world_, object);
   } else if (object.name == "canteen") {
     canteen_pos_ = object.position;
-    CreateCanteen(world_, object);
   }
 }
 
@@ -76,7 +73,7 @@ void BsuLobbyLevel::CreatePath(resource::Path path, const QString& name) {
 void BsuLobbyLevel::StartMiniGame(ContextBag contexts) {
   contexts.mini_game_context->Start();
   mini_game_ = std::make_shared<CanteenMiniGame>(
-      [this]() { state_ = State::kFinishedDialog; },
+      [this]() { state_ = State::kFinishedMiniGame; },
       contexts.mini_game_context->GetContainer(), contexts.input_context);
   state_ = State::kMiniGame;
 }
@@ -108,21 +105,8 @@ void BsuLobbyLevel::CreateGuard(ecs::World* world,
 QPointF BsuLobbyLevel::ProjectPlayerPos(ecs::World* world,
                                         ContextBag contexts) {
   QPointF point = player_->GetComponent<PositionComponent>().position;
-  point.ry() -= player_->GetComponent<BoundsComponent>().bounds.y() * 2;
+  point.ry() -= player_->GetComponent<BoundsComponent>().bounds.height() * 2;
   return ProjectToScreen(world, contexts, point);
-}
-
-void BsuLobbyLevel::CreateCanteen(ecs::World* world, const map::MapObject& object) {
-  auto ds = std::make_shared<resource::Dialog>(utils::DialogParser::Parse(
-      QFile(":/guard_dialog.json")));
-  QPixmap guard_sheet(":/guard-sheet.png");
-  canteen_icon_ = utils::PixmapRect(guard_sheet, QRect(0, 0, 64, 64));
-  canteen_ = &world->CreateEntity()
-      .AddComponent<DialogComponent>(ds,
-                                     [this](const std::optional<QString>&) {
-                                      state_ = State::kFinishedDialog;
-                                      },
-                                      canteen_icon_);
 }
 
 }  // namespace game
