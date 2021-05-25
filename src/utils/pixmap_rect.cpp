@@ -4,13 +4,13 @@ namespace utils {
 
 QPixmap utils::PixmapRect::Copy() const {
   QPixmap tmp = pixmap.copy(rect);
-  return tmp.scaled(tmp.width() * scale.x(), tmp.height() * scale.y());
+  return tmp.scaled(tmp.width(), tmp.height());
 }
 
 PixmapRect::PixmapRect(const QPixmap& pixmap)
   : pixmap(pixmap), rect(pixmap.rect()) {}
 
-PixmapRect::PixmapRect(const QPixmap& pixmap, const QRect& rect, const QPoint& scale)
-    : pixmap(pixmap), rect(rect), scale(scale)  {}
+PixmapRect::PixmapRect(const QPixmap& pixmap, const QRect& rect)
+    : pixmap(pixmap), rect(rect) {}
 
 }  // namespace utils

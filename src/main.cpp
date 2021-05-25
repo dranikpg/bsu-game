@@ -15,6 +15,6 @@ int main(int argc, char* argv[]) {
 
   PrototypeWidget prototype;
   prototype.show();
-  prototype.resize(500, 500);
+  prototype.resize(700, 500);
   return QApplication::exec();
 }

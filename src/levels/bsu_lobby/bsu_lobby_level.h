@@ -24,6 +24,7 @@ class BsuLobbyLevel : public resource::Level {
   void CreatePath(resource::Path path, const QString& name) override;
 
  private:
+  void CreateGirl(const map::MapObject& object);
   void CreateGuard(ecs::World* world, const map::MapObject& object);
   void StartMiniGame(ContextBag contexts);
   QPointF ProjectPlayerPos(ecs::World* world, ContextBag contexts);
@@ -32,7 +33,9 @@ class BsuLobbyLevel : public resource::Level {
   enum class State {
     kNone,
     kMiniGame,
-    kFinishedMiniGame
+    kFinishedMiniGame,
+    kUnlocked,
+    kHalted
   };
 
   State state_;
@@ -46,6 +49,7 @@ class BsuLobbyLevel : public resource::Level {
   std::shared_ptr<GuardBehaviour> guard_behaviour_;
   QPointF guard_pos_;
   QPointF canteen_pos_;
+  QPointF transition_pos_;
   utils::PixmapRect canteen_icon_;
 };
 

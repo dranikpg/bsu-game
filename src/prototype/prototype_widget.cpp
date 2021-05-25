@@ -27,9 +27,11 @@
 #include "../resources/animation.h"
 #include "../resources/dialog.h"
 #include "../utils/parser/ase_animation_parser.h"
+#include "../utils/splash.h"
 #include "../map/map_loader.h"
 
 #include "../levels/bsu_entrance/bsu_entrance_level.h"
+#include "../levels/upper_floor/upper_floor_level.h"
 
 PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;
@@ -66,10 +68,10 @@ PrototypeWidget::PrototypeWidget() {
   // Load first level
   level_context_.Load<game::BsuEntranceLevel>();
 
-  QPixmap icon(":/guard-sheet.png");
+  auto splash1 = utils::Splash::Load("start");
   world_.CreateEntity().AddComponent<game::SplashComponent>(
-      utils::PixmapRect(icon, QRect(0, 0, 64, 64), QPoint(1, 1)),
-      "Hello! I'm your master \nWelcome to the game!",
+      splash1.first,
+      splash1.second,
       []() {
       });
 

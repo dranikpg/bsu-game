@@ -23,10 +23,10 @@ void DialogContext::Hide() {
 void DialogContext::Init(QWidget* container) {
   container_ = container;
   container_->hide();
-  container_->setStyleSheet("background-color: white");
+  container_->setStyleSheet("background-color: white; border-radius: 30; ");
 
   text_label_ = new QLabel(container);
-  text_label_->setMinimumWidth(500);
+  text_label_->setMinimumWidth(600);
   text_label_->move(100, 0);
   text_label_->setStyleSheet("font-size: 25px;");
 

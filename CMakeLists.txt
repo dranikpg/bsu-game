@@ -60,15 +60,17 @@ set(SOURCES
         src/components/splash_component.cpp
         src/systems/splash_system.cpp
         src/widgets/typing_label.cpp
-        src/levels/bsu_sixth_floor/chernov_mini_game/chernov_mini_game.cpp
+        src/levels/upper_floor/chernov_mini_game.cpp
         src/widgets/npc_dialog.cpp
         src/widgets/choose_widget/choose_widget.cpp
         src/widgets/choose_widget/choose_var_widget.cpp
         src/widgets/clickable_label.cpp
-        src/levels/bsu_entrance/secret_mini_game.cpp
+        src/levels/upper_floor/secret_mini_game.cpp
         src/systems/camera_system.cpp
         src/levels/labyrinth/labyrinth_level.cpp
-        src/levels/labyrinth/labyrinth_mini_game.cpp)
+        src/levels/labyrinth/labyrinth_mini_game.cpp
+        src/utils/splash.cpp
+        src/levels/upper_floor/upper_floor_level.cpp)
 
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)

@@ -9,12 +9,11 @@ namespace utils {
 struct PixmapRect {
   PixmapRect() = default;
   explicit PixmapRect(const QPixmap& pixmap);
-  PixmapRect(const QPixmap& pixmap, const QRect& rect, const QPoint& scale);
+  PixmapRect(const QPixmap& pixmap, const QRect& rect);
   QPixmap Copy() const;
 
   QPixmap pixmap;
   QRect rect;
-  QPoint scale;
 };
 
 }  // namespace utils

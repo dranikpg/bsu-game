@@ -49,5 +49,24 @@
         <file>gora.png</file>
         <file>egor.png</file>
         <file>generator.png</file>
+
+        <file>upper_floor.png</file>
+        <file>upper_floor.json</file>
+
+        <file>splashes/start.txt</file>
+        <file>splashes/start.png</file>
+        <file>splashes/entrance.txt</file>
+        <file>splashes/entrance.png</file>
+        <file>splashes/canteen.txt</file>
+        <file>splashes/canteen.png</file>
+        <file>splashes/math_minigame.txt</file>
+        <file>splashes/math_minigame.png</file>
+        <file>splashes/lab_minigame.txt</file>
+        <file>splashes/lab_minigame.png</file>
+
+        <file>students.json</file>
+        <file>students.png</file>
+        <file>girl.json</file>
+        <file>girl.png</file>
     </qresource>
 </RCC>
