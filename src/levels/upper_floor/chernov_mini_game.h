@@ -1,5 +1,5 @@
-#ifndef SRC_LEVELS_BSU_SIXTH_FLOOR_CHERNOV_MINI_GAME_CHERNOV_MINI_GAME_H_
-#define SRC_LEVELS_BSU_SIXTH_FLOOR_CHERNOV_MINI_GAME_CHERNOV_MINI_GAME_H_
+#ifndef SRC_LEVELS_UPPER_FLOOR_CHERNOV_MINI_GAME_H_
+#define SRC_LEVELS_UPPER_FLOOR_CHERNOV_MINI_GAME_H_
 
 #include "../../resources/mini_game.h"
 #include "../../resources/animation.h"
@@ -84,4 +84,4 @@ class ChernovMiniGame : public resource::MiniGame {
 
 }  // namespace game
 
-#endif  // SRC_LEVELS_BSU_SIXTH_FLOOR_CHERNOV_MINI_GAME_CHERNOV_MINI_GAME_H_
+#endif  // SRC_LEVELS_UPPER_FLOOR_CHERNOV_MINI_GAME_H_

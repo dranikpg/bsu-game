@@ -1,7 +1,8 @@
-#ifndef BSU_GAME_SRC_UTILS_SPLASH_H_
-#define BSU_GAME_SRC_UTILS_SPLASH_H_
+#ifndef SRC_UTILS_SPLASH_H_
+#define SRC_UTILS_SPLASH_H_
 
 #include <utility>
+#include <string>
 
 #include <QString>
 
@@ -16,4 +17,4 @@ class Splash {
 
 }  // namespace utils
 
-#endif  // BSU_GAME_SRC_UTILS_SPLASH_H_
+#endif  // SRC_UTILS_SPLASH_H_

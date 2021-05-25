@@ -72,12 +72,7 @@ void LabyrinthLevel::Process(ecs::World* world, ContextBag contexts) {
           [&]() {
             *is_switched = !(*is_switched);
           });
-    }
-    /* else if (IsReady(pl_pos.position, entrance_, contexts)) {
-      contexts.mini_game_context->Stop();
-      contexts.level_context->Load<BsuLobbyLevel>();
-    } */
-    else if (IsReady(pl_pos.position, exit_, contexts)) {
+    } else if (IsReady(pl_pos.position, exit_, contexts)) {
       contexts.mini_game_context->Stop();
       contexts.level_context->Load<UpperFloorLevel>();
     }

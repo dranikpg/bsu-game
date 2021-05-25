@@ -1,5 +1,5 @@
-#ifndef BSU_GAME_SRC_LEVELS_UPPER_FLOOR_UPPER_FLOOR_LEVEL_H_
-#define BSU_GAME_SRC_LEVELS_UPPER_FLOOR_UPPER_FLOOR_LEVEL_H_
+#ifndef SRC_LEVELS_UPPER_FLOOR_UPPER_FLOOR_LEVEL_H_
+#define SRC_LEVELS_UPPER_FLOOR_UPPER_FLOOR_LEVEL_H_
 
 #include <memory>
 
@@ -20,9 +20,12 @@ class UpperFloorLevel : public resource::Level {
   void Process(ecs::World* world, ContextBag bag) override;
   void Load(ecs::World* world) override;
   void Dispose(ecs::World* word) override;
+
  private:
   void StartMinigameMath(ContextBag contexts);
   void StartMinigameLab(ContextBag contexts);
+  void CreateStudents(const map::MapObject& object);
+
  private:
   enum class State {
     None,
@@ -41,4 +44,4 @@ class UpperFloorLevel : public resource::Level {
 
 }  // namespace game
 
-#endif //BSU_GAME_SRC_LEVELS_UPPER_FLOOR_UPPER_FLOOR_LEVEL_H_
+#endif  // SRC_LEVELS_UPPER_FLOOR_UPPER_FLOOR_LEVEL_H_

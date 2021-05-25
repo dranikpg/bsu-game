@@ -4,10 +4,12 @@
 #include "../../map/map_loader.h"
 #include "../../map/map_layer.h"
 #include "../../utils/splash.h"
+#include "../../utils/parser/ase_animation_parser.h"
 
 #include <cmath>
 
 #include <QDebug>
+#include <QRectF>
 
 namespace game {
 
@@ -21,18 +23,23 @@ void UpperFloorLevel::CreateObject(map::MapLayer layer, const map::MapObject& ob
     math_marker_ = object.position;
   } else if (object.name == "lab") {
     lab_marker_ = object.position;
+  } else if (object.name == "students") {
+    CreateStudents(object);
   }
   if (layer == map::MapLayer::kCollision) {
     CreateCollider(world_, object);
   }
 }
-void UpperFloorLevel::CreatePath(resource::Path path, const QString& name) {
+void UpperFloorLevel::CreatePath(resource::Path path, const QString& name) {}
 
-}
 void UpperFloorLevel::Process(ecs::World* world, resource::Level::ContextBag bag) {
+  if (state_ == State::Halted) {
+    return;
+  }
+
   auto& pos = player_->GetComponent<PositionComponent>().position;
   if (state_ != State::MinigameMath
-      && std::hypotf(math_marker_.x() - pos.x(), math_marker_.y() - pos.y()) < 50) {
+      && std::hypotf(math_marker_.x() - pos.x(), math_marker_.y() - pos.y()) < 20) {
     StartMinigameMath(bag);
   } else if (state_ != State::MinigameLab
       && std::hypotf(lab_marker_.x() - pos.x(), lab_marker_.y() - pos.y()) < 50) {
@@ -54,33 +61,42 @@ void UpperFloorLevel::Dispose(ecs::World* world) {
 }
 
 void UpperFloorLevel::StartMinigameMath(resource::Level::ContextBag contexts) {
+  minigame_math_ = std::make_shared<ChernovMiniGame>(
+      [this]() {}, contexts.mini_game_context->GetContainer(), world_);
   auto splash = utils::Splash::Load("math_minigame");
   world_->CreateEntity()
       .AddComponent<SplashComponent>(
           splash.first,
           splash.second,
-          [this, contexts]() {
-            minigame_math_ = std::make_shared<ChernovMiniGame>(
-                [this]() {}, contexts.mini_game_context->GetContainer(), world_);
+          [this]() {
             state_ = State::MinigameMath;
-          }
-      );
+          });
   state_ = State::Halted;
 }
 
 void UpperFloorLevel::StartMinigameLab(resource::Level::ContextBag contexts) {
+  qDebug() << "clm";
+  minigame_lab_ = std::make_shared<SecretMiniGame>(
+      []() {}, contexts.mini_game_context->GetContainer(), contexts.input_context, world_);
   auto splash = utils::Splash::Load("lab_minigame");
   world_->CreateEntity()
       .AddComponent<SplashComponent>(
           splash.first,
           splash.second,
-          [this, contexts]() {
-            minigame_lab_ = std::make_shared<SecretMiniGame>(
-                [this]() {}, contexts.mini_game_context->GetContainer(), contexts.input_context, world_);
+          [this]() {
             state_ = State::MinigameLab;
-          }
-      );
+          });
   state_ = State::Halted;
+}
+
+void UpperFloorLevel::CreateStudents(const map::MapObject& object) {
+  auto anim_bag = utils::AseAnimationParser::Parse(QFile(":/students.json"));
+  world_->CreateEntity()
+      .AddComponent<PositionComponent>(object.position)
+      .AddComponent<BoundsComponent>(50, 50)
+      .AddComponent<ColliderComponent>()
+      .AddComponent<SpriteComponent>(QRectF(0, 0, 50, 50))
+      .AddComponent<AnimationComponent>(anim_bag["main"]);
 }
 
 }  // namespace game

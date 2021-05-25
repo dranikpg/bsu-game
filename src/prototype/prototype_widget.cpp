@@ -31,6 +31,7 @@
 #include "../map/map_loader.h"
 
 #include "../levels/bsu_entrance/bsu_entrance_level.h"
+#include "../levels/upper_floor/upper_floor_level.h"
 
 PrototypeWidget::PrototypeWidget() {
   std::vector<std::unique_ptr<System>> systems;

@@ -24,6 +24,7 @@ class BsuLobbyLevel : public resource::Level {
   void CreatePath(resource::Path path, const QString& name) override;
 
  private:
+  void CreateGirl(const map::MapObject& object);
   void CreateGuard(ecs::World* world, const map::MapObject& object);
   void StartMiniGame(ContextBag contexts);
   QPointF ProjectPlayerPos(ecs::World* world, ContextBag contexts);
@@ -33,7 +34,8 @@ class BsuLobbyLevel : public resource::Level {
     kNone,
     kMiniGame,
     kFinishedMiniGame,
-    kUnlocked
+    kUnlocked,
+    kHalted
   };
 
   State state_;

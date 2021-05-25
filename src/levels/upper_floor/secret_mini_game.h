@@ -1,5 +1,5 @@
-#ifndef SRC_LEVELS_BSU_ENTRANCE_SECRET_MINI_GAME_H_
-#define SRC_LEVELS_BSU_ENTRANCE_SECRET_MINI_GAME_H_
+#ifndef SRC_LEVELS_UPPER_FLOOR_SECRET_MINI_GAME_H_
+#define SRC_LEVELS_UPPER_FLOOR_SECRET_MINI_GAME_H_
 
 #include <memory>
 #include <vector>
@@ -122,4 +122,4 @@ class SecretMiniGame {
 };
 
 }  // namespace game
-#endif  // SRC_LEVELS_BSU_ENTRANCE_SECRET_MINI_GAME_H_
+#endif  // SRC_LEVELS_UPPER_FLOOR_SECRET_MINI_GAME_H_

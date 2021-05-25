@@ -728,7 +728,7 @@
                  "visible":true,
                  "width":0,
                  "x":132.667,
-                 "y":372
+                 "y":382
                 },
                 {
                  "height":0,
@@ -741,6 +741,18 @@
                  "width":0,
                  "x":2000.00,
                  "y":389.33
+                },
+                {
+                 "height":0,
+                 "id":1169,
+                 "name":"students",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":166.00,
+                 "y":290.00
                 }],
          "opacity":1,
          "type":"objectgroup",

@@ -71,7 +71,7 @@
  </objectgroup>
  <objectgroup id="4" name="entity">
   <object id="109" name="player" x="1063" y="208" width="46" height="33"/>
-  <object id="116" name="chernov" x="132.667" y="372">
+  <object id="116" name="math" x="116.167" y="443">
    <point/>
   </object>
  </objectgroup>
