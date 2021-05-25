@@ -79,7 +79,8 @@ void UpperFloorLevel::StartMinigameMath(resource::Level::ContextBag contexts) {
 void UpperFloorLevel::StartMinigameLab(resource::Level::ContextBag contexts) {
   qDebug() << "clm";
   minigame_lab_ = std::make_shared<SecretMiniGame>(
-      [this]() {state_ = State::None;}, contexts.mini_game_context->GetContainer(), contexts.input_context, world_);
+      [this]() {state_ = State::None;},
+      contexts.mini_game_context->GetContainer(), contexts.input_context, world_);
   auto splash = utils::Splash::Load("lab_minigame");
   world_->CreateEntity()
       .AddComponent<SplashComponent>(
