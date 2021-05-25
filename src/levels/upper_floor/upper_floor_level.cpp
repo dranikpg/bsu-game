@@ -93,9 +93,9 @@ void UpperFloorLevel::CreateStudents(const map::MapObject& object) {
   auto anim_bag = utils::AseAnimationParser::Parse(QFile(":/students.json"));
   world_->CreateEntity()
       .AddComponent<PositionComponent>(object.position)
-      .AddComponent<BoundsComponent>(50, 50)
+      .AddComponent<BoundsComponent>(64, 64)
       .AddComponent<ColliderComponent>()
-      .AddComponent<SpriteComponent>(QRectF(0, 0, 50, 50))
+      .AddComponent<SpriteComponent>(QRectF(0, 0, 100, 100))
       .AddComponent<AnimationComponent>(anim_bag["main"]);
 }
 
