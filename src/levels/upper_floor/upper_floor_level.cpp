@@ -39,10 +39,12 @@ void UpperFloorLevel::Process(ecs::World* world, resource::Level::ContextBag bag
 
   auto& pos = player_->GetComponent<PositionComponent>().position;
   if (state_ != State::MinigameMath
-      && std::hypotf(math_marker_.x() - pos.x(), math_marker_.y() - pos.y()) < 20) {
+      && std::hypotf(math_marker_.x() - pos.x(), math_marker_.y() - pos.y()) < 100
+      && bag.input_context->GetKeys().count(Keys::kEnter)) {
     StartMinigameMath(bag);
   } else if (state_ != State::MinigameLab
-      && std::hypotf(lab_marker_.x() - pos.x(), lab_marker_.y() - pos.y()) < 50) {
+      && std::hypotf(lab_marker_.x() - pos.x(), lab_marker_.y() - pos.y()) < 100
+      && bag.input_context->GetKeys().count(Keys::kEnter)) {
     StartMinigameLab(bag);
   } else if (state_ == State::MinigameMath) {
     minigame_math_->Process();
