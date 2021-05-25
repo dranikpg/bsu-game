@@ -29,11 +29,38 @@ void ChernovMiniGame::Drawer::Process() {
     case GameState::kFirst: {
       game_state_ = GameState::kDialog;
       chernov_dialog_ = std::make_shared<ui::NPCDialog>(
-          std::vector<std::pair<QString, int>>{{"Комбатa adads asd adsad asd "
-                                                "asd asd asd asd ads sa as "
-                                                "asd asd ads as sadasdasd a d"
-                                                "asdasd ads as asd ads adsasds"
-                                                "a sddsa ds .. asd.ads ", 0}},
+          std::vector<std::pair<QString, int>>
+              {{"Здесь должен был быть отличный разговорный уровень. "
+                "Но что то не повезло, не фартануло. \n \n"
+                "И вместо сюжетной линии...", 1000},
+               {"АНЕКДОТ", 200},
+               {"Едет машина скорой помощи, внутри водитель, "
+                "врач, фельдшер, медсестра и студент практикант.\n \n"
+                "Едут, вдруг водитель резко"
+                " тормозит и начинает задыхаться.\n \n"
+                "Хватается руками за горло, шипит - ужасное зрелище.\n \n"
+                "Медсестра невозмутимо и твердо хватает чемоданчик"
+                " с препаратами и бьет водителя по голове.\n \n"
+                "Тот моментально успокаивается"
+                " и машина продолжает движение.\n \n"
+                "Тут фельдшер хватается за горло, падает "
+                "на пол, начинает задыхаться и сипеть.\n \n"
+                "Медсестра зло бьет фельдшера по голове "
+                "и тот сразу оправляется и садится на место.\n \n"
+                "Не прошло и минуты, как врач "
+                "начинает задыхаться и брыкаться на полу.\n \n"
+                "Медсестра резким ударом чемоданчика "
+                "приводит врача в чувства.\n \n"
+                "Обалдевший от увиденного студент спрашивает у врача:\n \n"
+                "- Я учусь только на 4 курсе и все мои знания "
+                "- это сплошная теория, но о "
+                "подобных симптомах я даже не слышал! "
+                "А метод лечения настолько странный, "
+                "что я окончательно растерян, "
+                "не могли бы вы мне объяснить..\n \n"
+                "Врач, махая рукой:\n \n"
+                "- А, не бери в голову. "
+                "У медсестры муж вчера повесился, мы ее пОдКаЛыВаЕм!", 1000}},
                                           [this](){
         game_state_ = GameState::kMillionaire;
         PauseChernovPlayer();
@@ -43,11 +70,11 @@ void ChernovMiniGame::Drawer::Process() {
       chernov_dialog_->SetTypingStartCallback([this](){MakeChernovSpeaking();});
       chernov_dialog_->SetTypingEndCallback([this](){MakeChernovNotSpeaking();});
 
-      millionaire_pack_ = {"Кто?",
-               "Комбат?",
-               "Батяня?",
-               "Батяня?",
-               "Комбат?"};
+      millionaire_pack_ = {"Важный статистический опрос?",
+               "Ахахахах?",
+               "Охохохохоохо?",
+               "АХахаххохохахох?",
+               "АХАХХАХАХХ?"};
       millionaire_ = std::make_shared<ui::ChooseWidget>(
           millionaire_container_,
           millionaire_pack_[0],
@@ -57,6 +84,7 @@ void ChernovMiniGame::Drawer::Process() {
           millionaire_pack_[4],
           [this](int val){
             game_state_ = GameState::kFirstEnd;
+            MakeChernovNotSpeaking();
             UnpauseChernovPlayer();
             chosen_var_ = val;});
 
@@ -66,26 +94,17 @@ void ChernovMiniGame::Drawer::Process() {
     case GameState::kFirstEnd: {
       game_state_ = GameState::kDialog;
       player_dialog_ = std::make_shared<ui::NPCDialog>(
-          std::vector<std::pair<QString, int>>{{"Комбатa adads asd adsad asd "
-                                                "asd asd asd asd ads sa as "
-                                                "asd asd ads as sadasdasd a d"
-                                                "asdasd ads as asd ads adsasds"
-                                                "a sddsa ds .. asd.ads ", 500}},
+          std::vector<std::pair<QString, int>>{{
+            "Внимание. Спасибо за внимание.", 1000}},
           [this](){
-            QString message;
-            if ((chosen_var_ == 0) || (chosen_var_ == 3)) {
-              message = "Батяня!";
-            } else {
-              message = "Комбат!";
-            }
-            chernov_dialog_ = std::make_shared<ui::NPCDialog>(
-                std::vector<std::pair<QString, int>>{{message, 500}},
-                [this](){
-                  game_state_ = GameState::kSecond;
-                }, chernov_dialog_container_, ui::NPCDialog::DialogType::kRightBottom);
-            chernov_dialog_->Start();
+            game_state_ = GameState::kEnd;
           }, player_dialog_container_, ui::NPCDialog::DialogType::kLeftBottom);
       player_dialog_->Start();
+      break;
+    }
+    case GameState::kEnd: {
+      close();
+      callback_();
       break;
     }
   }

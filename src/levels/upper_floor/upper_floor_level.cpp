@@ -62,7 +62,9 @@ void UpperFloorLevel::Dispose(ecs::World* world) {
 
 void UpperFloorLevel::StartMinigameMath(resource::Level::ContextBag contexts) {
   minigame_math_ = std::make_shared<ChernovMiniGame>(
-      [this]() {}, contexts.mini_game_context->GetContainer(), world_);
+      [this]()
+      {state_ = State::None;},
+      contexts.mini_game_context->GetContainer(), world_);
   auto splash = utils::Splash::Load("math_minigame");
   world_->CreateEntity()
       .AddComponent<SplashComponent>(

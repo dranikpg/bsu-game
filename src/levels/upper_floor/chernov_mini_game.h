@@ -36,7 +36,7 @@ class ChernovMiniGame : public resource::MiniGame {
       kMillionaire,
       kFirst,
       kFirstEnd,
-      kSecond
+      kEnd
     } game_state_ = GameState::kFirst;
 
     QWidget* container_;
