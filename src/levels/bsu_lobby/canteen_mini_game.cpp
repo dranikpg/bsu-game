@@ -230,7 +230,7 @@ game::CanteenMiniGame::CanteenDrawer::CanteenDrawer(QWidget* container,
   first_playlist_ = new QMediaPlaylist(this);
   second_playlist_ = new QMediaPlaylist(this);
   third_playlist_ = new QMediaPlaylist(this);
-  first_playlist_->addMedia(QUrl("qrc:/ulitka.mp3"));
+  first_playlist_->addMedia(QUrl("qrc:/song.mp3"));
   first_playlist_->setPlaybackMode(QMediaPlaylist::Loop);
   second_playlist_->addMedia(QUrl("qrc:/win.wav"));
   third_playlist_->addMedia(QUrl("qrc:/fail.wav"));

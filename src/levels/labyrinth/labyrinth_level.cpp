@@ -40,28 +40,29 @@ void LabyrinthLevel::Process(ecs::World* world, ContextBag contexts) {
       QPixmap icon(":/sitnikova.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
           utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
-          "The first number is 1",
+          "С тебя 100 конспектов до завтра, иначе недопуск на экзамен! И не забудь про словарь"
+          "куда же без него.",
           []() {
           });
     } else if (IsReady(pl_pos.position, egor_, contexts)) {
       QPixmap icon(":/egor.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
           utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
-          "The second number is 4",
+          "Английский лучший предмет в университете! Наша группа обожает его!",
           []() {
           });
     } else if (IsReady(pl_pos.position, gora_, contexts)) {
       QPixmap icon(":/gora.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
           utils::PixmapRect(icon, QRect(0, 0, 128, 128)),
-          "The third number is 8",
+          "Как же я хочу чтобы англ был еще и в 3ем семестре...",
           []() {
           });
     } else if (IsReady(pl_pos.position, guard_pos_, contexts)) {
       QPixmap icon(":/guard-sheet.png");
       world_->CreateEntity().AddComponent<game::SplashComponent>(
           utils::PixmapRect(icon, QRect(0, 0, 64, 64)),
-          "The fourth number is 8",
+          "Масочку надень!!!!!",
           []() {
           });
     } else if (IsReady(pl_pos.position, generator_, contexts)) {
@@ -137,7 +138,7 @@ void LabyrinthLevel::StartMiniGame(ContextBag contexts) {
 }
 
 void LabyrinthLevel::CreateGuard(ecs::World* world,
-                                const map::MapObject& object) {
+                                 const map::MapObject& object) {
   auto anims = utils::AseAnimationParser::Parse(QFile(":/guard.json"));
   guard_ = &world_->CreateEntity()
       .AddComponent<PositionComponent>(guard_pos_)
@@ -149,7 +150,7 @@ void LabyrinthLevel::CreateGuard(ecs::World* world,
 }
 
 QPointF LabyrinthLevel::ProjectPlayerPos(ecs::World* world,
-                                        ContextBag contexts) {
+                                         ContextBag contexts) {
   QPointF point = player_->GetComponent<PositionComponent>().position;
   return ProjectToScreen(world, contexts, point);
 }
