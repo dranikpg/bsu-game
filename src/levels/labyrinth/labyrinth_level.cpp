@@ -6,7 +6,7 @@
 #include "../../context/level_context.h"
 #include "../../utils/parser/dialog_parser.h"
 #include "../../levels/bsu_lobby/bsu_lobby_level.h"
-#include "../../levels/bsu_entrance/bsu_entrance_level.h"
+#include "../../levels/upper_floor/upper_floor_level.h"
 
 #include <map>
 #include <memory>
@@ -73,12 +73,9 @@ void LabyrinthLevel::Process(ecs::World* world, ContextBag contexts) {
           [&]() {
             *is_switched = !(*is_switched);
           });
-    } else if (IsReady(pl_pos.position, entrance_, contexts)) {
-      contexts.mini_game_context->Stop();
-      contexts.level_context->Load<BsuLobbyLevel>();
     } else if (IsReady(pl_pos.position, exit_, contexts)) {
       contexts.mini_game_context->Stop();
-      contexts.level_context->Load<BsuEntranceLevel>();
+      contexts.level_context->Load<UpperFloorLevel>();
     }
     mini_game_->Process(ProjectPlayerPos(world, contexts));
   }
