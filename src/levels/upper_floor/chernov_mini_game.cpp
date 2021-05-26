@@ -121,6 +121,7 @@ ChernovMiniGame::Drawer::Drawer(Callback callback, QWidget* container,
   container_layout->addWidget(this);
   container_layout->setSpacing(0);
   container_layout->setContentsMargins(0, 0, 0, 0);
+  delete container_->layout();
   container_->setLayout(container_layout);
 
   auto main_layout = new QHBoxLayout(this);
